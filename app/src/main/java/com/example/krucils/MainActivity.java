@@ -11,7 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button loginBtn,adminBtn,daftarBtn;
+    private Button loginBtn,adminBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
            // Intent playIntent = new Intent(this, Penjumlahan.class);
 
-           // this.startActivity(playIntent); test
+           // this.startActivity(playIntent);
 
         } if(view.getId()== R.id.login_admin){
 
