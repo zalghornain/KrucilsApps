@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
            // Intent playIntent = new Intent(this, Penjumlahan.class);
 
-           // this.startActivity(playIntent);
+           // this.startActivity(playIntent);test2
 
         } if(view.getId()== R.id.login_admin){
 
