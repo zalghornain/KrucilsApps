@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Krucils</string>
+    <string name="email">Email</string>
+    <string name="pass">Password</string>
+    <string name="login">Login</string>
+    <string name="register">No account yet? Create one</string>
 </resources>
