@@ -25,24 +25,24 @@
             android:orientation="vertical"
             android:paddingTop="130dp">
             <Button
-                android:id="@+id/login_user"
+                android:id="@+id/login"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
                 android:background="#d67601"
-                android:text="User"
+                android:text="@string/login"
                 android:textAllCaps="false"
                 android:layout_marginBottom="30dp"
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/login_admin"
+                android:id="@+id/register"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
                 android:background="#d67601"
-                android:text="admin"
+                android:text="@string/register"
                 android:textAllCaps="false"
                 android:layout_marginBottom="30dp"
                 android:textColor="#fff"
