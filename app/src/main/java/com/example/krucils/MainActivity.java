@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private Button registerhomeBtn, loginBtn;
 
-
-    public boolean register = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
