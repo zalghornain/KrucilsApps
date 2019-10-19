@@ -3,6 +3,7 @@
     <string name="email">Email</string>
     <string name="pass">Password</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="registerhere">No account yet? Create one</string>
     <string name="register">signup</string>
 </resources>

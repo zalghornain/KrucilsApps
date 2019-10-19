@@ -9,7 +9,6 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_title"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="70dp"
@@ -37,6 +36,18 @@
                 android:textSize="18sp" />
 
             <Button
+                android:id="@+id/logout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="22dp"
+                android:background="#d67601"
+                android:text="@string/logout"
+                android:textAllCaps="false"
+                android:layout_marginBottom="30dp"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <Button
                 android:id="@+id/register"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -54,12 +65,11 @@
 
 
     <TextView
-        android:id="@+id/login_title"
+        android:id="@+id/main_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:gravity="center_horizontal"
-        android:text="Mari kita coba "
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold"
