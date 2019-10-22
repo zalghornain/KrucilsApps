@@ -2,6 +2,10 @@ package com.example.krucils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,8 +79,8 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             //         updateUI(user);
-                            Intent backtomainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                            LoginActivity.this.startActivity(backtomainIntent);
+
+                            //TODO bikin pindah ke fragment yang tadi
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
