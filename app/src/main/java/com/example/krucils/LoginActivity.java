@@ -81,6 +81,13 @@ public class LoginActivity extends AppCompatActivity {
                             //         updateUI(user);
 
                             //TODO bikin pindah ke fragment yang tadi
+                            /*Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                            if (currentFragment instanceof ProfilFragment) {
+                                FragmentTransaction fragTransaction =   (getSupportFragmentManager().beginTransaction());
+                                fragTransaction.detach(currentFragment);
+                                fragTransaction.attach(currentFragment);
+                                fragTransaction.commit();
+                            }*/
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
