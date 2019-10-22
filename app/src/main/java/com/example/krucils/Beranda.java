@@ -1,6 +1,8 @@
 package com.example.krucils;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,32 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             navigationView.setCheckedItem(R.id.nav_beranda);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_login:
+
+                Intent loginIntent = new Intent(Beranda.this, LoginActivity.class);
+                Beranda.this.startActivity(loginIntent);
+
+                return true;
+            case R.id.action_daftar:
+                Intent registerIntent = new Intent(Beranda.this, RegisterActivity.class);
+                Beranda.this.startActivity(registerIntent);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
