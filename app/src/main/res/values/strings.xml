@@ -5,7 +5,9 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="registerhere">No account yet? Create one</string>
-    <string name="register">signup</string>
+    <string name="register">Signup</string>
+    <string name="guest">Guest</string>
+    <string name="welcome">"Selamat datang \n"</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
