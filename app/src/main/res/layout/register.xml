@@ -13,6 +13,15 @@
         android:paddingRight="24dp">
 
 
+        <!-- Username Label -->
+
+        <EditText android:id="@+id/inputregister_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/username"/>
+
+
         <!-- Email Label -->
 
         <EditText android:id="@+id/inputregister_email"
@@ -29,6 +38,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/pass"/>
+
+
 
         <Button
             android:id="@+id/btn_signup"
