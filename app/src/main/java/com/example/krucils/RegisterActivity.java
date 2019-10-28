@@ -1,5 +1,6 @@
 package com.example.krucils;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class RegisterActivity extends MainActivity {
             @Override
             public void onClick(View view) {
                 createAccount(userRegister.getText().toString(),passRegister.getText().toString());
+                //todo kalo gak diisi apa2 crash aplikasinya
             }
         });
 
@@ -64,9 +66,10 @@ public class RegisterActivity extends MainActivity {
                             Toast.makeText(RegisterActivity.this, "Register success.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //                   updateUI(user);
-                            Intent backtomainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                            RegisterActivity.this.startActivity(backtomainIntent);
+                            //set result buat di cek di profil fragment
+                            setResult(Activity.RESULT_OK);
+                            finish();
+                            //todo kalo register udah selesai kira kira mau ngapain langkah selanjutnya ?
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
