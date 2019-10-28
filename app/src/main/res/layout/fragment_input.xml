@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="NIM"
+            android:hint="Paket"
             android:inputType="text" />
 
         <EditText
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Masukan Nama"
+            android:hint="Harga"
             android:inputType="number" />
 
         <EditText
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Jurusan"
+            android:hint="DD/MM/YYYY"
             android:inputType="date" />
 
         <LinearLayout
