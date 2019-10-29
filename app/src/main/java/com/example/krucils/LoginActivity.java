@@ -2,9 +2,6 @@ package com.example.krucils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -44,8 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn(UsernameField.getText().toString(),PassField.getText().toString());
-                //todo kalo gak diisi apa2 crash aplikasinya
+                //TODO login maunya pake email doang atau bisa username juga ?
+                String username = UsernameField.getText().toString();
+                String password = PassField.getText().toString();
+                if (!username.isEmpty() && !password.isEmpty()) {
+                    signIn(username, password);
+                } else {
+                    Toast.makeText(LoginActivity.this, R.string.field_empty, Toast.LENGTH_SHORT).show();
+                }
             }
 
         });

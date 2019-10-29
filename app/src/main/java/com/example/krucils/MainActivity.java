@@ -27,7 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
+//todo kalo ini gak dipake sama sekali dan udah dipindahin semua mending delete aja
 public class MainActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private Button registerhomeBtn, loginBtn, logoutBtn;

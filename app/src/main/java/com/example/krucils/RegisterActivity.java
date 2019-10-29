@@ -10,22 +10,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends MainActivity {
+public class RegisterActivity extends AppCompatActivity{
 
 
     private FirebaseAuth mAuth;
@@ -34,6 +32,7 @@ public class RegisterActivity extends MainActivity {
     private Button signupBtn;
     private FirebaseFirestore db;
     private static String z;
+
 
 
 
@@ -50,16 +49,18 @@ public class RegisterActivity extends MainActivity {
         db = FirebaseFirestore.getInstance();
 
 
+
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO only register if email is not used
-                //emailIsUsed(mAuth, db, emailRegister.getText().toString());
-                //Log.d(TAG, z);
-                //if(!emailIsUsed(mAuth, db, emailRegister.getText().toString())) {
-                    createAccount(userRegister.getText().toString(), emailRegister.getText().toString(), passRegister.getText().toString());
-                    //todo kalo gak diisi apa2 crash aplikasinya
-                //}
+                String username = userRegister.getText().toString();
+                String email = emailRegister.getText().toString();
+                String password = passRegister.getText().toString();
+                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                    createAccount(username, email, password);
+                } else {
+                    Toast.makeText(RegisterActivity.this, R.string.field_empty, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -73,7 +74,6 @@ public class RegisterActivity extends MainActivity {
         // }
         //    showProgressDialog();
         final String usernamefinal= username;
-        final String emailfinal = email;
 
 
 
@@ -85,8 +85,7 @@ public class RegisterActivity extends MainActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Toast.makeText(RegisterActivity.this, "Register success.",
-                                    Toast.LENGTH_SHORT).show();
+
 
 
                             //set result buat di cek di profil fragment
@@ -107,7 +106,8 @@ public class RegisterActivity extends MainActivity {
                             //masukin ke dalam document dengan judul UID di koleksi users
                             db.collection("users").document(user.getUid()).set(data);
 
-
+                            Toast.makeText(RegisterActivity.this, "Register success.",
+                                    Toast.LENGTH_SHORT).show();
                             setResult(Activity.RESULT_OK);
                             finish();
                             //todo kalo register udah selesai kira kira mau ngapain langkah selanjutnya ?
@@ -116,10 +116,10 @@ public class RegisterActivity extends MainActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
+                            //TODO error ini bisa gara2 email duplicate, biarin aja atau bikin peringatan baru ?
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Register failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //                   updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -128,29 +128,5 @@ public class RegisterActivity extends MainActivity {
                     }
                 });
         // [END create_user_with_email]
-    }
-
-    //ini belum selesai, masih error
-    private boolean emailIsUsed(FirebaseAuth auth, FirebaseFirestore db, String email){
-        FirebaseUser user = auth.getCurrentUser();
-        db.collection("users")
-                .whereEqualTo("email", email)
-                .get()
-                //todo kalo ketemu pertama stop
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task ) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot users : task.getResult()) {
-                                Log.d(TAG, users.getId() + " => " + users.get("email"));
-                                z = users.get("email").toString();
-                                Log.d(TAG, z);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        return true;
     }
 }

@@ -3,14 +3,12 @@ package com.example.krucils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -57,20 +55,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
         //todo bikin kelas getter userLoggedIn sama buat profile dari firebase ?
 
-        //cari cara buat invalidateoptionmenu kalo logout dari action bar
-        //ini udah
-
-        //cari cara buat automatis manggil sesuatu abis layout/data change pada fragment
-        //ini sepertinya udah
-
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //TODO bingung pake userloggedin atau cara lain
+        //TODO tiap ngeklik awal tombol action barnya loadingnya lama, kemungkinan kepanggil berkali2 ?
 
         getMenuInflater().inflate(R.menu.main, menu);
         if (!userLoggedin()) {
@@ -89,7 +80,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //todo bikin reloader fragment di new kelas (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
+        //todo bikin kelas baru buat reload fragment (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
         switch (item.getItemId()) {
             case R.id.action_login:
 
