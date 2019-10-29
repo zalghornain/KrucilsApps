@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -115,11 +117,19 @@ public class RegisterActivity extends AppCompatActivity{
                             //kalo email duplicate register gagal
 
                         } else {
-                            // If sign in fails, display a message to the user.
-                            //TODO error ini bisa gara2 email duplicate, biarin aja atau bikin peringatan baru ?
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Register failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthUserCollisionException e){
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(RegisterActivity.this, "Email sudah terdaftar",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthWeakPasswordException e){
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(RegisterActivity.this, "Password harus lebih dari enam karakter.",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch(Exception e) {
+                                Log.e(TAG, e.getMessage());
+                            }
                         }
 
                         // [START_EXCLUDE]
