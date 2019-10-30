@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -92,11 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
 
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //       updateUI(null);
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthInvalidUserException e){
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Email tidak terdaftar",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthInvalidCredentialsException e){
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Password anda salah.",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch(Exception e) {
+                                Log.e(TAG, e.getMessage());
+                            }
                         }
 
                         // [START_EXCLUDE]
