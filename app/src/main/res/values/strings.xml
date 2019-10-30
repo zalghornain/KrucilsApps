@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Krucils</string>
+    <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="pass">Password</string>
     <string name="login">Login</string>
@@ -11,4 +12,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="field_empty">Tolong isi semua field.</string>
 </resources>

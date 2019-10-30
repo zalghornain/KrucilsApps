@@ -10,20 +10,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class RegisterActivity extends MainActivity {
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RegisterActivity extends AppCompatActivity{
 
 
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
-    private TextView userRegister,passRegister;
+    private TextView userRegister,passRegister,emailRegister;
     private Button signupBtn;
+    private FirebaseFirestore db;
+    private static String z;
+
 
 
 
@@ -32,28 +41,41 @@ public class RegisterActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         mAuth = FirebaseAuth.getInstance();
-        userRegister= findViewById(R.id.inputregister_email);
+        userRegister= findViewById(R.id.inputregister_username);
+        emailRegister= findViewById(R.id.inputregister_email);
         passRegister=findViewById(R.id.inputregister_password);
         signupBtn=findViewById(R.id.btn_signup);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
 
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount(userRegister.getText().toString(),passRegister.getText().toString());
-                //todo kalo gak diisi apa2 crash aplikasinya
+                String username = userRegister.getText().toString();
+                String email = emailRegister.getText().toString();
+                String password = passRegister.getText().toString();
+                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                    createAccount(username, email, password);
+                } else {
+                    Toast.makeText(RegisterActivity.this, R.string.field_empty, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String username, String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         // if (!validateForm()) {
         //    return;
         // }
-
         //    showProgressDialog();
+        final String usernamefinal= username;
+
+
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -63,19 +85,41 @@ public class RegisterActivity extends MainActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+
+
+
+                            //set result buat di cek di profil fragment
+                            //input data to database
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+
+                            //buat nginput sesuatu yang mantap gan
+                            Map<String, Object> data = new HashMap<>();
+
+                            data.put("UID", user.getUid());
+                            data.put("email", user.getEmail());
+                            //todo coba cari cara buat manggil manual jangan di paksa gan
+                            data.put("username", usernamefinal);
+
+                            //apply ke database
+                            //masukin ke dalam document dengan judul UID di koleksi users
+                            db.collection("users").document(user.getUid()).set(data);
+
                             Toast.makeText(RegisterActivity.this, "Register success.",
                                     Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //set result buat di cek di profil fragment
                             setResult(Activity.RESULT_OK);
                             finish();
                             //todo kalo register udah selesai kira kira mau ngapain langkah selanjutnya ?
+
+                            //kalo email duplicate register gagal
+
                         } else {
                             // If sign in fails, display a message to the user.
+                            //TODO error ini bisa gara2 email duplicate, biarin aja atau bikin peringatan baru ?
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Register failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //                   updateUI(null);
                         }
 
                         // [START_EXCLUDE]
