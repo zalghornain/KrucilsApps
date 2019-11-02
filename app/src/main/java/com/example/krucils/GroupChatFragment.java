@@ -10,9 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,74 +35,81 @@ public class GroupChatFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private FirebaseFirestore db;
-    private static String[] Array = {"a"," b"," c"};
-    private static String[] Input;
 
     private static final String TAG = "bastard";
-    private static ArrayList<String> chatmessage = new ArrayList<String>();
+
+    private static FirestoreRecyclerAdapter adapter;
 
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_groupchat, container, false);
+
+
+
+        Query query = FirebaseFirestore.getInstance()
+                .collection("Messages").document("groupchat1")
+                .collection("messages")
+                .limit(50);
+
+        FirestoreRecyclerOptions<GroupChat> options = new FirestoreRecyclerOptions.Builder<GroupChat>()
+                .setQuery(query, GroupChat.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<GroupChat, GroupChatHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @NonNull GroupChat model) {
+                holder.setText("Nama = "+ model.getMessage(), "Message = " + model.getName());
+            }
+
+            @NonNull
+            @Override
+            public  GroupChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_row_item, parent, false);
+                return new  GroupChatHolder(view);
+            }
+        };
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerviewgroupchat);
 
         recyclerView.setHasFixedSize(true);
 
 
-        // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-
-
-        db = FirebaseFirestore.getInstance();
-
-
-        db.collection("Messages")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                GroupChatFragment.chatmessage.add(document.getId());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        // specify an adapter (see also next example)
-        //chatmessage.get(0);
-        convertArrays(chatmessage);
-
-        // TODO: 2019/11/01 bikin recyclerview dari list kelas, karena async datanya gak bisa dipake langsung setelah diquery 
-        //mAdapter = new GroupChatRecyclerViewAdapter(Input);
-        mAdapter = new GroupChatRecyclerViewAdapter(Array);
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(adapter);
 
         return v;
     }
 
-    public static String[] convertArrays(ArrayList<String> strings)
-    {
-        String[] ret = new String[strings.size()];
-        for (int i=0; i < ret.length; i++)
-        {
-            ret[i] = strings.get(i);
-        }
-
-        return Input;
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    private class GroupChatHolder extends RecyclerView.ViewHolder {
+        private View view;
+
+        GroupChatHolder(View itemView) {
+            super(itemView);
+            view = itemView;
+        }
+
+        void setText(String setName, String setMessage) {
+            TextView nama = view.findViewById(R.id.chatnama);
+            TextView message = view.findViewById(R.id.chatmessage);
+            nama.setText(setName);
+            message.setText(setMessage);
+        }
+    }
 }
