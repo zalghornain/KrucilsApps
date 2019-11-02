@@ -3,12 +3,14 @@ package com.example.krucils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -54,6 +56,14 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         updateUI(this,mAuth);
 
         //todo bikin kelas getter userLoggedIn sama buat profile dari firebase ?
+
+        //cari cara buat invalidateoptionmenu kalo logout dari action bar
+        //ini udah
+
+        //cari cara buat automatis manggil sesuatu abis layout/data change pada fragment
+        //ini sepertinya udah
+
+
 
     }
 
@@ -135,6 +145,18 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.nav_groupchat:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new GroupChatFragment()).commit();
+                updateUI(this,mAuth);
+                break;
+
+            case R.id.nav_input:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new InputFragment()).commit();
+                updateUI(this,mAuth);
+                break;
+
+            case R.id.nav_paket:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PaketFragment()).commit();
                 updateUI(this,mAuth);
                 break;
 
