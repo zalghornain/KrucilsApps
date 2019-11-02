@@ -45,8 +45,19 @@ public class PaketFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_kelas, container, false);
         recyclerView = v.findViewById(R.id.list_item);
-        setUpRecylerView();
+        //setUpRecylerView();
 
+        Query query = paketRef;
+        FirestoreRecyclerOptions<PaketHarga> options = new FirestoreRecyclerOptions.Builder<PaketHarga>()
+                .setQuery(query, PaketHarga.class)
+                .build();
+
+
+        adapter = new PaketAdapter(options);
+        //recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
 
         return v;
 
@@ -55,14 +66,13 @@ public class PaketFragment extends Fragment {
 
     private void setUpRecylerView() {
 
-        Query query = paketRef.orderBy("Harga",Query.Direction.DESCENDING);
+        Query query = paketRef;
         FirestoreRecyclerOptions<PaketHarga> options = new FirestoreRecyclerOptions.Builder<PaketHarga>()
                 .setQuery(query, PaketHarga.class)
                 .build();
 
+
         adapter = new PaketAdapter(options);
-
-
         //recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);

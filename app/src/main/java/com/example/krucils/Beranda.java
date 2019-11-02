@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.krucils.objek.PaketanFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -156,7 +157,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
             case R.id.nav_paket:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PaketFragment()).commit();
+                        new PaketanFragment()).commit();
                 updateUI(this,mAuth);
                 break;
 

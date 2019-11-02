@@ -27,7 +27,7 @@ public class PaketAdapter extends FirestoreRecyclerAdapter<PaketHarga, PaketAdap
 
     @Override
     protected void onBindViewHolder(@NonNull PaketHolder holder, int position, @NonNull PaketHarga model) {
-        holder.textPaket.setText(model.getPaket());
+       // holder.textPaket.setText(model.getPaket());
         holder.textHarga.setText(String.valueOf(model.getHarga()));
         holder.textBerlaku.setText(model.getBerlaku());
     }
@@ -40,7 +40,7 @@ public class PaketAdapter extends FirestoreRecyclerAdapter<PaketHarga, PaketAdap
         return new PaketHolder(v);
     }
 
-    class PaketHolder extends RecyclerView.ViewHolder{
+    public class PaketHolder extends RecyclerView.ViewHolder{
         TextView textPaket, textHarga, textBerlaku;
 
 
@@ -49,6 +49,8 @@ public class PaketAdapter extends FirestoreRecyclerAdapter<PaketHarga, PaketAdap
             textPaket = itemView.findViewById(R.id.tv_paket);
             textHarga = itemView.findViewById(R.id.tv_harga);
             textBerlaku = itemView.findViewById(R.id.tv_berlaku);
+
+
 
         }
     }

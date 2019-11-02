@@ -9,8 +9,9 @@ import java.util.Map;
 public class PaketHarga {
 
     public String id ;
-    public String paket;
-    public int harga;
+    public String nama;
+
+    public String harga;
     public String berlaku;
 
     public String getId() {
@@ -21,19 +22,19 @@ public class PaketHarga {
         this.id = id;
     }
 
-    public String getPaket() {
-        return paket;
+    public String getNama() {
+        return nama;
     }
 
-    public void setPaket(String paket) {
-        this.paket = paket;
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
-    public int getHarga() {
+    public String getHarga() {
         return harga;
     }
 
-    public void setHarga(int harga) {
+    public void setHarga(String harga) {
         this.harga = harga;
     }
 
@@ -49,16 +50,17 @@ public class PaketHarga {
 
     }
 
-    public PaketHarga(String id,String paket, int harga, String berlaku) {
+    public PaketHarga(String id,String nama, String harga, String berlaku) {
         this.id = id;
-        this.paket = paket;
+        this.nama= nama;
         this.harga = harga;
         this.berlaku = berlaku;
     }
 
     public Map<String,Object> toMap(){
         HashMap<String ,Object> result = new HashMap<>();
-        result.put("paket",this.paket);
+        result.put("id",this.id);
+        result.put("paket",this.nama);
         result.put("harga",this.harga);
         result.put("berlakut",this.berlaku);
 

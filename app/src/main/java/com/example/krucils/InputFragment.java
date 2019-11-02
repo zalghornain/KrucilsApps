@@ -60,25 +60,26 @@ public class InputFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        String paket = Paket.getText().toString();
+        //String paket = Paket.getText().toString();
+        String nama = Paket.getText().toString();
 
         String harga = Harga.getText().toString();
 
         String berlaku= Berlaku.getText().toString();
-        uploadPaket(paket,harga,berlaku);
+        uploadPaket(nama,harga,berlaku);
         Paket.setText(null);
         Harga.setText(null);
         Berlaku.setText(null);
 
         }
 
-    private void uploadPaket(String paket, String harga, String berlaku) {
+    private void uploadPaket(String nama, String harga, String berlaku) {
         String id = UUID.randomUUID().toString();
 
         Map<String, Object> doc = new HashMap<>();
 
         doc.put("id",id);
-        doc.put("nama",paket);
+        doc.put("nama",nama);
         doc.put("harga",harga);
         doc.put("berlaku",berlaku);
 
