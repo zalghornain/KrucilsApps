@@ -147,6 +147,12 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 updateUI(this,mAuth);
                 break;
 
+            case R.id.nav_paket:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PaketFragment()).commit();
+                updateUI(this,mAuth);
+                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);
