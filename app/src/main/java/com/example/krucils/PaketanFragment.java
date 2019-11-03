@@ -1,6 +1,7 @@
-package com.example.krucils.objek;
+package com.example.krucils;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.krucils.GroupChat;
 import com.example.krucils.PaketAdapter;
+import com.example.krucils.Pembelian;
 import com.example.krucils.R;
+import com.example.krucils.objek.PaketHarga;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,7 +50,7 @@ public class PaketanFragment extends Fragment {
            @Override
            protected void onBindViewHolder(@NonNull PaketanHolder holder, int position, @NonNull PaketHarga model) {
 
-               holder.setText(model.getNama(),model.getHarga(),model.getBerlaku() );
+               holder.setText(model.getNama(),model.getHarga(),model.getBerlaku(),model.getId() );
            }
 
            @NonNull
@@ -89,13 +92,36 @@ public class PaketanFragment extends Fragment {
             view = itemView;
         }
 
-        void setText (String setNama, String setHarga, String setBerlaku){
+        void setText (final String setNama, final String setHarga, final String setBerlaku, final String id){
             TextView nama = view.findViewById(R.id.tv_paket);
             TextView harga = view.findViewById(R.id.tv_harga);
             TextView berlaku = view.findViewById(R.id.tv_berlaku);
             nama.setText(setNama);
             harga.setText(setHarga);
             berlaku.setText(setBerlaku);
+
+            TextView click = view.findViewById(R.id.list_item);
+            click.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id", id);
+                    bundle.putString("Paket", setNama);
+                    bundle.putString("Harga",setHarga);
+                    bundle.putString("Berlaku",setBerlaku);
+                    Intent intent = new Intent(view.getContext(), Pembelian.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                    return true;
+                }
+            });
+
+
+
         }
+
+
     }
 }

@@ -34,6 +34,11 @@
             android:id="@+id/nav_paket"
             android:icon="@drawable/ic_kelas"
             android:title="Paket" />
+
+        <item
+            android:id="@+id/nav_input_kelas"
+            android:icon="@drawable/ic_kelas"
+            android:title="Input" />
     </group>
 
 
