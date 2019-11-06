@@ -9,19 +9,29 @@ public class Kelas {
     public int harga;
     public String detail;
     public Date mulaiKelas;
+    public boolean check;
     public String imageURL;
 
     public Kelas(){
 
     }
 
-    public Kelas(int id, String judul, int harga, String detail, Date mulaiKelas, String imageURL) {
+    public Kelas(int id, String judul, int harga, String detail, Date mulaiKelas, boolean check, String imageURL) {
         this.id = id;
         this.judul = judul;
         this.harga = harga;
         this.detail = detail;
         this.mulaiKelas = mulaiKelas;
+        this.check = check;
         this.imageURL = imageURL;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
     }
 
     public int getId() {

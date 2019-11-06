@@ -301,6 +301,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         doc.put("Detail", detail);
         doc.put("MulaiKelas", getDateFromString(tanggal));
         doc.put("ImageURL", imageURL);
+        doc.put("Check",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 
        // StorageReference childRef = storageRef.child("Kelas/"+image);

@@ -31,7 +31,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
 
-
+    //Picasso buat load gambar
+    implementation 'com.squareup.picasso:picasso:2.71828'
     //firebase storage
     implementation 'com.firebaseui:firebase-ui-storage:6.0.2'
     //firebase auth

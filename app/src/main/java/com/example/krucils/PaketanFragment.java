@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -90,6 +91,7 @@ public class PaketanFragment extends Fragment {
         public PaketanHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+
         }
 
         void setText (final String setNama, final String setHarga, final String setBerlaku, final String id){
@@ -100,7 +102,7 @@ public class PaketanFragment extends Fragment {
             harga.setText(setHarga);
             berlaku.setText(setBerlaku);
 
-           nama.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
                    Bundle bundle = new Bundle();
