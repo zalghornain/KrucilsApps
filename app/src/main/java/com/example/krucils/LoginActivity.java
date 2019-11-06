@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             } catch (FirebaseAuthInvalidCredentialsException e){
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Password anda salah.",
+                                Toast.makeText(LoginActivity.this, "Cek lagi email dan password anda.",
                                         Toast.LENGTH_SHORT).show();
                             } catch(Exception e) {
                                 Log.e(TAG, e.getMessage());
