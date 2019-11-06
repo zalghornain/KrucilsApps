@@ -37,7 +37,9 @@ public class BerandaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_beranda, container, false);
         db = FirebaseFirestore.getInstance();
+       /*
         judul = v.findViewById(R.id.kelas_judul);
+
         detail = v.findViewById(R.id.kelas_detail);
         harga = v.findViewById(R.id.kelas_harga);
         berlaku = v.findViewById(R.id.kelas_mulai);
@@ -69,6 +71,8 @@ public class BerandaFragment extends Fragment {
             }
         });
 
+
+        */
 
         return v;
     }
