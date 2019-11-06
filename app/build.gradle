@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.krucils"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -31,8 +31,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
 
-
-
+    //Picasso buat load gambar
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //firebase storage
+    implementation 'com.firebaseui:firebase-ui-storage:6.0.2'
     //firebase auth
     implementation 'com.google.firebase:firebase-auth:19.1.0'
 
