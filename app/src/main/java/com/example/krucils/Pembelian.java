@@ -14,8 +14,8 @@ public class Pembelian extends AppCompatActivity {
     private Button bayar;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.pembelian);
         //Todo tambah Auth buat ambil data user
         idPaket = findViewById(R.id.id_paket);
@@ -36,7 +36,5 @@ public class Pembelian extends AppCompatActivity {
             beliBerlaku.setText("kosong");
 
         }
-
-
     }
 }

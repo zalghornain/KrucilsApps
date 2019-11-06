@@ -100,23 +100,21 @@ public class PaketanFragment extends Fragment {
             harga.setText(setHarga);
             berlaku.setText(setBerlaku);
 
-            TextView click = view.findViewById(R.id.list_item);
-            click.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
+           nama.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   Bundle bundle = new Bundle();
+                   bundle.putString("id", id);
+                   bundle.putString("Paket", setNama);
+                   bundle.putString("Harga",setHarga);
+                   bundle.putString("Berlaku",setBerlaku);
+                   Intent intent = new Intent(getContext(), Pembelian.class);
+                   intent.putExtras(bundle);
+                   startActivity(intent);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id", id);
-                    bundle.putString("Paket", setNama);
-                    bundle.putString("Harga",setHarga);
-                    bundle.putString("Berlaku",setBerlaku);
-                    Intent intent = new Intent(view.getContext(), Pembelian.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+               }
+           });
 
-                    return true;
-                }
-            });
 
 
 

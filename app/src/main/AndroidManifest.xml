@@ -20,6 +20,8 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Pembelian"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>
