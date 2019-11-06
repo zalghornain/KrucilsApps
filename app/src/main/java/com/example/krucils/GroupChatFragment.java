@@ -62,7 +62,7 @@ public class GroupChatFragment extends Fragment {
         adapter = new FirestoreRecyclerAdapter<GroupChat, GroupChatHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @NonNull GroupChat model) {
-                holder.setText("Nama = "+ model.getMessage(), "Message = " + model.getName());
+                holder.setText("Nama = "+ model.getName(), "Message = " + model.getMessage());
             }
 
             @NonNull
