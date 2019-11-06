@@ -72,7 +72,7 @@ public class GroupChatFragment extends Fragment {
                 return new  GroupChatHolder(view);
             }
         };
-        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerviewgroupchat);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerviewchat);
 
         recyclerView.setHasFixedSize(true);
 
