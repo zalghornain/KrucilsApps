@@ -67,8 +67,8 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_input_kelas, container, false);
-      progressBar = v.findViewById(R.id.progressKelas);
-       progressBar.setVisibility(View.GONE);
+        progressBar = v.findViewById(R.id.progressKelas);
+        progressBar.setVisibility(View.GONE);
 
         judulKelas = v.findViewById(R.id.kelas_judul);
         detailKelas = v.findViewById(R.id.kelas_detail);
@@ -93,45 +93,45 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
 
 
-            if (view.getId()==R.id.upload) {
+        if (view.getId()==R.id.upload) {
 
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Uploading...");
-                progressDialog.show();
-
-
-                final String judul = judulKelas.getText().toString();
-                final String detail = detailKelas.getText().toString();
-                final String harga = hargaKelas.getText().toString();
-                final String tanggal = mulaiKelas.getText().toString();
-                //String file = uImage.getText().toString();
-                if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView != null) {
-                    Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
-                } else {
-
-                    if(uploadTask !=null&&uploadTask.isInProgress()){
-                        Toast.makeText(getActivity(), "sedang diproses", Toast.LENGTH_LONG).show();
-                        // lol logika eror nanti benerin
-
-                    } else {
-                        final StorageReference childRef = storageRef.child("Kelas/" + System.currentTimeMillis() + "." + getExtension(imgUri));
-                        uploadTask = childRef.putFile(imgUri)
+            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
 
 
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            final String judul = judulKelas.getText().toString();
+            final String detail = detailKelas.getText().toString();
+            final String harga = hargaKelas.getText().toString();
+            final String tanggal = mulaiKelas.getText().toString();
+            //String file = uImage.getText().toString();
+            //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imgUri !=null) {
+            if (judul !=null && detail !=null && harga !=null && tanggal !=null && imgUri !=null) {
+
+                final StorageReference childRef = storageRef.child("Kelas/" + System.currentTimeMillis() + "." + getExtension(imgUri));
+                uploadTask = childRef.putFile(imgUri)
+
+
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                final Uri downloadUrl = uri;
-                                                String image = downloadUrl.toString();
-                                                uploadKelas(judul, detail, harga, tanggal, image);
-                                                progressDialog.dismiss();
-                                                Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
+                                    public void onSuccess(Uri uri) {
+                                        final Uri downloadUrl = uri;
+                                        String image = downloadUrl.toString();
+                                        uploadKelas(judul, detail, harga, tanggal, image);
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
+                                        judulKelas.setText(null);
+                                        detailKelas.setText(null);
+                                        hargaKelas.setText(null);
+                                        mulaiKelas.setText(null);
+                                        imageView.setImageURI(null);
 
-                                            }
-                                        });
+
+                                    }
+                                });
 
 
                                         /*
@@ -140,37 +140,41 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
                                         Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
 
                                          */
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle unsuccessful uploads
-                                        progressDialog.dismiss();
-                                        // ...
-                                    }
-                                })
-                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                                .getTotalByteCount());
-                                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                                    }
-                                });
-
-                    }
-
-                }
-
-                judulKelas.setText(null);
-                detailKelas.setText(null);
-                hargaKelas.setText(null);
-                mulaiKelas.setText(null);
-                imageView.setImageURI(null);
-
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                progressDialog.dismiss();
+                                // ...
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
 
             }
+
+
+            if(uploadTask !=null&&uploadTask.isInProgress()){
+                    Toast.makeText(getActivity(), "sedang diproses", Toast.LENGTH_LONG).show();
+                    // lol logika eror nanti benerin
+
+                }
+            else {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
+            }
+
+
+
+        }
 
 
 
@@ -216,15 +220,15 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             }
 
          */
-            if (view.getId()==R.id.uImage){
+        if (view.getId()==R.id.uImage){
 
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(intent.ACTION_PICK);
-                //startActivityForResult(intent.createChooser(intent,"Pilih gambar"), PICK_IMAGE_REQUEST);
-                startActivityForResult(intent,1);
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(intent.ACTION_PICK);
+            //startActivityForResult(intent.createChooser(intent,"Pilih gambar"), PICK_IMAGE_REQUEST);
+            startActivityForResult(intent,1);
 
-            }
+        }
 
     }
 
@@ -286,7 +290,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
     private void uploadKelas(String judul, String detail, String harga, String tanggal, String imageURL) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-       //progressDialog.setTitle("Uploading...");
+        //progressDialog.setTitle("Uploading...");
         //progressDialog.show();
 
         String id = UUID.randomUUID().toString();
@@ -304,8 +308,8 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         doc.put("Check",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 
-       // StorageReference childRef = storageRef.child("Kelas/"+image);
-      //  childRef.putFile(filepath);
+        // StorageReference childRef = storageRef.child("Kelas/"+image);
+        //  childRef.putFile(filepath);
         /*
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
