@@ -14,20 +14,17 @@
         <TextView
             android:id="@+id/chatnama"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/chatmessage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/chattanggal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </FrameLayout>

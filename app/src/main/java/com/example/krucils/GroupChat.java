@@ -1,22 +1,23 @@
 package com.example.krucils;
 
-import com.google.type.Date;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
 
 public class GroupChat {
         private String name;
         private String message;
         private String uid;
-        private Date mTimestamp;
+        private Timestamp timestamp;
         private String email;
 
         public GroupChat() { } // Needed for Firebase
 
-        public GroupChat(String name, String message, String uid, String email) {
+        public GroupChat(String name, String message, String uid, String email, Timestamp timestamp) {
             this.name = name;
             this.message = message;
             this.uid = uid;
             this.email = email;
-            //mTimestamp = timestamp;
+            this.timestamp = timestamp;
         }
 
         public String getName() { return name; }
@@ -31,9 +32,11 @@ public class GroupChat {
 
         public void setUid(String uid) { this.uid = uid; }
 
-       // public Date getTimestamp() { return mTimestamp; }
+        @ServerTimestamp
+        public Timestamp getTimestamp() { return timestamp; }
 
-       // public void setTimestamp(Date timestamp) { mTimestamp = timestamp; }
+        public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
+
         public String getEmail(){ return email; }
 
         public void setEmail(String email) { this.email = email;}
