@@ -106,16 +106,16 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             final String harga = hargaKelas.getText().toString();
             final String tanggal = mulaiKelas.getText().toString();
             //String file = uImage.getText().toString();
-            boolean kosong_bastard = false;
+            boolean penuh_bastard = false;
             //if(judul.length() == 0 && detail.length() == 0 && harga.length() == 0 && tanggal.length() == 0 ){
-            if(judul.equals("")&& detail.equals("") && harga.equals("") && tanggal.equals("") ){
-                kosong_bastard = true;
+            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty() && !tanggal.isEmpty()){
+                penuh_bastard = true;
             }
             //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView.getDrawable() == null) {
             // lol logika eror nanti benerin
 
 
-            if (kosong_bastard==false && imgUri !=null) {
+            if (penuh_bastard==true && imgUri !=null) {
             //if (imgUri !=null) {
 
 
