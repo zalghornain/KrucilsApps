@@ -56,6 +56,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     private Uri filepath, imgUri;
     private final int PICK_IMAGE_REQUEST = 71;
     private StorageTask uploadTask;
+    private boolean CheckImage = false;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
 
@@ -96,42 +97,60 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         if (view.getId()==R.id.upload) {
 
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
 
             final String judul = judulKelas.getText().toString();
             final String detail = detailKelas.getText().toString();
             final String harga = hargaKelas.getText().toString();
             final String tanggal = mulaiKelas.getText().toString();
             //String file = uImage.getText().toString();
-            //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imgUri !=null) {
-            if (judul !=null && detail !=null && harga !=null && tanggal !=null && imgUri !=null) {
-
-                final StorageReference childRef = storageRef.child("Kelas/" + System.currentTimeMillis() + "." + getExtension(imgUri));
-                uploadTask = childRef.putFile(imgUri)
-
-
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        final Uri downloadUrl = uri;
-                                        String image = downloadUrl.toString();
-                                        uploadKelas(judul, detail, harga, tanggal, image);
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
-                                        judulKelas.setText(null);
-                                        detailKelas.setText(null);
-                                        hargaKelas.setText(null);
-                                        mulaiKelas.setText(null);
-                                        imageView.setImageURI(null);
+            boolean kosong_bastard = false;
+            //if(judul.length() == 0 && detail.length() == 0 && harga.length() == 0 && tanggal.length() == 0 ){
+            if(judul.equals("")&& detail.equals("") && harga.equals("") && tanggal.equals("") ){
+                kosong_bastard = true;
+            }
+            //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView.getDrawable() == null) {
+            // lol logika eror nanti benerin
 
 
-                                    }
-                                });
+            if (kosong_bastard==false && imgUri !=null) {
+            //if (imgUri !=null) {
+
+
+                if (uploadTask != null && uploadTask.isInProgress()) {
+                    Toast.makeText(getActivity(), "sedang diproses", Toast.LENGTH_LONG).show();
+
+
+                } else {
+
+                    final StorageReference childRef = storageRef.child("Kelas/" + System.currentTimeMillis() + "." + getExtension(imgUri));
+                    uploadTask = childRef.putFile(imgUri)
+
+
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+
+                                            final Uri downloadUrl = uri;
+                                            String image = downloadUrl.toString();
+                                            uploadKelas(judul, detail, harga, tanggal, image);
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
+                                            judulKelas.setText(null);
+                                            detailKelas.setText(null);
+                                            hargaKelas.setText(null);
+                                            mulaiKelas.setText(null);
+                                            imageView.setImageURI(null);
+                                            imgUri= null;
+
+
+                                        }
+                                    });
 
 
                                         /*
@@ -140,33 +159,29 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
                                         Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
 
                                          */
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle unsuccessful uploads
-                                progressDialog.dismiss();
-                                // ...
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                        .getTotalByteCount());
-                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                            }
-                        });
-
-            }
-
-
-            if(uploadTask !=null&&uploadTask.isInProgress()){
-                    Toast.makeText(getActivity(), "sedang diproses", Toast.LENGTH_LONG).show();
-                    // lol logika eror nanti benerin
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                    progressDialog.dismiss();
+                                    // ...
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                            .getTotalByteCount());
+                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                                }
+                            });
 
                 }
+
+
+            }
             else {
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
@@ -250,6 +265,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         {
             imgUri =data.getData();
             imageView.setImageURI(imgUri);
+            CheckImage = true;
         }
     }
 
