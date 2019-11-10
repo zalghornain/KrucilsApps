@@ -79,12 +79,16 @@
                 android:layout_weight="1"
                 android:text="upload" />
 
+
         </LinearLayout>
 
         <ImageView
             android:id="@+id/imgView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
+
+
 
     </LinearLayout>
 
