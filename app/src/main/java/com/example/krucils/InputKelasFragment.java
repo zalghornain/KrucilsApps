@@ -1,5 +1,7 @@
 package com.example.krucils;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -15,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +73,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_input_kelas, container, false);
+
         progressBar = v.findViewById(R.id.progressKelas);
         progressBar.setVisibility(View.GONE);
 
@@ -105,10 +111,17 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             final String detail = detailKelas.getText().toString();
             final String harga = hargaKelas.getText().toString();
             final String tanggal = mulaiKelas.getText().toString();
+
+            checkDataInput();
+            boolean checkTanggal= true;
+            if (getDateFromString(tanggal)==null){
+                checkTanggal=false;
+
+            }
             //String file = uImage.getText().toString();
             boolean penuh_bastard = false;
             //if(judul.length() == 0 && detail.length() == 0 && harga.length() == 0 && tanggal.length() == 0 ){
-            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty() && !tanggal.isEmpty()){
+            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty() && checkTanggal==true){
                 penuh_bastard = true;
             }
             //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView.getDrawable() == null) {
@@ -184,7 +197,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             }
             else {
                 progressDialog.dismiss();
-                Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
             }
 
 
@@ -245,6 +258,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
         }
 
+
     }
 
 
@@ -300,8 +314,58 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
 
          */
-    private boolean isEmpty(String s){
+    private boolean isEmpty(EditText text){
+        CharSequence s=text.getText().toString();
+
         return TextUtils.isEmpty(s);
+    }
+
+
+    private void checkDataInput(){
+
+        int count = 5;
+        if (isEmpty(judulKelas)){
+            Toast.makeText(getActivity(), "Judul tolong diisi", Toast.LENGTH_LONG).show();
+            count = count -1;
+            judulKelas.setError("Isi Judul kelas");
+        }
+
+        if(isEmpty(hargaKelas)){
+            Toast.makeText(getActivity(), "Harga tolong diisi", Toast.LENGTH_LONG).show();
+            hargaKelas.setError("Isi Harga kelas");
+            count = count -1;
+        }
+
+        if(isEmpty(detailKelas)){
+            Toast.makeText(getActivity(), "Detail tolong diisi", Toast.LENGTH_LONG).show();
+            detailKelas.setError("Isi detail kelas");
+            count = count -1;
+        }
+/*
+        if(isEmpty(mulaiKelas)){
+            Toast.makeText(getActivity(), "tanggal tolong diisi", Toast.LENGTH_LONG).show();
+            mulaiKelas.setError("Isi tanggal");
+        }
+
+
+
+ */
+        if(getDateFromString(mulaiKelas.getText().toString())==null){
+            Toast.makeText(getActivity(), "tanggal diisi sesuai format", Toast.LENGTH_LONG).show();
+            mulaiKelas.setError("Isi Tanggal sesuai format yyyy/mm/dd");
+            count = count -1;
+        }
+
+        if (imgUri==null){
+
+            Toast.makeText(getActivity(), "Silahkan Upload foto", Toast.LENGTH_LONG).show();
+            count = count -1;
+
+        }
+        if(count==0) {
+            Toast.makeText(getActivity(), "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
+            count = 5;
+        }
     }
 
     private void uploadKelas(String judul, String detail, String harga, String tanggal, String imageURL) {
@@ -382,4 +446,6 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             return null;
         }
     }
+
+
 }
