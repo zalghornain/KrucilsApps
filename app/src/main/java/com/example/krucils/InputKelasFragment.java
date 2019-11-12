@@ -1,6 +1,5 @@
 package com.example.krucils;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.Continuation;
@@ -39,6 +39,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -51,12 +52,13 @@ import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
-public class InputKelasFragment extends Fragment implements View.OnClickListener {
+public class InputKelasFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private ProgressBar progressBar;
-    private EditText judulKelas, detailKelas, hargaKelas,mulaiKelas;
-    private Button upload, uImage;
-    static  final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+    private EditText judulKelas, detailKelas, hargaKelas;
+    private TextView mulaiKelas;
+    private Button upload, uImage, datePicker;
+    static  final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
     private ImageView imageView;
     private Uri filepath, imgUri;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -66,6 +68,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
 
     FirebaseFirestore db;
+
 
 
 
@@ -88,12 +91,19 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         imageView = v.findViewById(R.id.imgView);
 
 
+
+
+        datePicker=v.findViewById(R.id.datePick);
+        datePicker.setOnClickListener(this);
+
         db = FirebaseFirestore.getInstance();
 
 
 
         return v;
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -254,10 +264,21 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             intent.setType("image/*");
             intent.setAction(intent.ACTION_PICK);
             //startActivityForResult(intent.createChooser(intent,"Pilih gambar"), PICK_IMAGE_REQUEST);
-            startActivityForResult(intent,1);
+            startActivityForResult(intent,PICK_IMAGE_REQUEST);
 
         }
 
+        if ((view.getId()==R.id.datePick)){
+            Calendar now = Calendar.getInstance();
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    InputKelasFragment.this,
+                    now.get(Calendar.YEAR), // Initial year selection
+                    now.get(Calendar.MONTH), // Initial month selection
+                    now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+            );
+
+            dpd.show(getFragmentManager(),"Datepickerdialog");
+        }
 
     }
 
@@ -274,7 +295,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData()
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData()
                 !=null)
         {
             imgUri =data.getData();
@@ -448,4 +469,9 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     }
 
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = (monthOfYear+1)+"/"+dayOfMonth+"/"+year;
+        mulaiKelas.setText(date);
+    }
 }

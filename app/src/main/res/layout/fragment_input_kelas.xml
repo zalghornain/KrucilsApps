@@ -51,7 +51,7 @@
             android:hint="Harga"
             android:inputType="number" />
 
-        <EditText
+        <TextView
             android:id="@+id/kelas_mulai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,12 @@
             android:orientation="horizontal">
 
 
-
+            <Button
+                android:id="@+id/datePick"
+                android:text="Choose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
             <Button
                 android:id="@+id/uImage"
                 android:text="Choose"
