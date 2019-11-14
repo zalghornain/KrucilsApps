@@ -39,7 +39,7 @@ public class ProfilFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String name = user.getEmail();
+            String name = user.getDisplayName();
             logintitle.setText(getText(R.string.welcome) + name);
             loginBtn.setVisibility(View.GONE);
             registerhomeBtn.setVisibility(View.GONE);
