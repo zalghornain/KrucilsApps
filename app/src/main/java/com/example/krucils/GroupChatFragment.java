@@ -1,5 +1,6 @@
 package com.example.krucils;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,7 +77,7 @@ public class GroupChatFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @NonNull GroupChat model) {
                 //todo parse datenya jadi jam doang mungkin ? tergantung mau gimana mereka
-                holder.setText("Nama = "+ model.getName(), "Message = " + model.getMessage(), model.getTimestamp().toDate());
+                holder.setText(model.getName(), model.getMessage(), model.getTimestamp().toDate());
             }
 
             @NonNull
@@ -180,7 +181,9 @@ public class GroupChatFragment extends Fragment {
             TextView message = view.findViewById(R.id.chatmessage);
             TextView tanggal = view.findViewById(R.id.chattanggal);
             nama.setText(setName);
+            nama.setTextColor(Color.BLUE);
             message.setText(setMessage);
+            message.setTextColor(Color.BLACK);
             tanggal.setText(setTanggal.toString());
         }
     }
@@ -188,10 +191,8 @@ public class GroupChatFragment extends Fragment {
     public void inputMessage(){
 
         FirebaseUser user = mAuth.getCurrentUser();
-        //todo pas register masukin display namenya, input ke currentUser sama database, terus disini buat namenya ganti user.getDisplayName() dkk
-
         //todo restrict access write sama read ke database dan restrict user
-        GroupChat chat = new GroupChat("test", isiteks,"test","test", Timestamp.now());
+        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), Timestamp.now());
         db.collection("Messages")
                 .document("groupchat1")
                 .collection("messages")

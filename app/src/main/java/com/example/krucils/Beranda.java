@@ -144,8 +144,14 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 break;
 
             case R.id.nav_groupchat:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new GroupChatFragment()).commit();
+                //todo kalo log in baru bisa liat groupchat, tapi harusnya kalo dia ada access di database baru bisa liat
+                if(userLoggedin()){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new GroupChatFragment()).commit();
+                } else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new ProfilFragment()).commit();
+                }
                 updateUI(this,mAuth);
                 break;
 
@@ -214,8 +220,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             username.setText(R.string.guest);
             email.setText("");
         }else{
-            //untuk sekarang samain dulu username sama email
-            username.setText(user.getEmail());
+            username.setText(user.getDisplayName());
             email.setText(user.getEmail());
         }
 
