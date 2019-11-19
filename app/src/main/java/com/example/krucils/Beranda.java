@@ -147,7 +147,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 //todo kalo log in baru bisa liat groupchat, tapi harusnya kalo dia ada access di database baru bisa liat
                 if(userLoggedin()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new GroupChatFragment()).commit();
+                            new GroupChatListFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -228,6 +228,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         //update action bar
         activity.invalidateOptionsMenu();
 
-        //todo bikin buat reset fragment yang lagi di opennya
+        //todo bikin buat reset fragment yang lagi di opennya, atau bikinnya di authuser change aja, cek API apa yang keganti pas user login
     }
 }

@@ -192,6 +192,7 @@ public class GroupChatFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
         //todo restrict access write sama read ke database dan restrict user
+        //todo check lagi, ini inputnya sebaiknya pake setMessage yang udah ada di groupchat kah ?
         GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), Timestamp.now());
         db.collection("Messages")
                 .document("groupchat1")
