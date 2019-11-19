@@ -28,6 +28,7 @@ public class GroupChatListFragment extends Fragment {
     private FirebaseAuth mAuth;
     private static FirestoreRecyclerAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private String documentId;
 
 
     //todo create onclick recyclerview, pake position aja atau judul atau uid
@@ -56,7 +57,8 @@ public class GroupChatListFragment extends Fragment {
         adapter = new FirestoreRecyclerAdapter<GroupChatList, GroupChatListFragment.GroupChatHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull GroupChatListFragment.GroupChatHolder holder, int position, @NonNull GroupChatList model) {
-                holder.setText(model.getJudul());
+                documentId = getSnapshots().getSnapshot(position).getId();
+                holder.setText(model.getJudul(), documentId);
             }
 
             @NonNull
@@ -110,7 +112,8 @@ public class GroupChatListFragment extends Fragment {
             view = itemView;
         }
 
-        void setText(String setJudul) {
+        void setText(String setJudul, String documentId) {
+            final String lokasiDokumen = documentId;
             TextView judul = view.findViewById(R.id.judulgroupchat);
             judul.setText(setJudul);
             judul.setTextColor(Color.BLACK);
@@ -119,13 +122,13 @@ public class GroupChatListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //todo investigasi sebaiknya add atau replace aja
-                    //todo passing argument id groupchat
+                    //todo tambahin ke backstack jadi kalo teken back balik ke fragment ini jangan close apps
                     GroupChatFragment fragment = new GroupChatFragment();
                     Bundle args = new Bundle();
-                    args.putString("chatid", "Value");
+                    args.putString("chatid", lokasiDokumen);
                     fragment.setArguments(args);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new GroupChatFragment()).commit();
+                    getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+
                 }
             });
         }
