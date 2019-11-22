@@ -55,7 +55,7 @@ import static android.app.Activity.RESULT_OK;
 public class InputKelasFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private ProgressBar progressBar;
-    private EditText judulKelas, detailKelas, hargaKelas;
+    private EditText judulKelas, detailKelas, hargaKelas,hargaKelas2;
     private TextView mulaiKelas;
     private Button upload, uImage, datePicker;
     static  final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
@@ -83,6 +83,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         judulKelas = v.findViewById(R.id.kelas_judul);
         detailKelas = v.findViewById(R.id.kelas_detail);
         hargaKelas = v.findViewById(R.id.kelas_harga);
+        hargaKelas2 = v.findViewById(R.id.kelas_harga2);
         mulaiKelas = v.findViewById(R.id.kelas_mulai);
         upload = v.findViewById(R.id.upload);
         upload.setOnClickListener(this);
@@ -120,6 +121,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             final String judul = judulKelas.getText().toString();
             final String detail = detailKelas.getText().toString();
             final String harga = hargaKelas.getText().toString();
+            final String harga2 = hargaKelas2.getText().toString();
             final String tanggal = mulaiKelas.getText().toString();
 
             checkDataInput();
@@ -131,7 +133,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             //String file = uImage.getText().toString();
             boolean penuh_bastard = false;
             //if(judul.length() == 0 && detail.length() == 0 && harga.length() == 0 && tanggal.length() == 0 ){
-            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty() && checkTanggal==true){
+            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty()&& !harga2.isEmpty() && checkTanggal==true){
                 penuh_bastard = true;
             }
             //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView.getDrawable() == null) {
@@ -161,12 +163,13 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
                                             final Uri downloadUrl = uri;
                                             String image = downloadUrl.toString();
-                                            uploadKelas(judul, detail, harga, tanggal, image);
+                                            uploadKelas(judul, detail, harga,harga2, tanggal, image);
                                             progressDialog.dismiss();
                                             Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
                                             judulKelas.setText(null);
                                             detailKelas.setText(null);
                                             hargaKelas.setText(null);
+                                            hargaKelas2.setText(null);
                                             mulaiKelas.setText(null);
                                             imageView.setImageURI(null);
                                             imgUri= null;
@@ -357,6 +360,12 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             count = count -1;
         }
 
+        if(isEmpty(hargaKelas2)){
+            Toast.makeText(getActivity(), "Harga tolong diisi", Toast.LENGTH_LONG).show();
+            hargaKelas2.setError("Isi Harga kelas");
+            count = count -1;
+        }
+
         if(isEmpty(detailKelas)){
             Toast.makeText(getActivity(), "Detail tolong diisi", Toast.LENGTH_LONG).show();
             detailKelas.setError("Isi detail kelas");
@@ -389,7 +398,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void uploadKelas(String judul, String detail, String harga, String tanggal, String imageURL) {
+    private void uploadKelas(String judul, String detail, String harga,String harga2, String tanggal, String imageURL) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         //progressDialog.setTitle("Uploading...");
         //progressDialog.show();
@@ -401,12 +410,13 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         Map<String, Object> doc = new HashMap<>();
 
         doc.put("id", id);
-        doc.put("Judul", judul);
-        doc.put("Harga", harga);
-        doc.put("Detail", detail);
-        doc.put("MulaiKelas", getDateFromString(tanggal));
-        doc.put("ImageURL", imageURL);
-        doc.put("Check",false);
+        doc.put("judul", judul);
+        doc.put("hargaFull", harga);
+        doc.put("hargaBiasa", harga2);
+        doc.put("detail", detail);
+        doc.put("mulaiKelas", getDateFromString(tanggal));
+        doc.put("imageURL", imageURL);
+        doc.put("check",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 
         // StorageReference childRef = storageRef.child("Kelas/"+image);

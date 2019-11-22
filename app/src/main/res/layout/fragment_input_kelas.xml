@@ -48,7 +48,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Harga"
+            android:hint="Harga dengan Grup chat"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/kelas_harga2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Harga hanya materi"
             android:inputType="number" />
 
         <TextView
