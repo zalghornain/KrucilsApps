@@ -145,6 +145,8 @@ public class BerandaFragment extends Fragment {
 
                      */
 
+                    SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
+                    String date = formatter.format(mulaiKelas);
 
                     Intent intent = new Intent(getContext(), DetailKelas.class);
                     intent.putExtra("id",id);
@@ -152,7 +154,7 @@ public class BerandaFragment extends Fragment {
                     intent.putExtra("hargaFull",hargaFull);
                     intent.putExtra("hargaBiasa",hargaBiasa);
                     intent.putExtra("detail",detail);
-                    intent.putExtra("mulaiKelas",mulaiKelas);
+                    intent.putExtra("mulaiKelas",date);
                     intent.putExtra("check",check);
                     intent.putExtra("imageURL",imageURL);
                     //intent.putExtras(bundle);

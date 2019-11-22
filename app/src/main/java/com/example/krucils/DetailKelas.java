@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -68,12 +69,16 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
             UIDkelas = getIntent().getStringExtra("id");
             String title = getIntent().getStringExtra("judul");
-            image.setImageURI(Uri.parse(getIntent().getStringExtra("imageURL")));
+            String imageURL = getIntent().getStringExtra("imageURL");
+            String detaill = getIntent().getStringExtra("detail");
+            String date = getIntent().getStringExtra("mulaiKelas");
+            Picasso.get().load(imageURL).into(image);
             judul.setText(title);
-            detail.setText(getIntent().getStringExtra("detail"));
+            detail.setText(detaill);
+
            // SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
            // String date = formatter.format(getIntent().getStringExtra("mulaiKelas"));
-          //kelasMulai.setText(date);
+            kelasMulai.setText(date);
             hargaFull = getIntent().getStringExtra("hargaFull");
              hargaBiasa = getIntent().getStringExtra("hargaBiasa");
 
@@ -110,7 +115,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
 
     private void ReadUser(String s) {
 
-        DocumentReference user = db.collection("User").document(s);
+        DocumentReference user = db.collection("users").document(s);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -122,9 +127,9 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
 
                     DocumentSnapshot doc = task.getResult();
 
-                    UIDuser = (String) doc.get("UID");
-                    email = (String) doc.get("email");
-                    username =(String)doc.get("username");
+                    UIDuser = (String) doc.getString("UID");
+                    email = (String) doc.getString("email");
+                    username =(String)doc.getString("username");
 
                 }
 
@@ -159,6 +164,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.btn_login:
                 // Intent ke login
+                Intent loginIntent = new Intent(DetailKelas.this, LoginActivity.class);
+                DetailKelas.this.startActivity(loginIntent);
                 break;
 
 
