@@ -22,6 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+//todo kalo teken back langsung ke close appsnya, coba bikin konfirmasi kalo mau close apps
 public class Beranda extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;

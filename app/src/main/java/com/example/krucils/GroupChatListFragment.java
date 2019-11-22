@@ -18,9 +18,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-
-import java.util.Date;
 
 public class GroupChatListFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -31,7 +30,6 @@ public class GroupChatListFragment extends Fragment {
     private String documentId;
 
 
-    //todo create onclick recyclerview, pake position aja atau judul atau uid
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,11 +41,9 @@ public class GroupChatListFragment extends Fragment {
 
 
         //todo sekarang bikinnya pake FirestoreRecyclerAdapter dulu, tapi mungkin lebih  baik pake paging adapter ?, atau pake normal recyclerview ?
-
-        //todo cari cara lain buat manggil list groupchatnya
         Query query = db
                 .collection("Messages")
-                .whereEqualTo("aksesUserUID",user.getUid());
+                .whereArrayContains("aksesUID", user.getUid());
 
         FirestoreRecyclerOptions<GroupChatList> options = new FirestoreRecyclerOptions.Builder<GroupChatList>()
                 .setQuery(query, GroupChatList.class)
@@ -66,13 +62,6 @@ public class GroupChatListFragment extends Fragment {
             public GroupChatListFragment.GroupChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listgroupchat, parent, false);
                 return new GroupChatListFragment.GroupChatHolder(view);
-            }
-
-            @Override
-            public void onDataChanged() {
-                super.onDataChanged();
-                //todo untuk sekarang kalo ada data baru langsung pindah ke data baru recyclerviewnya
-                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         };
         recyclerView = v.findViewById(R.id.recyclerviewlistchat);
@@ -121,13 +110,11 @@ public class GroupChatListFragment extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //todo investigasi sebaiknya add atau replace aja
-                    //todo tambahin ke backstack jadi kalo teken back balik ke fragment ini jangan close apps
                     GroupChatFragment fragment = new GroupChatFragment();
                     Bundle args = new Bundle();
                     args.putString("chatid", lokasiDokumen);
                     fragment.setArguments(args);
-                    getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+                    getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).addToBackStack(null).commit();
 
                 }
             });
