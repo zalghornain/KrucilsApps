@@ -42,7 +42,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private Button bayar,login;
     boolean checkGrupchat;
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,detailPick;
+    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas;
 
 
     @Override
@@ -69,7 +69,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
             UIDkelas = getIntent().getStringExtra("id");
             String title = getIntent().getStringExtra("judul");
-            String imageURL = getIntent().getStringExtra("imageURL");
+             imageURL = getIntent().getStringExtra("imageURL");
             String detaill = getIntent().getStringExtra("detail");
             String date = getIntent().getStringExtra("mulaiKelas");
             Picasso.get().load(imageURL).into(image);
@@ -160,7 +160,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                 judulPick = judul.getText().toString();
                 hargaPick = harga.getText().toString();
                 detailPick= detail_harga.getText().toString();
-                inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,hargaPick,detailPick,checkGrupchat);
+                mulaiKelas = kelasMulai.getText().toString();
+                inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,imageURL,hargaPick,detailPick,mulaiKelas,checkGrupchat);
                 break;
             case R.id.btn_login:
                 // Intent ke login
@@ -178,8 +179,10 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 String email,
                                 String UIDkelas,
                                 String judul,
+                                String imageURL,
                                 String harga,
                                 String detail,
+                                String mulaiKelas,
                                 boolean grupchat
                                 ) {
 
@@ -193,8 +196,11 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("email", email);
 
         doc.put("uidkelas", UIDkelas);
+        doc.put("judul", judul);
         doc.put("harga", harga);
+        doc.put("imageURL", imageURL);
         doc.put("detail", detail);
+        doc.put("tanggal", mulaiKelas);
         doc.put("grupchat", grupchat);
 
 
