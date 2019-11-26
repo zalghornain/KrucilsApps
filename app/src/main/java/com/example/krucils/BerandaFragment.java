@@ -51,7 +51,9 @@ public class BerandaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_beranda, container, false);
         Query query = FirebaseFirestore.getInstance()
-                .collection("Kelas");
+                .collection("Kelas")
+                .whereEqualTo("check",false)
+                ;
         FirestoreRecyclerOptions<Kelas> options = new FirestoreRecyclerOptions.Builder<Kelas>()
                 .setQuery(query,Kelas.class)
                 .build();
