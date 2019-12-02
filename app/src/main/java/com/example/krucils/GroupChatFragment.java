@@ -28,7 +28,6 @@ import com.google.firebase.firestore.Query;
 import java.util.Date;
 
 
-
 public class GroupChatFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -79,10 +78,11 @@ public class GroupChatFragment extends Fragment {
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<GroupChat, GroupChatHolder>(options) {
+            @NonNull
             @Override
-            protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @NonNull GroupChat model) {
+            protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @Nullable GroupChat model) {
                 //todo parse datenya jadi jam doang mungkin ? tergantung mau gimana mereka
-                holder.setText(model.getName(), model.getMessage(), model.getTimestamp().toDate());
+                holder.setText(model.getName(), model.getMessage(),model.getTimestamp().toString());
             }
 
             @NonNull
@@ -181,7 +181,8 @@ public class GroupChatFragment extends Fragment {
             view = itemView;
         }
 
-        void setText(String setName, String setMessage, Date setTanggal) {
+        void setText(String setName, String setMessage, String setTanggal) {
+            //String date = setTanggal.toString();
             TextView nama = view.findViewById(R.id.chatnama);
             TextView message = view.findViewById(R.id.chatmessage);
             TextView tanggal = view.findViewById(R.id.chattanggal);
@@ -189,7 +190,8 @@ public class GroupChatFragment extends Fragment {
             nama.setTextColor(Color.BLUE);
             message.setText(setMessage);
             message.setTextColor(Color.BLACK);
-            tanggal.setText(setTanggal.toString());
+            tanggal.setText(setTanggal);
+            Log.d(TAG, "nullpo : " + setTanggal);
         }
     }
 
@@ -198,7 +200,8 @@ public class GroupChatFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         //todo restrict access write sama read ke database dan restrict user
         //todo check lagi, ini inputnya sebaiknya pake setMessage yang udah ada di groupchat kah ?
-        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), Timestamp.now());
+        GroupChat z = new GroupChat();
+        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), z.getTimestamp());
         db.collection("Messages")
                 .document(nilaipassing)
                 .collection("messages")
