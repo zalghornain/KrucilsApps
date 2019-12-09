@@ -149,7 +149,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 updateUI(this,mAuth);
                 break;
 
-            case R.id.nav_input:
+          /*  case R.id.nav_input:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new InputFragment()).commit();
                 updateUI(this,mAuth);
@@ -160,6 +160,8 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                         new PaketanFragment()).commit();
                 updateUI(this,mAuth);
                 break;
+
+           */
             case R.id.nav_input_kelas:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new InputKelasFragment()).commit();

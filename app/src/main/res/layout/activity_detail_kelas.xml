@@ -7,7 +7,7 @@
     tools:context=".DetailKelas">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,6 +18,78 @@
             android:layout_height="130dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/judul_kelas"
+            android:layout_below="@id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="judult"/>
+        <TextView
+            android:id="@+id/detail_kelas"
+            android:layout_below="@id/judul_kelas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="element"/>
+        <TextView
+            android:id="@+id/detail_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_kelas"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/spinner"
+            android:text="Tolong pilih Harga >>>"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="169dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_kelas"
+            android:layout_alignParentRight="true"
+            android:text="done" />
+        <TextView
+            android:id="@+id/detail_harga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/harga_kelas"
+            android:text="Mater dan Grupchat"/>
+        <TextView
+            android:id="@+id/harga_kelas"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner"
+            android:layout_alignParentRight="true"
+            android:text="500000"/>
+        <TextView
+            android:id="@+id/kelas_berlaku"
+            android:layout_below="@id/detail_harga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="element" />
+
+        <Button
+            android:id="@+id/btn_bayar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kelas_berlaku"
+            android:text="Bayar"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kelas_berlaku"
+            android:text="login"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beranda"
+            android:layout_below="@id/btn_bayar"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_home"/>
+
+        <!--
         <TextView
             android:id="@+id/id_kelas"
             android:layout_width="match_parent"
@@ -69,6 +141,7 @@
             android:layout_height="wrap_content"
 
             android:text="login"/>
-    </LinearLayout>
+            -->
+    </RelativeLayout>
 
 </LinearLayout>
