@@ -226,7 +226,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
                 String harga = hargaKelas.getText().toString();
                 String tanggal = mulaiKelas.getText().toString();
                 //String file = uImage.getText().toString();
-                //Todo logika
+
                 if(isEmpty(judul)){
 
                 }
@@ -287,6 +287,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
 
 
+
     private String getExtension (Uri uri){
 
         ContentResolver cr = getActivity().getContentResolver();
@@ -294,7 +295,6 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
 
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -404,7 +404,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         //progressDialog.show();
 
         String id = UUID.randomUUID().toString();
-        String image = UUID.randomUUID().toString();
+
 
 
         Map<String, Object> doc = new HashMap<>();

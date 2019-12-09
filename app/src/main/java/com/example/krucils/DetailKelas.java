@@ -57,7 +57,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         detail = findViewById(R.id.detail_kelas);
         kelasMulai = findViewById(R.id.kelas_berlaku);
         harga = findViewById(R.id.harga_kelas);
-        detail_harga=findViewById(R.id.detail_kelas);
+        detail_harga=findViewById(R.id.detail_harga);
 
         bayar = findViewById(R.id.btn_bayar);
         bayar.setOnClickListener(this);
@@ -187,7 +187,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 ) {
 
         String id = UUID.randomUUID().toString();
-
+        String keyPembelian = "kosong";
         Map<String,Object> doc = new HashMap<>();
 
         doc.put("id", id);
@@ -203,7 +203,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("tanggal", mulaiKelas);
         doc.put("grupchat", grupchat);
 
-
+        doc.put("keyPembelian",keyPembelian);
         doc.put("check",false);
         doc.put("created", FieldValue.serverTimestamp());
 

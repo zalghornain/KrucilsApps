@@ -1,10 +1,12 @@
 package com.example.krucils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.krucils.objek.Beli;
 import com.example.krucils.objek.Kelas;
+import com.example.krucils.objek.Keranjang;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,24 +36,28 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class KeranjangFragment extends Fragment {
+public class KeranjangFragment extends Fragment implements View.OnClickListener {
 
     private final String TAG = " Keranjang";
     private TextView judul,detail,kelasMulai,harga,totalHarga;
+    private Button bayarKeranjang;
     private ImageView imageView;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String currentuserUID;
+    private String currentuserUID,email,username;
     private int inflater;
 
-    public static int total=1;
+    public  int total;
     //private List keranjangHarga = new ArrayList<Integer>();
     private ArrayList<Integer> keranjangHarga = new ArrayList<Integer>();
+    private ArrayList<Keranjang> keranjangList = new ArrayList<Keranjang>();
 
     private static FirestoreRecyclerAdapter adapter;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -64,6 +71,8 @@ public class KeranjangFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_keranjang,container,false);
         totalHarga = view.findViewById(R.id.tv_total);
+        bayarKeranjang=view.findViewById(R.id.btn_bayar);
+        bayarKeranjang.setOnClickListener(this);
         //getUID
         currentuserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -71,6 +80,7 @@ public class KeranjangFragment extends Fragment {
                 .collection("Keranjang")
                 .whereEqualTo("uiduser",currentuserUID)
                 .whereEqualTo("check", false)
+                .whereEqualTo("keyPembelian", "kosong")
                 ;
 
         FirestoreRecyclerOptions<Beli> options = new FirestoreRecyclerOptions.Builder<Beli>()
@@ -99,16 +109,17 @@ public class KeranjangFragment extends Fragment {
 
                 int hargaKelas = Integer.parseInt(harga);
                 String uiduser=model.getUiduser();
-                String email=model.getEmail();
-                String username=model.getUsername();
+                email=model.getEmail();
+                username=model.getUsername();
 
                 boolean check=model.isCheck();
                 Date created=model.getCreated();
 
 
+
                 keranjangHarga.add(position,hargaKelas);
                 calculateTotal();
-
+                holder.inputKeranjang(id,grupchat,position);
                 holder.delete(position,id);
                 holder.setText(judul,tanggal,image,harga,detail);
             }
@@ -118,7 +129,7 @@ public class KeranjangFragment extends Fragment {
 
         };
 
-        calculateTotal();
+
         recyclerView = view.findViewById(R.id.RecyclerViewKeranjang);
         recyclerView.setHasFixedSize(true);
 
@@ -128,15 +139,24 @@ public class KeranjangFragment extends Fragment {
         return view;
     }
 
+
     public  void calculateTotal(){
         int i=0;
         total=0;
-        while(i<keranjangHarga.size()){
+        int k = keranjangHarga.size();
+        while(i<k){
             total= total + keranjangHarga.get(i);
             i++;
         }
+        DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-        totalHarga.setText("Rp."+total);
+        formatRp.setCurrencySymbol("Rp. ");
+        formatRp.setMonetaryDecimalSeparator(',');
+        formatRp.setGroupingSeparator('.');
+
+        kursIndonesia.setDecimalFormatSymbols(formatRp);
+        totalHarga.setText(kursIndonesia.format(total));
     }
     @Override
     public void onStart() {
@@ -149,6 +169,22 @@ public class KeranjangFragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
+    @Override
+    public void onClick(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString("uidUser",currentuserUID);
+        bundle.putString("username",username);
+        bundle.putString("usermail",email);
+        bundle.putInt("totalHarga",total);
+        bundle.putSerializable("keranjangList",keranjangList);
+
+        Intent intent = new Intent(getContext(), DetailKeranjang.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
     private class KeranjangHolder extends RecyclerView.ViewHolder{
 
         public KeranjangHolder(@NonNull View itemView) {
@@ -175,12 +211,14 @@ public class KeranjangFragment extends Fragment {
         void delete(final int position, final String id){
 
             db = FirebaseFirestore.getInstance();
-            Button delete = itemView.findViewById(R.id.delete);
+            ImageButton delete = itemView.findViewById(R.id.delete);
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     keranjangHarga.remove(position);
+                    keranjangList.remove(position);
+                    calculateTotal();
                     DocumentReference keranjang = db.collection("Keranjang")
                             .document(id);
                     keranjang.update("check",true)
@@ -203,6 +241,15 @@ public class KeranjangFragment extends Fragment {
             });
 
 
+        }
+
+        void inputKeranjang(final String uidKeranjang, boolean faq,final  int position){
+
+            Keranjang keranjang = new Keranjang(uidKeranjang,faq);
+            keranjang.setUidKeranjang(uidKeranjang);
+            keranjang.setFaq(faq);
+
+            keranjangList.add(position,keranjang);
         }
 
 
