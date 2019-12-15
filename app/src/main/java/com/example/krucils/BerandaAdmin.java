@@ -87,16 +87,6 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         //todo bikin kelas baru buat reload fragment (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
         switch (item.getItemId()) {
-            case R.id.action_login:
-
-                Intent loginIntent = new Intent(BerandaAdmin.this, LoginActivity.class);
-                BerandaAdmin.this.startActivity(loginIntent);
-                updateUI(this,mAuth);
-
-                return true;
-
-
-
             case R.id.action_logout:
                /* mAuth.signOut();
                 updateUI(this,mAuth);
@@ -131,6 +121,13 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
                         new KonfirmasiAdminFragment()).commit();
                 updateUI(this,mAuth);
                 break;
+
+            case R.id.nav_create:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CreateAdminFragment()).commit();
+                updateUI(this,mAuth);
+                break;
+
 
             case R.id.nav_beranda_admin:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

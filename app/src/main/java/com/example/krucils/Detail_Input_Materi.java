@@ -2,6 +2,7 @@ package com.example.krucils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -9,6 +10,7 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -304,19 +306,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_delete:
-                DocumentReference kelas = db.collection("Kelas")
-                        .document(UIDkelas);
-                kelas.update("check",false)
+               alert();
 
-
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-
-                            }
-                        });
-                finish();
                 break;
             case R.id.btn_check:
                 Intent intent = new Intent(Detail_Input_Materi.this, List_Materi.class);
@@ -330,6 +321,87 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void delete (){
+
+        DocumentReference kelas = db.collection("Kelas")
+                .document(UIDkelas);
+        kelas.update("check",false)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+
+                    }
+                });
+    }
+    private void alert(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(Detail_Input_Materi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                delete();
+                                dialog.cancel();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
 
     private void  uploadMateri(String judul,String file,String uidAdmin, String username, String uidAkses,boolean tipeFile){
 
