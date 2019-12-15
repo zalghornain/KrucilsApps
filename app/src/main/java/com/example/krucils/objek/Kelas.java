@@ -9,8 +9,12 @@ public class Kelas {
     public String hargaFull;
     public String hargaBiasa;
     public String detail;
+    public String uidAkses;
+    public String uidAmin;
+    public String createdBy;
     public Date mulaiKelas;
     public boolean check;
+    public boolean publish;
     public String imageURL;
     public Date created;
 
@@ -18,16 +22,52 @@ public class Kelas {
 
     }
 
-    public Kelas(String id, String judul, String hargaFull, String hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL, Date created) {
+    public Kelas(String id, String judul, String hargaFull, String hargaBiasa, String detail, String uidAkses, String uidAmin, String createdBy, Date mulaiKelas, boolean check, boolean publish, String imageURL, Date created) {
         this.id = id;
         this.judul = judul;
         this.hargaFull = hargaFull;
         this.hargaBiasa = hargaBiasa;
         this.detail = detail;
+        this.uidAkses = uidAkses;
+        this.uidAmin = uidAmin;
+        this.createdBy = createdBy;
         this.mulaiKelas = mulaiKelas;
         this.check = check;
+        this.publish = publish;
         this.imageURL = imageURL;
         this.created = created;
+    }
+
+    public String getUidAmin() {
+        return uidAmin;
+    }
+
+    public void setUidAmin(String uidAmin) {
+        this.uidAmin = uidAmin;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public boolean isPublish() {
+        return publish;
+    }
+
+    public void setPublish(boolean publish) {
+        this.publish = publish;
+    }
+
+    public String getUidAkses() {
+        return uidAkses;
+    }
+
+    public void setUidAkses(String uidAkses) {
+        this.uidAkses = uidAkses;
     }
 
     public String getId() {

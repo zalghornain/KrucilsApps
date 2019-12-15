@@ -42,7 +42,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private Button bayar,login;
     boolean checkGrupchat;
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas;
+    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
 
 
     @Override
@@ -68,6 +68,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         if(getIntent().getExtras() != null){
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
             UIDkelas = getIntent().getStringExtra("id");
+            uidAkses = getIntent().getStringExtra("uidAkses");
             String title = getIntent().getStringExtra("judul");
              imageURL = getIntent().getStringExtra("imageURL");
             String detaill = getIntent().getStringExtra("detail");
@@ -161,7 +162,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                 hargaPick = harga.getText().toString();
                 detailPick= detail_harga.getText().toString();
                 mulaiKelas = kelasMulai.getText().toString();
-                inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,imageURL,hargaPick,detailPick,mulaiKelas,checkGrupchat);
+                inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,imageURL,hargaPick,detailPick,mulaiKelas,checkGrupchat,uidAkses);
                 break;
             case R.id.btn_login:
                 // Intent ke login
@@ -183,7 +184,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 String harga,
                                 String detail,
                                 String mulaiKelas,
-                                boolean grupchat
+                                boolean grupchat,
+                                String uidAkses
                                 ) {
 
         String id = UUID.randomUUID().toString();
@@ -203,8 +205,9 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("tanggal", mulaiKelas);
         doc.put("grupchat", grupchat);
 
+        doc.put("uidAkses",uidAkses);
         doc.put("keyPembelian",keyPembelian);
-        doc.put("check",false);
+        doc.put("check",true);
         doc.put("created", FieldValue.serverTimestamp());
 
         db.collection("Keranjang")

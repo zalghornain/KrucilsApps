@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,17 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.krucils.objek.AksesKelas;
 import com.example.krucils.objek.Kelas;
-import com.example.krucils.objek.Materi;
-import com.example.krucils.objek.UidUser;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,15 +32,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class KelasFragment extends Fragment {
-    private final String TAG = " Kelas_Fragment";
+public class InputMateriFragment extends Fragment {
+    private final String TAG = " Mantap";
     private TextView judul,detail,kelasMulai;
     private ImageView imageView;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
-    private FirebaseAuth mAuth;
+
+
     private static FirestoreRecyclerAdapter adapter;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
@@ -56,53 +49,43 @@ public class KelasFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String currentuser = user.getUid();
-
-        View v = inflater.inflate(R.layout.fragment_kelas, container, false);
+        View v = inflater.inflate(R.layout.fragment_input_materi, container, false);
         Query query = FirebaseFirestore.getInstance()
-                .collection("AksesKelas")
-                .whereArrayContains("uidUser",currentuser)
-
+                .collection("Kelas")
                 .whereEqualTo("check",true)
-                .whereEqualTo("publish",true)
                 ;
-        FirestoreRecyclerOptions<AksesKelas> options = new FirestoreRecyclerOptions.Builder<AksesKelas>()
-                .setQuery(query,AksesKelas.class)
+        FirestoreRecyclerOptions<Kelas> options = new FirestoreRecyclerOptions.Builder<Kelas>()
+                .setQuery(query,Kelas.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<AksesKelas, KelasHolder>(options) {
-
+        adapter = new FirestoreRecyclerAdapter<Kelas, KelasHolder>(options) {
             @NonNull
             @Override
             public KelasHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_akses_kelas,parent,false);
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_kelas_admin,parent,false);
                 return new KelasHolder(v);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull KelasHolder holder, int position, @NonNull AksesKelas model) {
+            protected void onBindViewHolder(@NonNull KelasHolder holder, int position, @NonNull Kelas model) {
                 String id = model.getId();
                 String judul = model.getJudul();
-                String imageURL= model.getImageURL();
-                String uidkelas = model.getUidkelas();
-                String createdBy= model.getCreatedBy();
-
-                Date mulaiKelas=model.getMulaiKelas();
-
-
-
+                String hargaFull = model.getHargaFull();
+                String hargaBiasa = model.getHargaBiasa();
+                String detail = model.getDetail();
+                Date mulaiKelas = model.getMulaiKelas();
+                Boolean check = model.isCheck();
+                String imageURL = model.getImageURL();
+                String uidAkses = model.getUidAkses();
 
 
                 holder.setText(judul,mulaiKelas,imageURL);
-                holder.getData(id);
 
+                holder.getData(id,judul,hargaFull,hargaBiasa,detail,mulaiKelas,check,imageURL,uidAkses);
             }
         };
 
-        recyclerView = v.findViewById(R.id.RecyclerViewKelas);
+        recyclerView = v.findViewById(R.id.RecyclerViewMateri);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getActivity());
@@ -113,8 +96,6 @@ public class KelasFragment extends Fragment {
 
         return v;
     }
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -150,15 +131,25 @@ public class KelasFragment extends Fragment {
 
         }
 
-        void getData(String id){
+        void getData(String id, String judul, String hargaFull, String hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL,String uidAkses){
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(getContext(), Materi_Kelas.class);
-                    intent.putExtra("uidAkses",id);
+                    SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
+                    String date = formatter.format(mulaiKelas);
 
+                    Intent intent = new Intent(getContext(), Detail_Input_Materi.class);
+                    intent.putExtra("id",id);
+                    intent.putExtra("judul",judul);
+                    intent.putExtra("hargaFull",hargaFull);
+                    intent.putExtra("hargaBiasa",hargaBiasa);
+                    intent.putExtra("detail",detail);
+                    intent.putExtra("mulaiKelas",date);
+                    intent.putExtra("check",check);
+                    intent.putExtra("imageURL",imageURL);
+                    intent.putExtra("uidAkses",uidAkses);
                     //intent.putExtras(bundle);
 
                     startActivity(intent);

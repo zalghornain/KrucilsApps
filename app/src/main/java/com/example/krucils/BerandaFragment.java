@@ -52,7 +52,7 @@ public class BerandaFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_beranda, container, false);
         Query query = FirebaseFirestore.getInstance()
                 .collection("Kelas")
-                .whereEqualTo("check",false)
+                .whereEqualTo("publish",true)
                 ;
         FirestoreRecyclerOptions<Kelas> options = new FirestoreRecyclerOptions.Builder<Kelas>()
                 .setQuery(query,Kelas.class)
@@ -75,13 +75,15 @@ public class BerandaFragment extends Fragment {
                 String detail = model.getDetail();
                 Date mulaiKelas = model.getMulaiKelas();
                 Boolean check = model.isCheck();
+                Boolean publish = model.isPublish();
                 String imageURL = model.getImageURL();
+                String uidAkses=model.getUidAkses();
 
 
 
                 holder.setText(judul,mulaiKelas,imageURL);
 
-                holder.getData(id,judul,hargaFull,hargaBiasa,detail,mulaiKelas,check,imageURL);
+                holder.getData(id,judul,hargaFull,hargaBiasa,detail,mulaiKelas,publish,imageURL,uidAkses);
             }
         };
 
@@ -131,7 +133,7 @@ public class BerandaFragment extends Fragment {
 
         }
 
-        void getData(String id, String judul, String hargaFull, String hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL){
+        void getData(String id, String judul, String hargaFull, String hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL,String uidAkses){
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,6 +154,7 @@ public class BerandaFragment extends Fragment {
 
                     Intent intent = new Intent(getContext(), DetailKelas.class);
                     intent.putExtra("id",id);
+                    intent.putExtra("uidAkses",uidAkses);
                     intent.putExtra("judul",judul);
                     intent.putExtra("hargaFull",hargaFull);
                     intent.putExtra("hargaBiasa",hargaBiasa);
