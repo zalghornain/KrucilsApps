@@ -1,12 +1,14 @@
 package com.example.krucils;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -192,47 +194,188 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
 
             case R.id.btn_tolak:
-                DocumentReference akses = db.collection("Pembelian")
-                        .document(keyPembelian);
-                akses.update("checkAdmin",true);
-                akses.update("pembayaran",false)
 
-
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                String fail = " Mohon maaf pembayaran anda gagal, silahkan mengulangi proses pembelian";
-                                String keterangan="Gagal";
-                                uploadNotifikasi(UIDUser,fail,keterangan);
-                            }
-                        });
-
+                alertTolak();
 
                 Intent intent = new Intent(DetailKonfirmasi.this, BerandaAdmin.class);
 
                 startActivity(intent);
-                finish();
+
                 break;
             case  R.id.btn_setuju:
-                DocumentReference akseskelas = db.collection("Pembelian")
-                        .document(keyPembelian);
-                akseskelas.update("checkAdmin",true);
-                akseskelas.update("pembayaran",true)
-
-
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //bikin notifikasi + akses Kelas
-                                inputAkses(UIDUser);
-                            }
-                        });
+                alertSetuju();
 
 
                 break;
         }
 
 
+    }
+    private void tolak(){
+        DocumentReference akses = db.collection("Pembelian")
+                .document(keyPembelian);
+        akses.update("checkAdmin",true);
+        akses.update("pembayaran",false)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        String fail = " Mohon maaf pembayaran anda gagal, silahkan mengulangi proses pembelian";
+                        String keterangan="Gagal";
+                        uploadNotifikasi(UIDUser,fail,keterangan);
+                        Toast.makeText(DetailKonfirmasi.this, "Tolak", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    private void setuju(){
+        DocumentReference akseskelas = db.collection("Pembelian")
+                .document(keyPembelian);
+        akseskelas.update("checkAdmin",true);
+        akseskelas.update("pembayaran",true)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //bikin notifikasi + akses Kelas
+                        inputAkses(UIDUser);
+                        Toast.makeText(DetailKonfirmasi.this, "Berhasil ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private void alertTolak(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(DetailKonfirmasi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                tolak();
+                                dialog.cancel();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
+    private void alertSetuju(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(DetailKonfirmasi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                setuju();
+                                dialog.cancel();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
     }
     private void inputAkses (String uiduser){
 
@@ -283,6 +426,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                     public void onSuccess(Void aVoid) {
 
 
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -315,20 +459,6 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
 
 
-        void downloadMateri(final String judul, final String urlFile, final boolean typeFile){
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(typeFile==true){
-
-                    } else {
-                        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlFile));
-                        startActivity(appIntent);
-
-                    }
-                }
-            });
-        }
     }
 }

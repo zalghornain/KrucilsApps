@@ -1,12 +1,14 @@
 package com.example.krucils;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -140,40 +142,16 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
 
 
             case R.id.btn_delete:
-                DocumentReference kelas = db.collection("Kelas")
-                        .document(uidKelas);
-                kelas.update("check",false);
-                kelas.update("publish",false)
-
-
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                batalpublish(uidAkses);
-                            }
-                        });
+                alertDelete();
 
 
                 Intent intent = new Intent(List_Materi.this, BerandaAdmin.class);
 
                 startActivity(intent);
-                finish();
+
                 break;
             case  R.id.btn_publish:
-                DocumentReference akseskelas = db.collection("AksesKelas")
-                        .document(uidAkses);
-                akseskelas.update("check",true);
-                akseskelas.update("publish",true)
-
-
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                    publish(uidKelas);
-
-                            }
-                        });
+                alertPublish();
 
 
                 break;
@@ -181,6 +159,169 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
 
 
     }
+    private void delete(){
+        DocumentReference kelas = db.collection("Kelas")
+                .document(uidKelas);
+        kelas.update("check",false);
+        kelas.update("publish",false)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        batalpublish(uidAkses);
+                    }
+                });
+    }
+    private void alertDelete(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(List_Materi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                delete();
+                                dialog.cancel();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
+    private void publish(){
+        DocumentReference akseskelas = db.collection("AksesKelas")
+                .document(uidAkses);
+        akseskelas.update("check",true);
+        akseskelas.update("publish",true)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        publish(uidKelas);
+
+                    }
+                });
+    }
+    private void alertPublish(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(List_Materi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin ingin mempublish kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                publish();
+                                dialog.cancel();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
+
     private void publish (String kelas){
 
         DocumentReference submitkelas = db.collection("Kelas")
