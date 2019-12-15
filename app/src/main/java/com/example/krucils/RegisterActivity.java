@@ -103,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity{
                             data.put("email", user.getEmail());
                             //todo coba cari cara buat manggil manual jangan di paksa gan
                             data.put("username", usernamefinal);
+                            data.put("admin", false);
 
                             //apply ke database
                             //masukin ke dalam document dengan judul UID di koleksi users

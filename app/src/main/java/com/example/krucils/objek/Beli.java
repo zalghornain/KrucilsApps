@@ -17,11 +17,15 @@ public class Beli {
     private String email;
     private String username;
 
+    private String uidAkses;
     private String keyPembelian;
     private boolean check;
     private Date created;
 
-    public Beli(String id, String uidkelas, String judul, String detail, String harga, String tanggal, String imageURL, boolean grupchat, String uiduser, String email, String username, String keyPembelian, boolean check, Date created) {
+
+    public Beli(){}
+
+    public Beli(String id, String uidkelas, String judul, String detail, String harga, String tanggal, String imageURL, boolean grupchat, String uiduser, String email, String username, String uidAkses, String keyPembelian, boolean check, Date created) {
         this.id = id;
         this.uidkelas = uidkelas;
         this.judul = judul;
@@ -33,13 +37,19 @@ public class Beli {
         this.uiduser = uiduser;
         this.email = email;
         this.username = username;
+        this.uidAkses = uidAkses;
         this.keyPembelian = keyPembelian;
         this.check = check;
         this.created = created;
     }
 
-    public Beli(){}
+    public String getUidAkses() {
+        return uidAkses;
+    }
 
+    public void setUidAkses(String uidAkses) {
+        this.uidAkses = uidAkses;
+    }
 
     public String getKeyPembelian() {
         return keyPembelian;

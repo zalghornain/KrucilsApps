@@ -29,9 +29,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,6 +48,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,6 +68,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     private Uri filepath, imgUri;
     private final int PICK_IMAGE_REQUEST = 71;
     private StorageTask uploadTask;
+    private String UIDuser,email,username;
     private boolean CheckImage = false;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
@@ -98,13 +104,50 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         datePicker.setOnClickListener(this);
 
         db = FirebaseFirestore.getInstance();
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        ReadUser(currentuser);
 
 
         return v;
     }
 
+    private void ReadUser(String s) {
 
+        DocumentReference user = db.collection("users").document(s);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+
+                    UIDuser = (String) doc.getString("UID");
+                    email = (String) doc.getString("email");
+                    username =(String)doc.getString("username");
+
+                }
+
+            }
+
+        })
+
+                .addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+
+                    public void onFailure(@NonNull Exception e) {
+
+
+                    }
+
+                });
+
+    }
 
     @Override
     public void onClick(View view) {
@@ -130,18 +173,17 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
                 checkTanggal=false;
 
             }
-            //String file = uImage.getText().toString();
+
             boolean penuh_bastard = false;
-            //if(judul.length() == 0 && detail.length() == 0 && harga.length() == 0 && tanggal.length() == 0 ){
+
             if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty()&& !harga2.isEmpty() && checkTanggal==true){
                 penuh_bastard = true;
             }
-            //if (isEmpty(judul) && isEmpty(detail) && isEmpty(harga) && isEmpty(tanggal) && imageView.getDrawable() == null) {
-            // lol logika eror nanti benerin
+
 
 
             if (penuh_bastard==true && imgUri !=null) {
-            //if (imgUri !=null) {
+
 
 
                 if (uploadTask != null && uploadTask.isInProgress()) {
@@ -163,7 +205,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
                                             final Uri downloadUrl = uri;
                                             String image = downloadUrl.toString();
-                                            uploadKelas(judul, detail, harga,harga2, tanggal, image);
+                                            uploadKelas(judul, detail, harga,harga2, tanggal, image,UIDuser,username);
                                             progressDialog.dismiss();
                                             Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
                                             judulKelas.setText(null);
@@ -218,49 +260,6 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         }
 
 
-
-        /*
-            if (view.getId()==R.id.upload) {
-                String judul = judulKelas.getText().toString();
-                String detail = detailKelas.getText().toString();
-                String harga = hargaKelas.getText().toString();
-                String tanggal = mulaiKelas.getText().toString();
-                //String file = uImage.getText().toString();
-
-                if(isEmpty(judul)){
-
-                }
-
-
-                if(uploadTask !=null&&uploadTask.isInProgress()){
-                    Toast.makeText(getActivity(), "sedang diproses", Toast.LENGTH_LONG).show();
-                    // lol logika eror nanti benerin
-
-                } else {
-                    StorageReference childRef = storageRef.child("Kelas/" + System.currentTimeMillis() + "." + getExtension(imgUri));
-                    uploadTask = childRef.putFile(imgUri)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    // Get a URL to the uploaded content
-                                    //Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                    Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
-
-                                    imageView.setImageURI(null);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle unsuccessful uploads
-                                    // ...
-                                }
-                            });
-
-                }
-            }
-
-         */
         if (view.getId()==R.id.uImage){
 
             Intent intent = new Intent();
@@ -307,37 +306,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    /*
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
 
-            if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData()
-            !=null)
-            try {
-
-                    if (Build.VERSION.SDK_INT<29){
-
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),filepath);
-                            imageView.setImageBitmap(bitmap);
-
-                    }else {
-                        Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(),filepath));
-                        imageView.setImageBitmap(bitmap);
-                    }
-
-            }catch (IOException e){
-                    e.printStackTrace();
-            }
-            else {
-                Intent intent = new Intent(getContext(), Pembelian.class);
-                startActivity(intent);
-            }
-
-        }
-
-
-         */
     private boolean isEmpty(EditText text){
         CharSequence s=text.getText().toString();
 
@@ -397,55 +366,69 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
             count = 5;
         }
     }
-
-    private void uploadKelas(String judul, String detail, String harga,String harga2, String tanggal, String imageURL) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        //progressDialog.setTitle("Uploading...");
-        //progressDialog.show();
-
-        String id = UUID.randomUUID().toString();
+    private void uploadAksesKelas(String uidkelas, String tanggal, String imageURL, String judul,String id,String uidUser, String createdBy){
 
 
 
         Map<String, Object> doc = new HashMap<>();
 
         doc.put("id", id);
+        doc.put("uidkelas", uidkelas);
+        doc.put("uidUser", Arrays.asList(uidUser));
         doc.put("judul", judul);
+        doc.put("mulaiKelas", getDateFromString(tanggal));
+        doc.put("createdBy", createdBy);
+        doc.put("imageURL", imageURL);
+        doc.put("publish",false);
+        doc.put("tester",false);
+        doc.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("AksesKelas")
+                .document(id)
+                .set(doc)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(getActivity(), "upload", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                })
+
+
+        ;
+    }
+    private void uploadKelas(String judul, String detail, String harga,String harga2, String tanggal, String imageURL, String uidAdmin, String username) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        //progressDialog.setTitle("Uploading...");
+        //progressDialog.show();
+
+        String id = UUID.randomUUID().toString();
+
+        String uidAkses = UUID.randomUUID().toString();
+
+        Map<String, Object> doc = new HashMap<>();
+
+        doc.put("id", id);
+        doc.put("judul", judul);
+        doc.put("uidAkses", uidAkses);
+        doc.put("uidAdmin", uidAdmin);
+        doc.put("createdBy", username);
         doc.put("hargaFull", harga);
         doc.put("hargaBiasa", harga2);
         doc.put("detail", detail);
         doc.put("mulaiKelas", getDateFromString(tanggal));
         doc.put("imageURL", imageURL);
         doc.put("check",false);
+        doc.put("publish",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 
-        // StorageReference childRef = storageRef.child("Kelas/"+image);
-        //  childRef.putFile(filepath);
-        /*
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                .getTotalByteCount());
-                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                    }
-                });
-
-         */
 
         db.collection("Kelas")
                 .document(id)
@@ -453,7 +436,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "upload", Toast.LENGTH_LONG).show();
+                       uploadAksesKelas(id,tanggal,imageURL,judul,uidAkses,UIDuser,username);
 
                     }
                 })

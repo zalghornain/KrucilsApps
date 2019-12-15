@@ -40,7 +40,7 @@ import java.util.UUID;
 public class DetailKeranjang extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView buktiPembayaran;
-    private EditText kodeRef;
+    private EditText kodeRef,atasnama,bank;
     private TextView hargaTotal;
     private Button checkRef, uploadImage, bayar,back;
     private int hargaAwal, hargaDiskon;
@@ -61,13 +61,15 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_detail_keranjang);
         kodeRef = findViewById(R.id.kodeRef);
+        atasnama=findViewById(R.id.atas_nama);
+        bank = findViewById(R.id.bank);
         hargaTotal=findViewById(R.id.tv_total);
         checkRef=findViewById(R.id.btn_check);
         uploadImage=findViewById(R.id.btn_image);
         bayar=findViewById(R.id.btn_bayar);
         buktiPembayaran=findViewById(R.id.thumbnail);
-        back = findViewById(R.id.btn_home);
-        back.setOnClickListener(this);
+
+
         checkRef.setOnClickListener(this);
         uploadImage.setOnClickListener(this);
         bayar.setOnClickListener(this);
@@ -106,11 +108,6 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
                     // nanti di pake, kita tambahin dulu field poin dan kodeRef di collection User
                     break;
-                case R.id.btn_home:
-
-                    Intent intents = new Intent(getApplicationContext(),BerandaFragment.class);
-                    startActivity(intents);
-                    break;
 
                 case R.id.btn_image:
                     Intent intent = new Intent();
@@ -129,9 +126,11 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
                      */
 
-                    final String checRef = checkRef.getText().toString();
 
-                    if (imgUri !=null) {
+                    final String checkAtasNama= atasnama.getText().toString();
+                    final String checkBank = bank.getText().toString();
+
+                    if (imgUri !=null && checkAtasNama !=null && checkBank !=null) {
                         //if (imgUri !=null) {
 
 
@@ -157,7 +156,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                                                     String koderef = kodeRef.getText().toString();
                                                     //Disini Tambahin Method input ke database
                                                     //uploadKelas(judul, detail, harga,harga2, tanggal, image);
-                                                    uploadKeranjang(currentuserUID,username,email,image,listKerangjang,hargaAkhir,harga,koderef);
+                                                    uploadKeranjang(currentuserUID,email,username,image,listKerangjang,hargaAkhir,harga,koderef,checkAtasNama,checkBank);
                                                     progressDialog.dismiss();
 
                                                     kodeRef.setText("1");
@@ -195,6 +194,9 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Silahkan Upload foto", Toast.LENGTH_LONG).show();
                     }
+
+                    Intent intents = new Intent(DetailKeranjang.this,Beranda.class);
+                    startActivity(intents);
 
                     break;
             }
@@ -252,7 +254,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void uploadKeranjang(String UIDuser, String email, String username , String imageURL, ArrayList keranjangList,String hargaAkhir,String hargaAwal, String kodeRef) {
+    private void uploadKeranjang(String UIDuser, String email, String username , String imageURL, ArrayList keranjangList,String hargaAkhir,String hargaAwal, String kodeRef, String checkNama, String checkBank) {
         final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
         //progressDialog.setTitle("Uploading...");
         //progressDialog.show();
@@ -264,7 +266,10 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         Map<String, Object> doc = new HashMap<>();
 
         doc.put("keyPembelian", keyPembelian);
+        doc.put("uidUser", currentuserUID);
         doc.put("username", username);
+        doc.put("atasnama", checkNama);
+        doc.put("bank", checkBank);
         doc.put("email", email);
         doc.put("hargaAwal", hargaAwal);
         doc.put("hargaAkhir", hargaAkhir);
@@ -272,6 +277,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         doc.put("keranjangList", keranjangList);
         doc.put("imageURL", imageURL);
         doc.put("checkAdmin",false);
+        doc.put("pembayaran",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 
 
@@ -313,13 +319,13 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                 String uidKelas = input.getUidKeranjang();
                 DocumentReference keranjangg = db.collection("Keranjang")
                         .document(uidKelas);
-                keranjangg.update("keyPembelian", keyPembelian);
-                keranjangg.update("check",false)
+                keranjangg.update("keyPembelian", keyPembelian)
+
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
 
-
+                                Toast.makeText(getApplicationContext(), "Berhasil mengirim", Toast.LENGTH_LONG).show();
                             }
                         });
 

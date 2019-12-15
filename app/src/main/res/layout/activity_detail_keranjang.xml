@@ -20,8 +20,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/kodeRef"
+            android:id="@+id/atas_nama"
+            android:hint="Krucils Indonesia"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+
+
+            />
+        <EditText
+            android:id="@+id/bank"
+            android:hint="Mandiri"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/atas_nama"
+
+
+            />
+
+
+        <EditText
+            android:id="@+id/kodeRef"
+            android:layout_below="@+id/bank"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,14 +105,7 @@
                 android:id="@+id/btn_bayar"/>
 
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Beranda"
-            android:layout_below="@id/button"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:id="@+id/btn_home"/>
+
     </RelativeLayout>
 
 </LinearLayout>

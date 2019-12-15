@@ -79,7 +79,7 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
         Query query = FirebaseFirestore.getInstance()
                 .collection("Keranjang")
                 .whereEqualTo("uiduser",currentuserUID)
-                .whereEqualTo("check", false)
+                .whereEqualTo("check", true)
                 .whereEqualTo("keyPembelian", "kosong")
                 ;
 
@@ -221,7 +221,7 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
                     calculateTotal();
                     DocumentReference keranjang = db.collection("Keranjang")
                             .document(id);
-                    keranjang.update("check",true)
+                    keranjang.update("check",false)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
