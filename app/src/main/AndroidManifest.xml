@@ -12,7 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailKonfirmasi"></activity>
+        <activity android:name=".StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".DetailKonfirmasi" />
         <activity android:name=".Materi_Kelas" />
         <activity android:name=".List_Materi" />
         <activity android:name=".Detail_Input_Materi" />
@@ -23,13 +30,7 @@
         <activity android:name=".DetailKelas" />
         <activity
             android:name=".Beranda"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".LogoutActivity" />
         <activity android:name=".RegisterActivity" />
