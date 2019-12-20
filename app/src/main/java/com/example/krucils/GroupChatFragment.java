@@ -82,7 +82,8 @@ public class GroupChatFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @Nullable GroupChat model) {
                 //todo parse datenya jadi jam doang mungkin ? tergantung mau gimana mereka
-                holder.setText(model.getName(), model.getMessage(),model.getTimestamp().toString());
+                //todo set jadi null dulu untuk sementara
+                holder.setText(model.getName(), model.getMessage(), null);
             }
 
             @NonNull
@@ -200,8 +201,7 @@ public class GroupChatFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         //todo restrict access write sama read ke database dan restrict user
         //todo check lagi, ini inputnya sebaiknya pake setMessage yang udah ada di groupchat kah ?
-        GroupChat z = new GroupChat();
-        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), z.getTimestamp());
+        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail());
         db.collection("Messages")
                 .document(nilaipassing)
                 .collection("messages")
