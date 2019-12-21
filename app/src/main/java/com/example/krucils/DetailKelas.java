@@ -216,7 +216,11 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "upload", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Berhasil tambahkan ke keranjang", Toast.LENGTH_LONG).show();
+                        Intent beranda = new Intent(DetailKelas.this, Beranda.class);
+                        DetailKelas.this.startActivity(beranda);
+
+                        finish();
 
                     }
                 })

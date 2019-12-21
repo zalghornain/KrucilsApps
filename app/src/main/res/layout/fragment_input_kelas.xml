@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Paket"
+            android:hint="Judul"
             android:inputType="text" />
 
 
@@ -75,13 +75,13 @@
 
             <Button
                 android:id="@+id/datePick"
-                android:text="Choose"
+                android:text="Pilih tanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
             <Button
                 android:id="@+id/uImage"
-                android:text="Choose"
+                android:text="Pilih gambar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

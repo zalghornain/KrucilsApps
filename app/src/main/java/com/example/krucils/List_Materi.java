@@ -145,9 +145,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
                 alertDelete();
 
 
-                Intent intent = new Intent(List_Materi.this, BerandaAdmin.class);
 
-                startActivity(intent);
 
                 break;
             case  R.id.btn_publish:
@@ -292,6 +290,9 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
                                 // then app will close
                                 publish();
                                 dialog.cancel();
+                                Intent intent = new Intent(List_Materi.this, BerandaAdmin.class);
+
+                                startActivity(intent);
                             }
                         });
 

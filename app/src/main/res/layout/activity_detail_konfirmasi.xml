@@ -24,20 +24,20 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atago"/>
+            android:text="adhe"/>
         <TextView
             android:id="@+id/atas_nama"
             android:layout_below="@id/username_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bismarck"/>
+            android:text="Rizky Fauzan"/>
 
         <TextView
             android:id="@+id/bank_tv"
             android:layout_below="@id/atas_nama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bank Monarch"/>
+            android:text="Bank BRI"/>
         <TextView
             android:id="@+id/harga_awal_tv"
             android:layout_below="@id/bank_tv"

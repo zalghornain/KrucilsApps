@@ -37,11 +37,11 @@ public class InputMateriFragment extends Fragment {
     private TextView judul,detail,kelasMulai;
     private ImageView imageView;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-
     private static FirestoreRecyclerAdapter adapter;
+
+
+
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
 

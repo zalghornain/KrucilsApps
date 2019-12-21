@@ -90,7 +90,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         detail_harga=findViewById(R.id.detail_harga);
         judulMateri = findViewById(R.id.judul_materi);
         linkMateri = findViewById(R.id.link_file);
-
+        typeFile = false;
         chooseFile=findViewById(R.id.btn_upload);
         uploadFile=findViewById(R.id.btn_submit);
         deleteKelas=findViewById(R.id.btn_delete);
@@ -211,7 +211,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 String judul = judulMateri.getText().toString();
                 String urlLink = linkMateri.getText().toString();
 
-                if (judul != null && file != null && urlLink==null) {
+                if (!judul.isEmpty() && file != null ) {
 
 
                     if (uploadTask != null && uploadTask.isInProgress()) {
@@ -262,15 +262,22 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
 
                 }
-                    if(judul != null && file == null && urlLink!=null){
+                    if(!judul.isEmpty() && file == null  ){
+
 
                         uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
 
-                    }
-                else {
+                    } if (judul.isEmpty() && file == null && !urlLink.isEmpty()){
+
+                progressDialog.dismiss();
+                Toast.makeText(Detail_Input_Materi.this, "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
+            }
+              /* if(judul.isEmpty() && urlLink.isEmpty() ) {
                     progressDialog.dismiss();
                     Toast.makeText(Detail_Input_Materi.this, "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
                 }
+
+               */
                 judulMateri.setText(null);
                 file = null;
                 linkMateri.setText(null);
