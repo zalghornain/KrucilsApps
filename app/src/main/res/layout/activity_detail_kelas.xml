@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/kelas_berlaku"
-            android:text="Bayar"/>
+            android:text="Tambah ke Keranjang"/>
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"

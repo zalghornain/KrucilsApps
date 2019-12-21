@@ -207,41 +207,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void ReadUser(String s) {
 
-        DocumentReference user = db.collection("users").document(s);
-
-        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
-            @Override
-
-            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-
-                if (task.isSuccessful()) {
-
-                    DocumentSnapshot doc = task.getResult();
-
-                    //role = doc.getBoolean("role");
-
-                }
-
-            }
-
-        })
-
-                .addOnFailureListener(new OnFailureListener() {
-
-                    @Override
-
-                    public void onFailure(@NonNull Exception e) {
-                        // ajaib ini
-
-
-                    }
-
-                });
-
-    }
     @Override
     public void onBackPressed() {
 

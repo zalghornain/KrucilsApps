@@ -197,9 +197,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
                 alertTolak();
 
-                Intent intent = new Intent(DetailKonfirmasi.this, BerandaAdmin.class);
 
-                startActivity(intent);
 
                 break;
             case  R.id.btn_setuju:
@@ -225,6 +223,10 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                         String keterangan="Gagal";
                         uploadNotifikasi(UIDUser,fail,keterangan);
                         Toast.makeText(DetailKonfirmasi.this, "Tolak", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(DetailKonfirmasi.this, BerandaAdmin.class);
+
+                        startActivity(intent);
 
                     }
                 });
@@ -253,7 +255,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                 .Builder(DetailKonfirmasi.this);
 
         // Set the message show for the Alert time
-        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+        builder.setMessage("Anda yakin menolak ini ?");
 
         // Set Alert Title
         builder.setTitle("Perhatian");
@@ -319,7 +321,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                 .Builder(DetailKonfirmasi.this);
 
         // Set the message show for the Alert time
-        builder.setMessage("Anda yakin mau menghapus kelas ini ?");
+        builder.setMessage("Anda yakin menyutujui ini ?");
 
         // Set Alert Title
         builder.setTitle("Perhatian");

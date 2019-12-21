@@ -118,7 +118,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                     break;
 
                 case R.id.btn_bayar:
-
+                    checkDataInput();
                     final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
 
                     /*progressDialog.setTitle("Uploading...");
@@ -195,8 +195,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                         Toast.makeText(getApplicationContext(), "Silahkan Upload foto", Toast.LENGTH_LONG).show();
                     }
 
-                    Intent intents = new Intent(DetailKeranjang.this,Beranda.class);
-                    startActivity(intents);
+
 
                     break;
             }
@@ -235,11 +234,21 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
     private void checkDataInput(){
 
+        if (isEmpty(atasnama)){
+            Toast.makeText(DetailKeranjang.this, "atasnama tolong diisi", Toast.LENGTH_LONG).show();
 
+            atasnama.setError("tolong dilengkapi");
+        }
+
+        if(isEmpty(bank)){
+            Toast.makeText(DetailKeranjang.this, "nama bank tolong diisi", Toast.LENGTH_LONG).show();
+            bank.setError("tolong dilengkapi");
+
+        }
 
         if (imgUri==null){
 
-            Toast.makeText(getApplicationContext(), "Silahkan Upload foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailKeranjang.this, "Silahkan Upload foto", Toast.LENGTH_LONG).show();
 
 
         }
@@ -260,7 +269,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         //progressDialog.show();
 
         String keyPembelian = UUID.randomUUID().toString();
-        String image = UUID.randomUUID().toString();
+
 
 
         Map<String, Object> doc = new HashMap<>();
@@ -288,7 +297,8 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(Void aVoid) {
                         updateKeypembelian(keranjangList,keyPembelian);
-
+                        Intent intents = new Intent(DetailKeranjang.this,Beranda.class);
+                        startActivity(intents);
 
 
                     }

@@ -424,7 +424,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         doc.put("detail", detail);
         doc.put("mulaiKelas", getDateFromString(tanggal));
         doc.put("imageURL", imageURL);
-        doc.put("check",false);
+        doc.put("check",true);
         doc.put("publish",false);
         doc.put("timestamp", FieldValue.serverTimestamp());
 

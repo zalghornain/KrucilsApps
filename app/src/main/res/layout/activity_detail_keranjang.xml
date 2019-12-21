@@ -21,7 +21,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/atas_nama"
-            android:hint="Krucils Indonesia"
+            android:hint="Atas nama"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             />
         <EditText
             android:id="@+id/bank"
-            android:hint="Mandiri"
+            android:hint="Nama Bank"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,6 +47,7 @@
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:hint="Kode Ref"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/btn_check"
 
@@ -88,18 +89,18 @@
             android:layout_alignParentEnd="true">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
-                android:text="upload"
+                android:text="upload bukti pembayaran"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textSize="10sp"
                 android:id="@+id/btn_image"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bayar"
+                android:text="submit"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:id="@+id/btn_bayar"/>

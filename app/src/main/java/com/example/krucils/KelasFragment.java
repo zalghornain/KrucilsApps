@@ -46,7 +46,6 @@ public class KelasFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
     private FirebaseAuth mAuth;
     private static FirestoreRecyclerAdapter adapter;
     FirebaseStorage storage = FirebaseStorage.getInstance();
