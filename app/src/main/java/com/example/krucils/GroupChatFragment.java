@@ -28,7 +28,6 @@ import com.google.firebase.firestore.Query;
 import java.util.Date;
 
 
-
 public class GroupChatFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -48,6 +47,7 @@ public class GroupChatFragment extends Fragment {
 
     private boolean lastItemVisible;
 
+    private String nilaipassing;
 
     //todo bikin recyclerview list kelas yang dia udah daftar
 
@@ -55,6 +55,10 @@ public class GroupChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_groupchat, container, false);
+
+        nilaipassing = getArguments().getString("chatid");
+
+
         mAuth = FirebaseAuth.getInstance();
 
         sendButton = v.findViewById(R.id.sendchat);
@@ -64,7 +68,7 @@ public class GroupChatFragment extends Fragment {
 
         //todo nanti ubah documentpath disini jadi berdasarkan apa yang dia klik di list groupchat sama cek lagi limit
         Query query = db
-                .collection("Messages").document("groupchat1")
+                .collection("Messages").document(nilaipassing)
                 .collection("messages")
                 .orderBy("timestamp")
                 .limit(50);
@@ -74,10 +78,12 @@ public class GroupChatFragment extends Fragment {
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<GroupChat, GroupChatHolder>(options) {
+            @NonNull
             @Override
-            protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @NonNull GroupChat model) {
+            protected void onBindViewHolder(@NonNull  GroupChatHolder  holder, int position, @Nullable GroupChat model) {
                 //todo parse datenya jadi jam doang mungkin ? tergantung mau gimana mereka
-                holder.setText(model.getName(), model.getMessage(), model.getTimestamp().toDate());
+                //todo set jadi null dulu untuk sementara
+                holder.setText(model.getName(), model.getMessage(), null);
             }
 
             @NonNull
@@ -118,41 +124,41 @@ public class GroupChatFragment extends Fragment {
             }
         });
 
-        textmessage.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                isLastItemVisible();
-                return false;
-            }
-        });
-
         //automatis ke last object kalo keyboard muncul (kalo last object lagi keliatan)
-        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+        textmessage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                int z = Integer.valueOf(adapter.getItemCount() -1);
-                Log.d(TAG, "sebelum : " + z );
-                Log.d(TAG, "sebelum: " + layoutManager.findLastCompletelyVisibleItemPosition());
-                if (lastItemVisible) {
-                    Log.d(TAG, "masuk: " + z);
-                    Log.d(TAG, "masuk: " + layoutManager.findLastCompletelyVisibleItemPosition());
-                    if (bottom < oldBottom) {
-                        recyclerView.getScrollState();
-                        layoutManager.findLastCompletelyVisibleItemPosition();
-                        Log.d(TAG, "selesai: " + z);
-                        Log.d(TAG, "selesai: " + layoutManager.findLastCompletelyVisibleItemPosition());
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+            public void onClick(View v) {
+                isLastItemVisible();
+
+                recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        int z = adapter.getItemCount() -1;
+                        Log.d(TAG, "sebelum : " + z );
+                        Log.d(TAG, "sebelum: " + layoutManager.findLastCompletelyVisibleItemPosition());
+                        if (lastItemVisible) {
+                            Log.d(TAG, "masuk: " + z);
+                            Log.d(TAG, "masuk: " + layoutManager.findLastCompletelyVisibleItemPosition());
+                            if (bottom < oldBottom) {
+                                recyclerView.getScrollState();
+                                layoutManager.findLastCompletelyVisibleItemPosition();
+                                Log.d(TAG, "selesai: " + z);
+                                Log.d(TAG, "selesai: " + layoutManager.findLastCompletelyVisibleItemPosition());
+                                recyclerView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                    }
+                                }, 100);
                             }
-                        }, 100);
+                        }
                     }
-                }
+                });
+
             }
         });
 
-
+        textmessage.performClick();
         return v;
     }
 
@@ -176,7 +182,8 @@ public class GroupChatFragment extends Fragment {
             view = itemView;
         }
 
-        void setText(String setName, String setMessage, Date setTanggal) {
+        void setText(String setName, String setMessage, String setTanggal) {
+            //String date = setTanggal.toString();
             TextView nama = view.findViewById(R.id.chatnama);
             TextView message = view.findViewById(R.id.chatmessage);
             TextView tanggal = view.findViewById(R.id.chattanggal);
@@ -184,7 +191,8 @@ public class GroupChatFragment extends Fragment {
             nama.setTextColor(Color.BLUE);
             message.setText(setMessage);
             message.setTextColor(Color.BLACK);
-            tanggal.setText(setTanggal.toString());
+            tanggal.setText(setTanggal);
+            Log.d(TAG, "nullpo : " + setTanggal);
         }
     }
 
@@ -192,9 +200,10 @@ public class GroupChatFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
         //todo restrict access write sama read ke database dan restrict user
-        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail(), Timestamp.now());
+        //todo check lagi, ini inputnya sebaiknya pake setMessage yang udah ada di groupchat kah ?
+        GroupChat chat = new GroupChat(user.getDisplayName(), isiteks,user.getUid(),user.getEmail());
         db.collection("Messages")
-                .document("groupchat1")
+                .document(nilaipassing)
                 .collection("messages")
                 .add(chat);
         textmessage.getText().clear();

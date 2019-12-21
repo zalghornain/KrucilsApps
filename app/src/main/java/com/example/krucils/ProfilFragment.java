@@ -36,6 +36,7 @@ public class ProfilFragment extends Fragment {
         logoutBtn=v.findViewById(R.id.logout);
 
 
+
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String name = user.getDisplayName();
