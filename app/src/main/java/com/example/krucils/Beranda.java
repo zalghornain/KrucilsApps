@@ -147,8 +147,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_kelas:
                 if(userLoggedin()){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new KelasFragment()).commit();
+                    if(userIsVerified()){
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new KelasFragment()).commit();
+                    }else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new VerifyYourEmailFragment()).commit();
+                    }
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -158,8 +163,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_notif:
                 if(userLoggedin()){
+                    if(userIsVerified()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new NotifikasiFragment()).commit();
+                    }else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new VerifyYourEmailFragment()).commit();
+                    }
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -168,8 +178,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
             case R.id.nav_profil:
                 if(userLoggedin()){
+                    if(userIsVerified()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
+                    }else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new VerifyYourEmailFragment()).commit();
+                    }
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -181,8 +196,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.nav_groupchat:
                 //todo kalo log in baru bisa liat groupchat, tapi harusnya kalo dia ada access di database baru bisa liat
                 if(userLoggedin()){
+                    if(userIsVerified()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new GroupChatListFragment()).commit();
+                    }else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new VerifyYourEmailFragment()).commit();
+                    }
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -193,8 +213,13 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
             case R.id.nav_keranjang:
                 if(userLoggedin()){
+                    if(userIsVerified()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new KeranjangFragment()).commit();
+                    }else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new VerifyYourEmailFragment()).commit();
+                    }
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
@@ -227,6 +252,18 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         }else{
             return true;
         }
+    }
+
+    public boolean userIsVerified() {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user.isEmailVerified() == true){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @Override

@@ -125,6 +125,9 @@ public class RegisterActivity extends AppCompatActivity{
                             //masukin ke dalam document dengan judul UID di koleksi users
                             db.collection("users").document(user.getUid()).set(data);
 
+                            //send verification email
+                            user.sendEmailVerification();
+
                             Toast.makeText(RegisterActivity.this, "Register success.",
                                     Toast.LENGTH_SHORT).show();
                             setResult(Activity.RESULT_OK);
