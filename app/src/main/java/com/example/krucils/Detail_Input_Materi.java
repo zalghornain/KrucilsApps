@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -216,6 +217,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 String judul = judulMateri.getText().toString();
                 String urlLink = linkMateri.getText().toString();
 
+
                 if (!judul.isEmpty() && file != null && urlLink.isEmpty() ) {
 
 
@@ -273,7 +275,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
 
                 }
-               else if(!judul.isEmpty() && file == null && !urlLink.isEmpty() ){
+                else if(!judul.isEmpty() && file == null && !urlLink.isEmpty() ){
 
                     progressDialog.dismiss();
                     uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
@@ -281,10 +283,10 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                     file = null;
                     linkMateri.setText(null);
 
-                    }
+                }
                 else {
                     progressDialog.dismiss();
-                    Toast.makeText(Detail_Input_Materi.this, "Tolong disi", Toast.LENGTH_LONG).show();
+                    checkDataInput();
                 }
 
 
@@ -335,7 +337,36 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+    private boolean isEmpty(EditText text){
+        CharSequence s=text.getText().toString();
 
+        return TextUtils.isEmpty(s);
+    }
+
+
+    private void checkDataInput(){
+
+
+        if (isEmpty(judulMateri)){
+            Toast.makeText(getApplicationContext(), "Judul kosong", Toast.LENGTH_SHORT).show();
+
+            judulMateri.setError("Judul materi kosong");
+        }
+
+        if(isEmpty(linkMateri)){
+
+            linkMateri.setError("Link url materi kosong");
+
+        }
+
+        if (typeFile==false && file == null){
+
+            Toast.makeText(getApplicationContext(), "tolong dilengkapi", Toast.LENGTH_SHORT).show();
+
+        } if(typeFile==true && file == null) {
+            Toast.makeText(getApplicationContext(), "File materi kosong", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void delete (){
 
         DocumentReference kelas = db.collection("Kelas")

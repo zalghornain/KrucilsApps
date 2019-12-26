@@ -42,7 +42,7 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new BerandaFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_input_kelas);
+            navigationView.setCheckedItem(R.id.nav_beranda_admin);
         }
 
         mAuth = FirebaseAuth.getInstance();
