@@ -131,6 +131,24 @@ public class RegisterActivity extends AppCompatActivity{
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //input data ke database
+                            Map<String, Object> data = new HashMap<>();
+
+                            data.put("UID", user.getUid());
+                            data.put("email", user.getEmail());
+                            data.put("username", user.getDisplayName());
+                            data.put("admin", false);
+
+                            //apply ke database
+                            //masukin ke dalam document dengan judul UID di koleksi users
+                            db.collection("users").document(user.getUid()).set(data);
+
+                            Toast.makeText(RegisterActivity.this, "Authentication success.",
+                                    Toast.LENGTH_SHORT).show();
+
+
+
                             setResult(Activity.RESULT_OK);
                             finish();
                         } else {
