@@ -23,8 +23,11 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
     private String AdminUID;
+    public static Activity berandaAdmin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.berandaAdmin = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beranda_admin);
 
