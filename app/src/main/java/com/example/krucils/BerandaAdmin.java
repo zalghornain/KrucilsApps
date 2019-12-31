@@ -91,9 +91,6 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
         //todo bikin kelas baru buat reload fragment (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
         switch (item.getItemId()) {
             case R.id.action_logout:
-               /* mAuth.signOut();
-                updateUI(this,mAuth);
-                */
                 Intent logout = new Intent(BerandaAdmin.this, LogoutActivity.class);
                 startActivity(logout);
                 return true;
@@ -183,14 +180,8 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
         TextView email = headerView.findViewById(R.id.email);
 
         FirebaseUser user = auth.getCurrentUser();
-
-        if (user == null) {
-            username.setText(R.string.guest);
-            email.setText("");
-        }else{
-            username.setText(user.getDisplayName());
-            email.setText(user.getEmail());
-        }
+        username.setText(user.getDisplayName());
+        email.setText(user.getEmail());
 
 
         //update action bar

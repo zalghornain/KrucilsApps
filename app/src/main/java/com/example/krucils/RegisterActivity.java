@@ -35,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity{
     private TextView userRegister,passRegister,emailRegister;
     private Button signupBtn;
     private FirebaseFirestore db;
-    private static String z;
 
 
 
@@ -73,10 +72,6 @@ public class RegisterActivity extends AppCompatActivity{
 
     private void createAccount(String username, String email, String password) {
         Log.d(TAG, "createAccount:" + email);
-        // if (!validateForm()) {
-        //    return;
-        // }
-        //    showProgressDialog();
         final String usernamefinal= username;
 
 
@@ -117,7 +112,6 @@ public class RegisterActivity extends AppCompatActivity{
 
                             data.put("UID", user.getUid());
                             data.put("email", user.getEmail());
-                            //todo coba cari cara buat manggil manual jangan di paksa gan
                             data.put("username", usernamefinal);
                             data.put("admin", false);
 
@@ -129,10 +123,6 @@ public class RegisterActivity extends AppCompatActivity{
                                     Toast.LENGTH_SHORT).show();
                             setResult(Activity.RESULT_OK);
                             finish();
-                            //todo kalo register udah selesai kira kira mau ngapain langkah selanjutnya ?
-
-                            //kalo email duplicate register gagal
-
                         } else {
                             try {
                                 throw task.getException();
@@ -148,12 +138,7 @@ public class RegisterActivity extends AppCompatActivity{
                                 Log.e(TAG, e.getMessage());
                             }
                         }
-
-                        // [START_EXCLUDE]
-                        //          hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
 }

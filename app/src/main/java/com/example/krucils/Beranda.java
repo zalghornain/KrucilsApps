@@ -70,18 +70,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             navigationView.setCheckedItem(R.id.nav_beranda);
 
         }
-
-
         //todo bikin kelas getter userLoggedIn sama buat profile dari firebase ?
-
-        //cari cara buat invalidateoptionmenu kalo logout dari action bar
-        //ini udah
-
-        //cari cara buat automatis manggil sesuatu abis layout/data change pada fragment
-        //ini sepertinya udah
-
-
-
     }
 
     @Override
@@ -96,36 +85,27 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             menu.findItem(R.id.action_daftar).setVisible(true);
             menu.findItem(R.id.action_logout).setVisible(false);
 
-
         }else{
             menu.findItem(R.id.action_login).setVisible(false);
             menu.findItem(R.id.action_daftar).setVisible(false);
             menu.findItem(R.id.action_logout).setVisible(true);
 
-
-
         }
-
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //todo bikin kelas baru buat reload fragment (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
         switch (item.getItemId()) {
             case R.id.action_login:
 
                 Intent loginIntent = new Intent(Beranda.this, LoginActivity.class);
                 Beranda.this.startActivity(loginIntent);
-                //updateUI(this,mAuth);
 
                 return true;
             case R.id.action_daftar:
                 Intent registerIntent = new Intent(Beranda.this, RegisterActivity.class);
                 Beranda.this.startActivity(registerIntent);
-                //updateUI(this,mAuth);
-
                 return true;
 
 
@@ -144,7 +124,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.nav_beranda:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BerandaFragment()).commit();
-                //updateUI(this,mAuth);
                 break;
             case R.id.nav_kelas:
                 if(userLoggedin()){
@@ -154,8 +133,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-
-                //updateUI(this,mAuth);
                 break;
             case R.id.nav_notif:
                 if(userLoggedin()){
@@ -175,12 +152,9 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-
-                //updateUI(this,mAuth);
                 break;
 
             case R.id.nav_groupchat:
-                //todo kalo log in baru bisa liat groupchat, tapi harusnya kalo dia ada access di database baru bisa liat
                 if(userLoggedin()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new GroupChatListFragment()).commit();
@@ -188,7 +162,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                //updateUI(this,mAuth);
                 break;
 
 
@@ -200,7 +173,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                //updateUI(this,mAuth);
                 break;
 
         }
@@ -233,7 +205,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
     @Override
     public void onResume(){
         super.onResume();
-        //gak butuh kah karena udah ada updateui ?
         updateUI(this,mAuth);
     }
 
@@ -260,7 +231,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
 
         onNavigationItemSelected(navigationView.getCheckedItem());
-
     }
 
     private void getRole (String UID){
