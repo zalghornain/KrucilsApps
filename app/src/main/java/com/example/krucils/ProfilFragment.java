@@ -26,7 +26,6 @@ public class ProfilFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_main, container, false);
-        //getActivity().invalidateOptionsMenu();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -56,7 +55,7 @@ public class ProfilFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                ProfilFragment.this.startActivityForResult(loginIntent, 10001);
+                ProfilFragment.this.startActivity(loginIntent);
             }
         });
 
@@ -64,7 +63,7 @@ public class ProfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent registerIntent = new Intent(getActivity(), RegisterActivity.class);
-                ProfilFragment.this.startActivityForResult(registerIntent, 10001);
+                ProfilFragment.this.startActivity(registerIntent);
             }
         });
 
@@ -72,31 +71,11 @@ public class ProfilFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
-                //todo ini kan buat restart fragment jadi mungkin coba pindahin ke updateUI
-                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (currentFragment instanceof ProfilFragment) {
-                    FragmentTransaction fragTransaction =   (getActivity()).getSupportFragmentManager().beginTransaction();
-                    fragTransaction.detach(currentFragment);
-                    fragTransaction.attach(currentFragment);
-                    fragTransaction.commit();
-                }
-
-                //getActivity().invalidateOptionsMenu();//gak butuh kah karena udah update ?
-                beranda.updateUI(getActivity(),mAuth);
+                Intent logout = new Intent(getActivity(), LogoutActivity.class);
+                ProfilFragment.this.startActivity(logout);
             }
         });
 
         return v;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == 10001) && (resultCode == Activity.RESULT_OK))
-            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-        beranda.updateUI(getActivity(),mAuth);
-    }
-
 }
