@@ -90,13 +90,15 @@ public class ProfilFragment extends Fragment {
         return v;
     }
 
-    @Override
+
+    //todo placeholder coba ilangin dulu
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == 10001) && (resultCode == Activity.RESULT_OK))
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         beranda.updateUI(getActivity(),mAuth);
-    }
+    }*/
 
 }

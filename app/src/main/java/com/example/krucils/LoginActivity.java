@@ -169,14 +169,13 @@ public class LoginActivity extends AppCompatActivity {
     private void getBeranda(boolean admin){
 
         if (admin==true){
+            //todo ini harusnya jangan bikin activity baru
 
             Intent adminLogin = new Intent(LoginActivity.this, BerandaAdmin.class);
             LoginActivity.this.startActivity(adminLogin);
 
             finish();
         }else {
-            Intent userLogin = new Intent(LoginActivity.this, Beranda.class);
-            LoginActivity.this.startActivity(userLogin);
             finish();
         }
     }

@@ -27,8 +27,6 @@ public class LogoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAuth.signOut();
-                Intent logout = new Intent(LogoutActivity.this, Beranda.class);
-                startActivity(logout);
                 finish();
             }
         });

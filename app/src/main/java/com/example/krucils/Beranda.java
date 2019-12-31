@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,21 +116,18 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
 
                 Intent loginIntent = new Intent(Beranda.this, LoginActivity.class);
                 Beranda.this.startActivity(loginIntent);
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
 
                 return true;
             case R.id.action_daftar:
                 Intent registerIntent = new Intent(Beranda.this, RegisterActivity.class);
                 Beranda.this.startActivity(registerIntent);
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
 
                 return true;
 
 
             case R.id.action_logout:
-               /* mAuth.signOut();
-                updateUI(this,mAuth);
-                */
                 Intent logout = new Intent(Beranda.this, LogoutActivity.class);
                 startActivity(logout);
                 return true;
@@ -143,7 +142,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.nav_beranda:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BerandaFragment()).commit();
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
                 break;
             case R.id.nav_kelas:
                 if(userLoggedin()){
@@ -154,7 +153,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new ProfilFragment()).commit();
                 }
 
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
                 break;
             case R.id.nav_notif:
                 if(userLoggedin()){
@@ -175,7 +174,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new ProfilFragment()).commit();
                 }
 
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
                 break;
 
             case R.id.nav_groupchat:
@@ -187,7 +186,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
                 break;
 
 
@@ -199,7 +198,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                updateUI(this,mAuth);
+                //updateUI(this,mAuth);
                 break;
 
         }
@@ -234,7 +233,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         super.onResume();
         //gak butuh kah karena udah ada updateui ?
         updateUI(this,mAuth);
-
     }
 
     public void updateUI(Activity activity, FirebaseAuth auth){
@@ -259,6 +257,9 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         activity.invalidateOptionsMenu();
 
         //todo bikin buat reset fragment yang lagi di opennya, atau bikinnya di authuser change aja, cek API apa yang keganti pas user login
+
+        onNavigationItemSelected(navigationView.getCheckedItem());
+
     }
 
     private void getRole (String UID){
