@@ -56,7 +56,7 @@ public class ProfilFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                ProfilFragment.this.startActivityForResult(loginIntent, 10001);
+                ProfilFragment.this.startActivity(loginIntent);
             }
         });
 
@@ -64,7 +64,7 @@ public class ProfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent registerIntent = new Intent(getActivity(), RegisterActivity.class);
-                ProfilFragment.this.startActivityForResult(registerIntent, 10001);
+                ProfilFragment.this.startActivity(registerIntent);
             }
         });
 
@@ -89,16 +89,4 @@ public class ProfilFragment extends Fragment {
 
         return v;
     }
-
-
-    //todo placeholder coba ilangin dulu
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == 10001) && (resultCode == Activity.RESULT_OK))
-            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-        beranda.updateUI(getActivity(),mAuth);
-    }*/
-
 }

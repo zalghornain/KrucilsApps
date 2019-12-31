@@ -173,7 +173,8 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent adminLogin = new Intent(LoginActivity.this, BerandaAdmin.class);
             LoginActivity.this.startActivity(adminLogin);
-
+            Beranda beranda = new Beranda();
+            Beranda.beranda.finish();
             finish();
         }else {
             finish();

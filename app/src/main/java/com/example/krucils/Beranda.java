@@ -38,9 +38,11 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
     private boolean role=false;
+    public static Activity beranda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.beranda = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beranda);
 
@@ -256,7 +258,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         //update action bar
         activity.invalidateOptionsMenu();
 
-        //todo bikin buat reset fragment yang lagi di opennya, atau bikinnya di authuser change aja, cek API apa yang keganti pas user login
 
         onNavigationItemSelected(navigationView.getCheckedItem());
 
