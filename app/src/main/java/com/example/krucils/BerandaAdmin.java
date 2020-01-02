@@ -135,6 +135,11 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
                 updateUI(this,mAuth);
                 break;
 
+            case R.id.nav_tester:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new InputFragment()).commit();
+                updateUI(this,mAuth);
+                break;
 
 
         }

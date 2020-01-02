@@ -1,8 +1,10 @@
 package com.example.krucils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.krucils.objek.Materi;
+import com.example.krucils.objek.Test;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,10 +41,11 @@ import java.util.UUID;
 
 public class InputFragment extends Fragment implements View.OnClickListener{
     private ProgressBar progressBar;
-    private EditText judul, fileurl;
+    private EditText judul, hargatest;
     private Button input,check;
     private ArrayList<Materi> materiList = new ArrayList<Materi>();
     private ArrayList<Materi> ambilList = new ArrayList<Materi>();
+    private static final String TAG = "check";
     FirebaseFirestore db;
 
 
@@ -53,7 +57,7 @@ public class InputFragment extends Fragment implements View.OnClickListener{
         progressBar =v.findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
         judul =(EditText)v.findViewById(R.id.tv_paket);
-        fileurl = (EditText)v.findViewById((R.id.tv_harga));
+        hargatest= (EditText)v.findViewById((R.id.tv_harga));
 
 
         db = FirebaseFirestore.getInstance();
@@ -79,51 +83,98 @@ public class InputFragment extends Fragment implements View.OnClickListener{
             //String paket = Paket.getText().toString();
             String nama = judul.getText().toString();
 
-            String harga = fileurl.getText().toString();
-
+            String hargaString = hargatest.getText().toString();
+            int harga = Integer.parseInt(hargaString);
 
             uploadPaket(nama, harga);
             judul.setText(null);
-            fileurl.setText(null);
+            hargatest.setText(null);
 
             break;
 
             case R.id.check:
-
+                Intent intent = new Intent(getContext(), Test_Activity.class);
+                startActivity(intent);
                 break;
 
         }
 
         }
+    private void check (){
+        DocumentReference user = db.collection("paket").document("2");
 
-    private void uploadPaket(String nama, String harga) {
-        Materi materi = new Materi();
-        materi.setJudul(nama);
-        materi.setFileurl(harga);
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
-        materiList.add(materi);
+            @Override
+
+            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+
+                    //Test test = doc.toObject(Test.class);
+                    String s = doc.getString("nama");
+                    long b = doc.getLong("harga");
+                    //int a = Integer.parseInt(doc.getString("harga"));
+
+
+
+                    Toast.makeText(getActivity(), s+"dan"+b , Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+                }
+
+            }
+
+        })
+
+                .addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+
+                    public void onFailure(@NonNull Exception e) {
+                        // ajaib ini
+
+
+                    }
+
+                });
+    }
+    private void uploadPaket(String nama, int harga) {
+
+
+
 
         Map<String, Object> doc = new HashMap<>();
 
-
-        doc.put("test",materiList);
-        doc.put("regions", Arrays.asList("test", "hebei"));
-
+        doc.put("nama", nama);
+        doc.put("harga", harga);
 
 
-
-        DocumentReference keranjangg = db.collection("paket")
-                .document("1");
-        keranjangg.update("regions", FieldValue.arrayUnion("greater_virginia"))
-
-
+        db.collection("paket")
+                .document()
+                .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        Toast.makeText(getActivity(), "upload", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
                     }
-                });
+                })
+
+
+        ;
 
 
     }
