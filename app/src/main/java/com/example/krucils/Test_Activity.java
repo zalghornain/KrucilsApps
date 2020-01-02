@@ -122,9 +122,8 @@ public class Test_Activity extends AppCompatActivity {
             harga=itemView.findViewById(R.id.harga_test);
 
             judul.setText(setJudul);
-
-
-            harga.setText(setHarga);
+            String stringHarga = Integer.toString(setHarga);
+            harga.setText(stringHarga);
 
 
 

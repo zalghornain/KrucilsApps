@@ -1,13 +1,10 @@
 package com.example.krucils.objek;
 
 public class Test {
+    public String nama;
+    public int harga;
 
-
-
-        public String nama;
-        public int harga;
-
-        public Test(){}
+    public Test() {}
 
     public Test(String nama, int harga) {
         this.nama = nama;
@@ -15,18 +12,15 @@ public class Test {
     }
 
     public String getNama() {
-            return nama;
-        }
+        return nama;
+    }
 
-        public void setNama(String nama) {
-            this.nama = nama;
-        }
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 
-        public int getHarga() {
-            return harga;
-        }
+    public int getHarga() { return harga; }
 
-        public void setHarga(int harga) {
-            this.harga = harga;
-        }
+    public void setHarga(int harga) { this.harga = harga; }
 }
+
