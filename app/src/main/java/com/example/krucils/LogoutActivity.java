@@ -68,7 +68,7 @@ public class LogoutActivity extends AppCompatActivity {
                                     Intent adminLogout = new Intent(LogoutActivity.this, Beranda.class);
                                     LogoutActivity.this.startActivity(adminLogout);
                                 }
-                                mGoogleSignInClient.signOut()
+                                mGoogleSignInClient.signOut();
                                 mAuth.signOut();
                                 finish();
                             } else {
