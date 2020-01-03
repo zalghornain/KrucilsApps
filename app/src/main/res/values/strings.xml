@@ -16,4 +16,11 @@
     <string name="field_empty">Tolong isi semua field.</string>
 
     <string name="sendchat">Send</string>
+
+    <string name="submit_username">Change Username</string>
+    <string name="submit_verify_email">Change Email</string>
+    <string name="oldpass">Old Password</string>
+    <string name="newpass">New Password</string>
+    <string name="confirmpass">Retype New Password</string>
+    <string name="submit_password">Change Password</string>
 </resources>

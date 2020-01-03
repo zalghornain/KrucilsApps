@@ -35,17 +35,6 @@
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="22dp"
-                android:background="#d67601"
-                android:text="@string/logout"
-                android:textAllCaps="false"
-                android:layout_marginBottom="30dp"
-                android:textColor="#fff"
-                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/register"
@@ -65,7 +54,7 @@
 
 
     <TextView
-        android:id="@+id/main_title"
+        android:id="@+id/welcome_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"

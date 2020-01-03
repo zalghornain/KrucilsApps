@@ -34,7 +34,6 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".LogoutActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".Pembelian" />
     </application>
 

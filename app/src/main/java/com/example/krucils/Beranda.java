@@ -131,7 +131,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new KelasFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfilFragment()).commit();
+                            new GuestFragment()).commit();
                 }
                 break;
             case R.id.nav_notif:
@@ -140,7 +140,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new NotifikasiFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfilFragment()).commit();
+                            new GuestFragment()).commit();
                 }
                 break;
 
@@ -150,7 +150,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new ProfilFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfilFragment()).commit();
+                            new GuestFragment()).commit();
                 }
                 break;
 
@@ -160,7 +160,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new GroupChatListFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfilFragment()).commit();
+                            new GuestFragment()).commit();
                 }
                 break;
 
@@ -171,7 +171,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                             new KeranjangFragment()).commit();
                 } else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new ProfilFragment()).commit();
+                            new GuestFragment()).commit();
                 }
                 break;
 
