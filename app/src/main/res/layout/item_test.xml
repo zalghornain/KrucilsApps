@@ -37,7 +37,15 @@
                 android:text="harga"
                 android:layout_alignParentStart="true"
                 />
-
+            <TextView
+                android:id="@+id/id_test"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/harga_test"
+                android:text="harga"
+                android:layout_alignParentStart="true"
+                />
 
 
 

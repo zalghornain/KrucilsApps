@@ -43,6 +43,8 @@ public class InputFragment extends Fragment implements View.OnClickListener{
     private ProgressBar progressBar;
     private EditText judul, hargatest;
     private Button input,check;
+    private String id;
+    private boolean stop = false;
     private ArrayList<Materi> materiList = new ArrayList<Materi>();
     private ArrayList<Materi> ambilList = new ArrayList<Materi>();
     private static final String TAG = "check";
@@ -93,8 +95,20 @@ public class InputFragment extends Fragment implements View.OnClickListener{
             break;
 
             case R.id.check:
-                Intent intent = new Intent(getContext(), Test_Activity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getContext(), Test_Activity.class);
+                //startActivity(intent);
+                String hargate = hargatest.getText().toString();
+                int start = Integer.parseInt(hargate);
+                //int start = 2;
+              /*  do {
+                    getUID(start);
+                    start = start + 1;
+                }
+
+                  while (stop == false);
+                */
+              getUID(start);
+
                 break;
 
         }
@@ -117,7 +131,7 @@ public class InputFragment extends Fragment implements View.OnClickListener{
                     String s = doc.getString("nama");
                     long b = doc.getLong("harga");
                     //int a = Integer.parseInt(doc.getString("harga"));
-
+                    String id = doc.getId();
 
 
                     Toast.makeText(getActivity(), s+"dan"+b , Toast.LENGTH_SHORT).show();
@@ -157,7 +171,7 @@ public class InputFragment extends Fragment implements View.OnClickListener{
 
 
         db.collection("paket")
-                .document()
+                .document("2")
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -169,7 +183,7 @@ public class InputFragment extends Fragment implements View.OnClickListener{
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(getActivity(), "gagal", Toast.LENGTH_SHORT).show();
                     }
                 })
 
@@ -179,4 +193,35 @@ public class InputFragment extends Fragment implements View.OnClickListener{
 
     }
 
+
+    private void getUID (int mulai) {
+
+            String UID = Integer.toString(mulai);
+            DocumentReference user = db.collection("paket").document(UID);
+
+            user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                @Override
+
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if (task.isSuccessful()) {
+
+                       DocumentSnapshot doc = task.getResult();
+                       if(doc.exists()){
+                           stop =false;
+                           Toast.makeText(getActivity(), "udah ada id"+UID, Toast.LENGTH_SHORT).show();
+
+                       } else {
+                           stop = true;
+                           id = UID;
+                           Toast.makeText(getActivity(), "unik id "+id, Toast.LENGTH_SHORT).show();
+                       }
+                    }
+
+                }
+
+            });
+
+    }
 }

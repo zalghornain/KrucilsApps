@@ -80,12 +80,12 @@ public class Test_Activity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull BahanMateriHolder holder, int position, @NonNull Test model) {
-
+                String id = model.getId();
                 String nama = model.getNama();
                 int harga = model.getHarga();
 
 
-                holder.setText(nama,harga);
+                holder.setText(nama,harga, id);
             }
 
         };
@@ -116,14 +116,16 @@ public class Test_Activity extends AppCompatActivity {
             super(itemView);
         }
 
-        void setText(final String setJudul, final int setHarga){
+        void setText(final String setJudul, final int setHarga, final  String setId){
 
             judul=itemView.findViewById(R.id.judul_test);
             harga=itemView.findViewById(R.id.harga_test);
+            id = itemView.findViewById(R.id.id_test);
 
             judul.setText(setJudul);
             String stringHarga = Integer.toString(setHarga);
             harga.setText(stringHarga);
+            id.setText(setId);
 
 
 
