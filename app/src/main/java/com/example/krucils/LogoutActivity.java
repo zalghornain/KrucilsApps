@@ -10,7 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +28,7 @@ public class LogoutActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView name;
     private Button btn_ya,btn_tidak;
+    private GoogleSignInClient mGoogleSignInClient;
     private boolean role;
     private String TAG = "logout";
 
@@ -31,12 +37,16 @@ public class LogoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logout);
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         btn_ya = findViewById(R.id.btn_ya);
         btn_ya.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -58,6 +68,7 @@ public class LogoutActivity extends AppCompatActivity {
                                     Intent adminLogout = new Intent(LogoutActivity.this, Beranda.class);
                                     LogoutActivity.this.startActivity(adminLogout);
                                 }
+                                mGoogleSignInClient.signOut()
                                 mAuth.signOut();
                                 finish();
                             } else {
