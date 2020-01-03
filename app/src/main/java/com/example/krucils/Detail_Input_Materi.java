@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +58,7 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 public class Detail_Input_Materi extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     FirebaseFirestore db;
     private Spinner spinner;
+    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private ImageView image;
     private TextView judul,detail,kelasMulai,harga,detail_harga;
@@ -97,6 +100,9 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         checkKelas=findViewById(R.id.btn_check);
         materiFile=findViewById(R.id.checkbox_file);
         materiLink=findViewById(R.id.uncheckbox_file);
+
+        progressBar = findViewById(R.id.progressKelas);
+        progressBar.setVisibility(View.GONE);
 
         materiLink.setOnClickListener(this);
         materiFile.setOnClickListener(this);
@@ -211,11 +217,12 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 String judul = judulMateri.getText().toString();
                 String urlLink = linkMateri.getText().toString();
 
-                if (!judul.isEmpty() && file != null ) {
+
+                if (!judul.isEmpty() && file != null && urlLink.isEmpty() ) {
 
 
                     if (uploadTask != null && uploadTask.isInProgress()) {
-                        Toast.makeText(getApplication(), "sedang diproses", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Detail_Input_Materi.this , "sedang diproses", Toast.LENGTH_LONG).show();
 
 
                     } else {
@@ -234,6 +241,10 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                                                 final Uri downloadUrl = uri;
                                                 String urlfile = downloadUrl.toString();
                                                 uploadMateri(judul, urlfile, UIDuser, username, uidAkses,typeFile);
+                                                progressDialog.dismiss();
+                                                judulMateri.setText(null);
+                                                file = null;
+                                                linkMateri.setText(null);
 
                                             }
                                         });
@@ -261,28 +272,27 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                     }
 
 
+
+
                 }
-                    if(!judul.isEmpty() && file == null  ){
+                else if(!judul.isEmpty() && file == null && !urlLink.isEmpty() ){
 
-
-                        uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
-
-                    } if (judul.isEmpty() && file == null && !urlLink.isEmpty()){
-
-                progressDialog.dismiss();
-                Toast.makeText(Detail_Input_Materi.this, "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
-            }
-              /* if(judul.isEmpty() && urlLink.isEmpty() ) {
                     progressDialog.dismiss();
-                    Toast.makeText(Detail_Input_Materi.this, "Tolong dilengkapi kembali", Toast.LENGTH_LONG).show();
+                    uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
+                    judulMateri.setText(null);
+                    file = null;
+                    linkMateri.setText(null);
+
+                }
+                else {
+                    progressDialog.dismiss();
+                    checkDataInput();
                 }
 
-               */
-                judulMateri.setText(null);
-                file = null;
-                linkMateri.setText(null);
 
-                progressDialog.dismiss();
+
+
+
 
                 break;
             case R.id.btn_upload:
@@ -327,7 +337,36 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+    private boolean isEmpty(EditText text){
+        CharSequence s=text.getText().toString();
 
+        return TextUtils.isEmpty(s);
+    }
+
+
+    private void checkDataInput(){
+
+
+        if (isEmpty(judulMateri)){
+            Toast.makeText(getApplicationContext(), "Judul kosong", Toast.LENGTH_SHORT).show();
+
+            judulMateri.setError("Judul materi kosong");
+        }
+
+        if(isEmpty(linkMateri)){
+
+            linkMateri.setError("Link url materi kosong");
+
+        }
+
+        if (typeFile==false && file == null){
+
+            Toast.makeText(getApplicationContext(), "tolong dilengkapi", Toast.LENGTH_SHORT).show();
+
+        } if(typeFile==true && file == null) {
+            Toast.makeText(getApplicationContext(), "File materi kosong", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void delete (){
 
         DocumentReference kelas = db.collection("Kelas")
