@@ -70,8 +70,7 @@ public class GroupChatFragment extends Fragment {
         Query query = db
                 .collection("Messages").document(nilaipassing)
                 .collection("messages")
-                .orderBy("timestamp")
-                .limit(50);
+                .orderBy("timestamp");
 
         FirestoreRecyclerOptions<GroupChat> options = new FirestoreRecyclerOptions.Builder<GroupChat>()
                 .setQuery(query, GroupChat.class)
