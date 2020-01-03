@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +38,11 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
     private boolean role=false;
+    public static Activity beranda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.beranda = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beranda);
 
@@ -66,18 +70,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             navigationView.setCheckedItem(R.id.nav_beranda);
 
         }
-
-
         //todo bikin kelas getter userLoggedIn sama buat profile dari firebase ?
-
-        //cari cara buat invalidateoptionmenu kalo logout dari action bar
-        //ini udah
-
-        //cari cara buat automatis manggil sesuatu abis layout/data change pada fragment
-        //ini sepertinya udah
-
-
-
     }
 
     @Override
@@ -92,43 +85,31 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             menu.findItem(R.id.action_daftar).setVisible(true);
             menu.findItem(R.id.action_logout).setVisible(false);
 
-
         }else{
             menu.findItem(R.id.action_login).setVisible(false);
             menu.findItem(R.id.action_daftar).setVisible(false);
             menu.findItem(R.id.action_logout).setVisible(true);
 
-
-
         }
-
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //todo bikin kelas baru buat reload fragment (atau masukkin updateUI), login dari profil fragment ke reload profil fragmentnya tapi dari action bar nggak
         switch (item.getItemId()) {
             case R.id.action_login:
 
                 Intent loginIntent = new Intent(Beranda.this, LoginActivity.class);
                 Beranda.this.startActivity(loginIntent);
-                updateUI(this,mAuth);
 
                 return true;
             case R.id.action_daftar:
                 Intent registerIntent = new Intent(Beranda.this, RegisterActivity.class);
                 Beranda.this.startActivity(registerIntent);
-                updateUI(this,mAuth);
-
                 return true;
 
 
             case R.id.action_logout:
-               /* mAuth.signOut();
-                updateUI(this,mAuth);
-                */
                 Intent logout = new Intent(Beranda.this, LogoutActivity.class);
                 startActivity(logout);
                 return true;
@@ -143,7 +124,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.nav_beranda:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BerandaFragment()).commit();
-                updateUI(this,mAuth);
                 break;
             case R.id.nav_kelas:
                 if(userLoggedin()){
@@ -153,8 +133,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-
-                updateUI(this,mAuth);
                 break;
             case R.id.nav_notif:
                 if(userLoggedin()){
@@ -174,12 +152,9 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-
-                updateUI(this,mAuth);
                 break;
 
             case R.id.nav_groupchat:
-                //todo kalo log in baru bisa liat groupchat, tapi harusnya kalo dia ada access di database baru bisa liat
                 if(userLoggedin()){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new GroupChatListFragment()).commit();
@@ -187,7 +162,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                updateUI(this,mAuth);
                 break;
 
 
@@ -199,7 +173,6 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfilFragment()).commit();
                 }
-                updateUI(this,mAuth);
                 break;
 
         }
@@ -232,9 +205,7 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
     @Override
     public void onResume(){
         super.onResume();
-        //gak butuh kah karena udah ada updateui ?
         updateUI(this,mAuth);
-
     }
 
     public void updateUI(Activity activity, FirebaseAuth auth){
@@ -258,7 +229,8 @@ public class Beranda extends AppCompatActivity implements NavigationView.OnNavig
         //update action bar
         activity.invalidateOptionsMenu();
 
-        //todo bikin buat reset fragment yang lagi di opennya, atau bikinnya di authuser change aja, cek API apa yang keganti pas user login
+
+        onNavigationItemSelected(navigationView.getCheckedItem());
     }
 
     private void getRole (String UID){

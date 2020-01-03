@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -118,6 +119,21 @@ public class CreateAdminFragment extends Fragment{
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(usernamefinal)
+                                    .build();
+
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
+                                            }
+                                        }
+                                    });
+
+
 
                             //buat nginput sesuatu yang mantap gan
                             Map<String, Object> data = new HashMap<>();
@@ -132,7 +148,7 @@ public class CreateAdminFragment extends Fragment{
                             //masukin ke dalam document dengan judul UID di koleksi users
                             db.collection("users").document(user.getUid()).set(data);
 
-                            Toast.makeText(getActivity(), "Register success.",
+                            Toast.makeText(getActivity(), "Admin berhasil dibuat",
                                     Toast.LENGTH_SHORT).show();
 
                             emailRegister.setText(null);
