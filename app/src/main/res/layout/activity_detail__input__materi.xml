@@ -31,17 +31,47 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitXY" />
         <TextView
+            android:id="@+id/judul_kelas1"
+            android:layout_below="@id/image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/judul_kelas"
+            android:text="Judul : "/>
+        <TextView
             android:id="@+id/judul_kelas"
             android:layout_below="@id/image"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="judult"/>
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="Webinar 10 mendidik anak tanpa duduk"/>
+        <TextView
+            android:id="@+id/detail_kelas1"
+            android:layout_below="@id/judul_kelas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/detail_kelas"
+            android:text="Detail : "/>
         <TextView
             android:id="@+id/detail_kelas"
             android:layout_below="@id/judul_kelas"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="element"/>
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="metode ini dilakukang dengan mendidik anak sambil berdiri"/>
         <TextView
             android:id="@+id/detail_spinner"
             android:layout_width="0dp"
@@ -72,12 +102,30 @@
             android:layout_below="@id/spinner"
             android:layout_alignParentRight="true"
             android:text="500000"/>
+
+        <TextView
+            android:id="@+id/kelas_berlaku1"
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_harga"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="-76dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toLeftOf="@+id/kelas_berlaku"
+            android:gravity="center"
+            android:text="Kelas akan dimulai pada : " />
+
         <TextView
             android:id="@+id/kelas_berlaku"
             android:layout_below="@id/detail_harga"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="element" />
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="20/2/2020" />
 
 
         <EditText
@@ -94,7 +142,7 @@
             android:id="@+id/checkbox_file"
             android:layout_marginTop="100dp"
             android:layout_below="@id/kelas_berlaku"
-            android:text="Materi File"
+            android:text="Materi Video"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -103,7 +151,7 @@
             android:id="@+id/uncheckbox_file"
             android:layout_marginTop="100dp"
             android:layout_below="@id/kelas_berlaku"
-            android:text="Materi Link"
+            android:text="Materi File"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -117,7 +165,7 @@
             android:layout_below="@id/checkbox_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="www.krucils.co.id" />
+            android:hint="www.youtube.com/" />
 
         <Button
             android:id="@+id/btn_upload"

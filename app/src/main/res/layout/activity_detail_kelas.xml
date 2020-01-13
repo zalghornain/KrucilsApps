@@ -16,20 +16,53 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="130dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitXY" />
         <TextView
+            android:id="@+id/judul_kelas1"
+            android:layout_below="@id/image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/judul_kelas"
+            android:text="Judul : "/>
+        <TextView
             android:id="@+id/judul_kelas"
             android:layout_below="@id/image"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="judult"/>
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="Webinar 10 mendidik anak tanpa duduk"/>
+        <TextView
+            android:id="@+id/detail_kelas1"
+            android:layout_below="@id/judul_kelas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/detail_kelas"
+            android:text="Detail : "/>
         <TextView
             android:id="@+id/detail_kelas"
             android:layout_below="@id/judul_kelas"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="element"/>
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="metode ini dilakukang dengan mendidik anak sambil berdiri"/>
         <TextView
             android:id="@+id/detail_spinner"
             android:layout_width="0dp"
@@ -60,80 +93,47 @@
             android:layout_below="@id/spinner"
             android:layout_alignParentRight="true"
             android:text="500000"/>
+
+        <TextView
+            android:id="@+id/kelas_berlaku1"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_harga"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="-60dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toLeftOf="@+id/kelas_berlaku"
+            android:gravity="center"
+            android:text="Kelas akan dimulai pada : " />
+
         <TextView
             android:id="@+id/kelas_berlaku"
             android:layout_below="@id/detail_harga"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="element" />
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
+            android:text="20/2/2020" />
 
         <Button
             android:id="@+id/btn_bayar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/kelas_berlaku"
             android:text="Tambah ke Keranjang"/>
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/kelas_berlaku"
             android:text="login"/>
 
 
-        <!--
-        <TextView
-            android:id="@+id/id_kelas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-
-        <TextView
-            android:id="@+id/judul_kelas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-        <TextView
-            android:id="@+id/detail_kelas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="5dp" />
-
-        <TextView
-            android:id="@+id/harga_kelas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-        <TextView
-            android:id="@+id/detail_harga"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-
-        <TextView
-            android:id="@+id/kelas_berlaku"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="element"/>
-
-        <Button
-            android:id="@+id/btn_bayar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:text="Bayar"/>
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:text="login"/>
-            -->
     </RelativeLayout>
 
 </LinearLayout>

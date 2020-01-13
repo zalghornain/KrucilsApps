@@ -20,56 +20,126 @@
         android:layout_marginEnd="10dp">
 
         <TextView
-            android:id="@+id/username_tv"
+            android:id="@+id/username_tv1"
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="adhe"/>
-        <TextView
-            android:id="@+id/atas_nama"
-            android:layout_below="@id/username_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rizky Fauzan"/>
-
-        <TextView
-            android:id="@+id/bank_tv"
-            android:layout_below="@id/atas_nama"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bank BRI"/>
-        <TextView
-            android:id="@+id/harga_awal_tv"
-            android:layout_below="@id/bank_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1000"/>
-        <TextView
-            android:id="@+id/kodeRef"
-            android:layout_below="@id/harga_awal_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="9029"/>
-        <TextView
-            android:id="@+id/tanggal_upload"
-            android:layout_below="@id/kodeRef"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="30 mei 2018"/>
-        <TextView
-            android:id="@+id/harga_total"
-            android:layout_below="@id/tanggal_upload"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Rp 100.000"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/btn_setuju" />
+            android:layout_toLeftOf="@+id/username_tv"
+            android:text="Username : "/>
+        <TextView
+            android:id="@+id/username_tv"
+
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="adhe"/>
+        <TextView
+            android:id="@+id/atas_nama1"
+            android:layout_below="@id/username_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/atas_nama"
+            android:text="Atas nama : "/>
+        <TextView
+            android:id="@+id/atas_nama"
+            android:layout_below="@id/username_tv"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Rizky Fauzan"/>
+
+        <TextView
+            android:id="@+id/bank_tv1"
+            android:layout_below="@id/atas_nama"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/bank_tv"
+            android:text="Nama Bank : "/>
+        <TextView
+            android:id="@+id/bank_tv"
+            android:layout_below="@id/atas_nama"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Bank BRI"/>
+        <TextView
+            android:id="@+id/harga_awal_tv1"
+            android:layout_below="@id/bank_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/harga_awal_tv"
+            android:text="Harga Awal : "/>
+        <TextView
+            android:id="@+id/harga_awal_tv"
+            android:layout_below="@id/bank_tv"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Rp 1.000"/>
+        <TextView
+            android:id="@+id/kodeRef1"
+            android:layout_below="@id/harga_awal_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/kodeRef"
+            android:text="KodeRef : "/>
+
+        <TextView
+            android:id="@+id/kodeRef"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/harga_awal_tv"
+            android:layout_alignParentRight="true"
+            android:text="9029" />
+        <TextView
+            android:id="@+id/tanggal_upload1"
+            android:layout_below="@id/kodeRef"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tanggal_upload"
+            android:text="Tanggal Upload Pembayaran : "/>
+        <TextView
+            android:id="@+id/tanggal_upload"
+            android:layout_below="@id/kodeRef"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="30/2/2018"/>
+        <TextView
+            android:id="@+id/harga_total2"
+            android:layout_below="@id/tanggal_upload"
+            android:text="Harga Akhir : "
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/harga_total" />
+        <TextView
+            android:id="@+id/harga_total"
+            android:layout_below="@id/tanggal_upload"
+            android:text="100.000"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        <TextView
+            android:id="@+id/harga_total1"
+            android:layout_below="@id/harga_total"
+
+            android:gravity="center"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_gambar" />
         <Button
             android:id="@+id/btn_gambar"
-            android:layout_below="@id/tanggal_upload"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/harga_total"
+
             android:text="Download bukti"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
