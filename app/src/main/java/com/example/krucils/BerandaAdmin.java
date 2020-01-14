@@ -102,37 +102,35 @@ public class BerandaAdmin extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-
-
-
-
             case R.id.nav_input_kelas:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new InputKelasFragment()).commit();
-                updateUI(this,mAuth);
                 break;
+
             case R.id.nav_input_materi:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new InputMateriFragment()).commit();
-                updateUI(this,mAuth);
                 break;
+
             case R.id.nav_konfirmasi:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new KonfirmasiAdminFragment()).commit();
-                updateUI(this,mAuth);
                 break;
 
             case R.id.nav_create:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new CreateAdminFragment()).commit();
-                updateUI(this,mAuth);
                 break;
 
 
             case R.id.nav_beranda_admin:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BerandaFragment()).commit();
-                updateUI(this,mAuth);
+                break;
+
+            case R.id.nav_groupchat:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new GroupChatListFragment()).commit();
                 break;
 
 
