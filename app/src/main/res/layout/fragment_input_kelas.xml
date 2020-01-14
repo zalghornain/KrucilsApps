@@ -30,6 +30,8 @@
             android:id="@+id/kelas_judul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="Judul"
             android:inputType="text" />
@@ -39,6 +41,7 @@
             android:id="@+id/kelas_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="detail"
             android:inputType="text" />
@@ -47,6 +50,7 @@
             android:id="@+id/kelas_harga"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="Harga dengan Grup chat"
             android:inputType="number" />
@@ -55,17 +59,27 @@
             android:id="@+id/kelas_harga2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="Harga hanya materi"
             android:inputType="number" />
 
         <TextView
-            android:id="@+id/kelas_mulai"
+            android:id="@+id/kelas_mulai1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="yyyy/MM/dd"
-            android:inputType="date" />
+            android:hint="Kelas akan dimulai pada :"
+             />
+
+        <TextView
+            android:id="@+id/kelas_mulai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:hint="2/2/2020"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="upload" />
+                android:text="Submit" />
 
 
         </LinearLayout>

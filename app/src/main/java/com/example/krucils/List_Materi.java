@@ -111,7 +111,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
                     Date created = model.getCreated();
 
                     holder.setText(judul);
-                    holder.delete(id);
+                    holder.deleteMateri(id);
                     holder.downloadMateri(judul,urlFile,typeFile);
             }
         };
@@ -238,7 +238,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
         // Show the Alert Dialog box
         alertDialog.show();
     }
-    private void publish(){
+    private void publishAksesKelas(){
         DocumentReference akseskelas = db.collection("AksesKelas")
                 .document(uidAkses);
         akseskelas.update("check",true);
@@ -248,7 +248,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        publish(uidKelas);
+                        publishKelas(uidKelas);
 
                     }
                 });
@@ -288,7 +288,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
 
                                 // When the user click yes button
                                 // then app will close
-                                publish();
+                                publishAksesKelas();
                                 dialog.cancel();
                                 Intent intent = new Intent(List_Materi.this, BerandaAdmin.class);
 
@@ -323,7 +323,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
         alertDialog.show();
     }
 
-    private void publish (String kelas){
+    private void publishKelas (String kelas){
 
         DocumentReference submitkelas = db.collection("Kelas")
                 .document(kelas);
@@ -367,7 +367,7 @@ public class List_Materi extends AppCompatActivity implements View.OnClickListen
             judul.setText(setJudul);
         }
 
-        void delete(final String id){
+        void deleteMateri(final String id){
             db = FirebaseFirestore.getInstance();
             ImageButton delete = itemView.findViewById(R.id.btn_delete);
             delete.setOnClickListener(new View.OnClickListener() {

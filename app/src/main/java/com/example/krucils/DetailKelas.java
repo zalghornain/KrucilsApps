@@ -72,7 +72,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
             String title = getIntent().getStringExtra("judul");
              imageURL = getIntent().getStringExtra("imageURL");
             String detaill = getIntent().getStringExtra("detail");
-            String date = getIntent().getStringExtra("mulaiKelas");
+            String date =  getIntent().getStringExtra("mulaiKelas");
             Picasso.get().load(imageURL).into(image);
             judul.setText(title);
             detail.setText(detaill);

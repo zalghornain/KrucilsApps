@@ -110,6 +110,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
             imageURL = getIntent().getStringExtra("imageURL");
             userName = getIntent().getStringExtra("username");
+            username.setText(userName);
             UIDUser = getIntent().getStringExtra("uidUser");
 
 

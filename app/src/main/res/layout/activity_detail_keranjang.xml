@@ -9,16 +9,12 @@
     tools:context=".DetailKeranjang">
 
 
-    <ImageView
-        android:id="@+id/thumbnail"
 
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitXY" />
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
         <EditText
             android:id="@+id/atas_nama"
             android:hint="Atas nama"
@@ -66,31 +62,33 @@
             android:textColor="@android:color/white" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_weight = "1.5"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp">
 
+        <TextView
+            android:id="@+id/tv_rekening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginEnd="35dp"
 
+            android:text="Silahkan melakukan transfer ke rekening Krucils Indonesia : 69 420 8008 " />
         <TextView
             android:id="@+id/tv_total"
-            android:layout_width="177dp"
-            android:layout_height="72dp"
-            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_marginEnd="35dp"
-            android:layout_toStartOf="@id/button"
+            android:layout_below="@id/tv_rekening"
             android:text="Total : Rp. 100.000" />
 
-        <LinearLayout
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:layout_alignParentEnd="true">
 
             <Button
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_total"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
                 android:text="upload bukti pembayaran"
@@ -100,13 +98,21 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_total"
                 android:text="submit"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:id="@+id/btn_bayar"/>
 
-        </LinearLayout>
+
 
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/thumbnail"
+
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitXY" />
 
 </LinearLayout>
