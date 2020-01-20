@@ -68,7 +68,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     private Uri filepath, imgUri;
     private final int PICK_IMAGE_REQUEST = 71;
     private StorageTask uploadTask;
-    private String UIDuser,email,username;
+    private String UIDuser,email,username,idKelas,idAkses;
     private boolean CheckImage = false;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
@@ -107,7 +107,8 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         ReadUser(currentuser);
-
+        getUIDKelas();
+        getUIDAkses();
 
         return v;
     }
@@ -163,8 +164,8 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
             final String judul = judulKelas.getText().toString();
             final String detail = detailKelas.getText().toString();
-            final String harga = hargaKelas.getText().toString();
-            final String harga2 = hargaKelas2.getText().toString();
+            final int harga = Integer.parseInt(hargaKelas.getText().toString());
+            final int harga2 = Integer.parseInt(hargaKelas2.getText().toString());
             final String tanggal = mulaiKelas.getText().toString();
 
             checkDataInput();
@@ -176,7 +177,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
             boolean penuh_bastard = false;
 
-            if(!judul.isEmpty() && !detail.isEmpty() && !harga.isEmpty()&& !harga2.isEmpty() && checkTanggal==true){
+            if(!judul.isEmpty() && !detail.isEmpty() && harga!=0 && harga2!=0 && checkTanggal==true){
                 penuh_bastard = true;
             }
 
@@ -403,20 +404,19 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
         ;
     }
-    private void uploadKelas(String judul, String detail, String harga,String harga2, String tanggal, String imageURL, String uidAdmin, String username) {
+    private void uploadKelas(String judul, String detail, int harga,int harga2, String tanggal, String imageURL, String uidAdmin, String username) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         //progressDialog.setTitle("Uploading...");
         //progressDialog.show();
 
-        String id = UUID.randomUUID().toString();
 
-        String uidAkses = UUID.randomUUID().toString();
+
 
         Map<String, Object> doc = new HashMap<>();
 
-        doc.put("id", id);
+        doc.put("id", idKelas);
         doc.put("judul", judul);
-        doc.put("uidAkses", uidAkses);
+        doc.put("uidAkses", idAkses);
         doc.put("uidAdmin", uidAdmin);
         doc.put("createdBy", username);
         doc.put("hargaFull", harga);
@@ -430,13 +430,13 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
 
 
-        db.collection("Kelas")
-                .document(id)
+        db.collection("NewKelas")
+                .document(idKelas)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                       uploadAksesKelas(id,tanggal,imageURL,judul,uidAkses,UIDuser,username);
+                       uploadAksesKelas(idKelas,tanggal,imageURL,judul,idAkses,UIDuser,username);
 
                     }
                 })
@@ -451,7 +451,61 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
         ;
 
     }
+    private void getUIDKelas () {
 
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("NewKelas").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDKelas();
+                    } else {
+                        idKelas = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
+
+    private void getUIDAkses () {
+
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("AksesKelas").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDAkses();
+                    } else {
+                        idAkses = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
     public Date getDateFromString(String datetoSave) {
         try {
             Date date = format.parse(datetoSave);

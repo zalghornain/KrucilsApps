@@ -42,7 +42,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private Button bayar,login;
     boolean checkGrupchat;
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private String UIDuser,email,username,UIDkelas,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private int hargaFull,hargaBiasa,hargaPick;
 
 
     @Override
@@ -80,8 +81,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
            // SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
            // String date = formatter.format(getIntent().getStringExtra("mulaiKelas"));
             kelasMulai.setText(date);
-            hargaFull = getIntent().getStringExtra("hargaFull");
-             hargaBiasa = getIntent().getStringExtra("hargaBiasa");
+            hargaFull =getIntent().getIntExtra("hargaFull",0) ;
+             hargaBiasa =getIntent().getIntExtra("hargaBiasa",0);
 
             boolean check = getIntent().getExtras().getBoolean("check");
 
@@ -159,7 +160,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
 
             case R.id.btn_bayar:
                 judulPick = judul.getText().toString();
-                hargaPick = harga.getText().toString();
+                hargaPick = Integer.parseInt(harga.getText().toString());
                 detailPick= detail_harga.getText().toString();
                 mulaiKelas = kelasMulai.getText().toString();
                 inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,imageURL,hargaPick,detailPick,mulaiKelas,checkGrupchat,uidAkses);
@@ -181,7 +182,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 String UIDkelas,
                                 String judul,
                                 String imageURL,
-                                String harga,
+                                int harga,
                                 String detail,
                                 String mulaiKelas,
                                 boolean grupchat,
@@ -242,12 +243,12 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
             case 0:
                 // Whatever you want to happen when the first item gets selected
                 checkGrupchat = true;
-                harga.setText(hargaFull);
+                harga.setText(String.valueOf(hargaFull));
                 detail_harga.setText("Materi dan Akses Grup chat");
                 break;
             case 1:
                 checkGrupchat = false;
-                harga.setText(hargaBiasa);
+                harga.setText(String.valueOf(hargaBiasa));
                 detail_harga.setText("Materi aja");
                 break;
 

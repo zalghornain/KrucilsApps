@@ -71,7 +71,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
     DownloadManager downloadManager;
     private Boolean typeFile;
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private int hargaFull,hargaBiasa;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
 
@@ -136,8 +137,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
             // SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
             // String date = formatter.format(getIntent().getStringExtra("mulaiKelas"));
             kelasMulai.setText(date);
-            hargaFull = getIntent().getStringExtra("hargaFull");
-            hargaBiasa = getIntent().getStringExtra("hargaBiasa");
+            hargaFull = getIntent().getIntExtra("hargaFull",0);
+            hargaBiasa = getIntent().getIntExtra("hargaBiasa",0);
 
             boolean check = getIntent().getExtras().getBoolean("check");
 
@@ -580,12 +581,12 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
             case 0:
                 // Whatever you want to happen when the first item gets selected
                 checkGrupchat = true;
-                harga.setText(hargaFull);
+                harga.setText(String.valueOf(hargaFull));
                 detail_harga.setText("Materi dan Akses Grup chat");
                 break;
             case 1:
                 checkGrupchat = false;
-                harga.setText(hargaBiasa);
+                harga.setText(String.valueOf(hargaBiasa));
                 detail_harga.setText("Materi aja");
                 break;
 
