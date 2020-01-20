@@ -130,7 +130,7 @@
 
         <EditText
             android:id="@+id/judul_materi"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_below="@id/kelas_berlaku"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
 
         <Button
             android:id="@+id/checkbox_file"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_below="@id/kelas_berlaku"
             android:text="Materi Video"
             android:layout_width="96dp"
@@ -149,7 +149,7 @@
             />
         <Button
             android:id="@+id/uncheckbox_file"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_below="@id/kelas_berlaku"
             android:text="Materi File"
             android:layout_width="96dp"
@@ -184,9 +184,9 @@
             android:layout_alignParentRight="true" />
 
         <Button
-            android:id="@+id/btn_delete"
+            android:id="@+id/btn_publish"
             android:layout_below="@id/btn_submit"
-            android:text="Hapus Kelas"
+            android:text="Publish Kelas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -200,7 +200,14 @@
             android:layout_alignParentRight="true" />
 
 
-
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_below="@id/btn_publish"
+            android:text="Hapus Kelas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_check" />
     </RelativeLayout>
 
 </LinearLayout>

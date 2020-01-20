@@ -211,7 +211,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("check",true);
         doc.put("created", FieldValue.serverTimestamp());
 
-        db.collection("Keranjang")
+        db.collection("NewKeranjang")
                 .document(id)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
