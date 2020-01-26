@@ -11,15 +11,15 @@ public class KonfirmasiAdmin {
     public String username;
     public String email;
     public String kodeRef;
-    public String hargaAwal;
-    public String hargaAkhir;
+    public int hargaAwal;
+    public int hargaAkhir;
     public String imageURL;
 
     public Date timestamp;
 
     public  KonfirmasiAdmin(){}
 
-    public KonfirmasiAdmin(String keyPembelian, String atasnama, String bank, String uidUser, String username, String email, String kodeRef, String hargaAwal, String hargaAkhir, String imageURL, Date timestamp) {
+    public KonfirmasiAdmin(String keyPembelian, String atasnama, String bank, String uidUser, String username, String email, String kodeRef, int hargaAwal, int hargaAkhir, String imageURL, Date timestamp) {
         this.keyPembelian = keyPembelian;
         this.atasnama = atasnama;
         this.bank = bank;
@@ -97,19 +97,19 @@ public class KonfirmasiAdmin {
         this.kodeRef = kodeRef;
     }
 
-    public String getHargaAwal() {
+    public int getHargaAwal() {
         return hargaAwal;
     }
 
-    public void setHargaAwal(String hargaAwal) {
+    public void setHargaAwal(int hargaAwal) {
         this.hargaAwal = hargaAwal;
     }
 
-    public String getHargaAkhir() {
+    public int getHargaAkhir() {
         return hargaAkhir;
     }
 
-    public void setHargaAkhir(String hargaAkhir) {
+    public void setHargaAkhir(int hargaAkhir) {
         this.hargaAkhir = hargaAkhir;
     }
 

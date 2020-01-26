@@ -74,7 +74,7 @@ public class KonfirmasiAdminFragment extends Fragment {
         currentuserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Query query = FirebaseFirestore.getInstance()
-                .collection("Pembelian")
+                .collection("NewPembelian")
                 .whereEqualTo("checkAdmin", false)
                 ;
 
@@ -100,8 +100,8 @@ public class KonfirmasiAdminFragment extends Fragment {
                 String username = model.getUsername();
                 String email = model.getEmail();
                 String kodeRef = model.getKodeRef();
-                String hargaAwal = model.getHargaAwal();
-                String hargaAkhir = model.getHargaAkhir();
+                int hargaAwal = model.getHargaAwal();
+                int hargaAkhir = model.getHargaAkhir();
                 String imageURL = model.getImageURL();
 
                 Date uploadBukti = model.getTimestamp();
@@ -147,7 +147,7 @@ public class KonfirmasiAdminFragment extends Fragment {
             super(itemView);
         }
 
-        void setText(final String keypembelian, final String atasnama, final String bank, final String uidUser, final String username, final String email, final String kodeRef, final String hargaAwal, final String hargaAkhir, final String imageURL,final Date tanggal) {
+        void setText(final String keypembelian, final String atasnama, final String bank, final String uidUser, final String username, final String email, final String kodeRef, final int hargaAwal, final int hargaAkhir, final String imageURL,final Date tanggal) {
 
             nama= itemView.findViewById(R.id.username_tv);
             nama.setText(atasnama);
@@ -161,19 +161,22 @@ public class KonfirmasiAdminFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(getContext(), DetailKonfirmasi.class);
-                    intent.putExtra("keyPembelian",keypembelian);
-                    intent.putExtra("atasnama",atasnama);
-                    intent.putExtra("bank",bank);
-                    intent.putExtra("uidUser",uidUser);
-                    intent.putExtra("username",username);
-                    intent.putExtra("email",email);
-                    intent.putExtra("kodeRef",kodeRef);
-                    intent.putExtra("hargaAwal",hargaAwal);
-                    intent.putExtra("hargaAkhir",hargaAkhir);
-                    intent.putExtra("imageURL",imageURL);
-                    intent.putExtra("date",date);
+                    Bundle bundle = new Bundle();
 
+
+                    bundle.putString("keyPembelian",keypembelian);
+                    bundle.putString("atasnama",atasnama);
+                    bundle.putString("bank",bank);
+                    bundle.putString("uidUser",uidUser);
+                    bundle.putString("username",username);
+                    bundle.putString("email",email);
+                    bundle.putString("kodeRef",kodeRef);
+                    bundle.putInt("hargaAwal",hargaAwal);
+                    bundle.putInt("hargaAkhir",hargaAkhir);
+                    bundle.putString("imageURL",imageURL);
+                    bundle.putString("date",date);
+                    Intent intent = new Intent(getContext(), DetailKonfirmasi.class);
+                    intent.putExtras(bundle);
                     //intent.putExtras(bundle);
 
                     startActivity(intent);

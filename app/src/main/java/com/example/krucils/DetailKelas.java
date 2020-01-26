@@ -42,7 +42,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private Button bayar,login;
     boolean checkGrupchat;
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
-    private String UIDuser,email,username,UIDkelas,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private String UIDuser,email,username,UIDkelas,judulPick,imageURL,detailPick,mulaiKelas, uidAkses, idKeranjang;
     private int hargaFull,hargaBiasa,hargaPick;
 
 
@@ -64,7 +64,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         bayar.setOnClickListener(this);
         login = findViewById(R.id.btn_login);
         login.setOnClickListener(this);
-
+        getUIDKeranjang();
 
         if(getIntent().getExtras() != null){
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
@@ -189,11 +189,11 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 String uidAkses
                                 ) {
 
-        String id = UUID.randomUUID().toString();
+
         String keyPembelian = "kosong";
         Map<String,Object> doc = new HashMap<>();
 
-        doc.put("id", id);
+        doc.put("id", idKeranjang);
         doc.put("uiduser", UIDuser);
         doc.put("username", username);
         doc.put("email", email);
@@ -212,7 +212,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("created", FieldValue.serverTimestamp());
 
         db.collection("NewKeranjang")
-                .document(id)
+                .document(idKeranjang)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -236,7 +236,33 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         ;
     }
 
+    private void getUIDKeranjang () {
 
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("NewKeranjang").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDKeranjang();
+                    } else {
+                        idKeranjang = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         switch (position) {

@@ -72,7 +72,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
     DownloadManager downloadManager;
     private Boolean typeFile;
-    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses, format;
+    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses, format, idMateri;
     private int hargaFull,hargaBiasa;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
@@ -231,6 +231,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
 
                     } else {
+                        getUIDMateri();
                         String formatFile = file.toString();
                         formatFile(formatFile);
                         final StorageReference childRef = storageRef.child("Materi/" + judul + "."+format);
@@ -550,7 +551,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
     private void publishKelas (String kelas){
 
-        DocumentReference submitkelas = db.collection("newKelas")
+        DocumentReference submitkelas = db.collection("NewKelas")
                 .document(kelas);
         submitkelas.update("publish",true)
 
@@ -581,13 +582,39 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 });
 
     }
+    private void getUIDMateri () {
 
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("NewKeranjang").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDMateri();
+                    } else {
+                        idMateri = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
     private void  uploadMateri(String judul,String file,String uidAdmin, String username, String uidAkses,boolean tipeFile){
 
-        String id = UUID.randomUUID().toString();
-        String keyPembelian = "kosong";
+
+
         Map<String,Object> doc = new HashMap<>();
-        doc.put("id",id);
+        doc.put("id",idMateri);
         doc.put("judul",judul);
         doc.put("urlFile",file);
         doc.put("uploadBy",username);
@@ -599,7 +626,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         doc.put("check",true);
         doc.put("created", FieldValue.serverTimestamp());
         db.collection("MateriKelas")
-                .document(id)
+                .document(idMateri)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -22,29 +22,54 @@
         android:layout_height="0dp"
         android:layout_marginEnd="10dp">
 
-        <TextView
-            android:layout_width="15dp"
-            android:layout_height="match_parent"
-            android:id="@+id/tv_total"
-            android:text="Total : Rp. 0"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/button"/>
-        <LinearLayout
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/kodeRef"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentEnd="true">
+            android:hint="Kode Ref"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_check"
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bayar"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:id="@+id/btn_bayar"/>
 
-        </LinearLayout>
+            />
+
+        <Button
+            android:id="@+id/btn_check"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kodeRef"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-45dp"
+            android:layout_marginRight="2dp"
+            android:text="Check"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_check"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="21dp"
+
+
+            android:layout_marginRight="-4dp"
+            android:layout_toLeftOf="@+id/btn_bayar"
+            android:text="Total : Rp. 0" />
+
+        <Button
+            android:id="@+id/btn_bayar"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_total"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-39dp"
+            android:layout_marginRight="1dp"
+            android:text="Bayar"
+            android:textColor="@android:color/white" />
+
+
     </RelativeLayout>
 </LinearLayout>
 

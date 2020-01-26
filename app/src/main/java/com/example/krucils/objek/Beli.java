@@ -8,7 +8,7 @@ public class Beli {
     private String uidkelas;
     private String judul;
     private String detail;
-    private String harga;
+    private int harga;
     private String tanggal;
     private String imageURL;
     private boolean grupchat;
@@ -25,23 +25,7 @@ public class Beli {
 
     public Beli(){}
 
-    public Beli(String id, String uidkelas, String judul, String detail, String harga, String tanggal, String imageURL, boolean grupchat, String uiduser, String email, String username, String uidAkses, String keyPembelian, boolean check, Date created) {
-        this.id = id;
-        this.uidkelas = uidkelas;
-        this.judul = judul;
-        this.detail = detail;
-        this.harga = harga;
-        this.tanggal = tanggal;
-        this.imageURL = imageURL;
-        this.grupchat = grupchat;
-        this.uiduser = uiduser;
-        this.email = email;
-        this.username = username;
-        this.uidAkses = uidAkses;
-        this.keyPembelian = keyPembelian;
-        this.check = check;
-        this.created = created;
-    }
+
 
     public String getUidAkses() {
         return uidAkses;
@@ -90,11 +74,11 @@ public class Beli {
         this.detail = detail;
     }
 
-    public String getHarga() {
+    public int getHarga() {
         return harga;
     }
 
-    public void setHarga(String harga) {
+    public void setHarga(int harga) {
         this.harga = harga;
     }
 

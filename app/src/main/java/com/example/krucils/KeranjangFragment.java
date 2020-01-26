@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,9 +29,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -46,7 +49,8 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
 
     private final String TAG = " Keranjang";
     private TextView judul,detail,kelasMulai,harga,totalHarga;
-    private Button bayarKeranjang;
+    private EditText kodeRef;
+    private Button checkRef,bayarKeranjang;
     private ImageView imageView;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -63,7 +67,7 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
     private FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    FirebaseFirestore db= FirebaseFirestore.getInstance();
 
 
     @Nullable
@@ -71,13 +75,18 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_keranjang,container,false);
         totalHarga = view.findViewById(R.id.tv_total);
+        kodeRef = view.findViewById(R.id.kodeRef);
+        checkRef=view.findViewById(R.id.btn_check);
+       // checkRef.setOnClickListener(this);
+        currentuserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        arrayReload();
         bayarKeranjang=view.findViewById(R.id.btn_bayar);
         bayarKeranjang.setOnClickListener(this);
         //getUID
-        currentuserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         Query query = FirebaseFirestore.getInstance()
-                .collection("Keranjang")
+                .collection("NewKeranjang")
                 .whereEqualTo("uiduser",currentuserUID)
                 .whereEqualTo("check", true)
                 .whereEqualTo("keyPembelian", "kosong")
@@ -102,12 +111,12 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
                 String uidkelas = model.getUidkelas();
                 String judul=model.getJudul();
                 String detail=model.getDetail();
-                String harga=model.getHarga();
+                int harga=model.getHarga();
                 String image = model.getImageURL();
                 String tanggal = model.getTanggal();
                 boolean grupchat=model.isGrupchat();
 
-                int hargaKelas = Integer.parseInt(harga);
+
                 String uiduser=model.getUiduser();
                 email=model.getEmail();
                 username=model.getUsername();
@@ -117,9 +126,9 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
 
 
 
-                keranjangHarga.add(position,hargaKelas);
-                calculateTotal();
-                holder.inputKeranjang(id,grupchat,position);
+
+
+
                 holder.delete(position,id);
                 holder.setText(judul,tanggal,image,harga,detail);
             }
@@ -136,11 +145,44 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        kodeRef.setText("1");
+
         return view;
     }
 
+    public void arrayReload(){
 
+        CollectionReference collectionReferences = db.collection("NewKeranjang");
+        Query query = collectionReferences
+                .whereEqualTo("uiduser",currentuserUID)
+                .whereEqualTo("check", true)
+                .whereEqualTo("keyPembelian", "kosong");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        long hargas = documentSnapshot.getLong("harga");
+                        int harga = (int) hargas;
+                        keranjangHarga.add(harga);
+
+                        String uidKeranjang = documentSnapshot.getString("id");
+                        boolean faq = documentSnapshot.getBoolean("grupchat");
+                        Keranjang keranjang = new Keranjang(uidKeranjang,faq);
+                        keranjang.setUidKeranjang(uidKeranjang);
+                        keranjang.setFaq(faq);
+
+                        keranjangList.add(keranjang);
+                        calculateTotal();
+                    }
+                }
+            }
+        });
+
+    }
     public  void calculateTotal(){
+
+
         int i=0;
         total=0;
         int k = keranjangHarga.size();
@@ -172,11 +214,16 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
+
+        int hargaAkhir = total;
+        String koderef = kodeRef.getText().toString();
         Bundle bundle = new Bundle();
         bundle.putString("uidUser",currentuserUID);
         bundle.putString("username",username);
         bundle.putString("usermail",email);
+        bundle.putString("koderef",koderef);
         bundle.putInt("totalHarga",total);
+        bundle.putInt("hargaAkhir",hargaAkhir);
         bundle.putSerializable("keranjangList",keranjangList);
 
         Intent intent = new Intent(getContext(), DetailKeranjang.class);
@@ -191,7 +238,7 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
             super(itemView);
         }
 
-        void setText(final String setJudul, final String setTanggal, final String setImage, final  String setHarga, final  String setDetail) {
+        void setText(final String setJudul, final String setTanggal, final String setImage, final  int setHarga, final  String setDetail) {
             imageView = itemView.findViewById(R.id.thumbnail);
             Picasso.get().load(setImage).into(imageView);
 
@@ -203,9 +250,9 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
 
             kelasMulai= itemView.findViewById(R.id.mulaiKelas_tv);
             kelasMulai.setText(setTanggal);
-
+            String hargas = String.valueOf(setHarga);
             harga=itemView.findViewById(R.id.harga_tv);
-            harga.setText(setHarga);
+            harga.setText(hargas);
         }
 
         void delete(final int position, final String id){
@@ -216,17 +263,26 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
                 @Override
                 public void onClick(View view) {
 
-                    keranjangHarga.remove(position);
-                    keranjangList.remove(position);
-                    calculateTotal();
-                    DocumentReference keranjang = db.collection("Keranjang")
+
+
+
+                    DocumentReference keranjang = db.collection("NewKeranjang")
                             .document(id);
                     keranjang.update("check",false)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getActivity(), "Delete", Toast.LENGTH_LONG).show();
+                                    if (keranjangList.size()>1) {
+                                        keranjangHarga.clear();
+                                        keranjangList.clear();
+                                        arrayReload();
+                                    } else {
 
+                                        keranjangHarga.clear();
+                                        keranjangList.clear();
+                                        totalHarga.setText("Rp 0");
+                                    }
                                 }
                             });
 
@@ -243,14 +299,7 @@ public class KeranjangFragment extends Fragment implements View.OnClickListener 
 
         }
 
-        void inputKeranjang(final String uidKeranjang, boolean faq,final  int position){
 
-            Keranjang keranjang = new Keranjang(uidKeranjang,faq);
-            keranjang.setUidKeranjang(uidKeranjang);
-            keranjang.setFaq(faq);
-
-            keranjangList.add(position,keranjang);
-        }
 
 
     }
