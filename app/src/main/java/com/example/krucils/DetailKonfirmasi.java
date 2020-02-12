@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -65,7 +66,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
     private  List<String> idSetujui = new ArrayList<>();
     private  List<String> Tolak = new ArrayList<>();
     private Button downloadBukti,setuju,tolak;
-    private String keyPembelian,imageURL,userName,tanggalupload,UIDUser,idNotifikasi;
+    private String keyPembelian,imageURL,userName,tanggalupload,UIDUser,idNotifikasi, uidAdmin, adminname;
     private static FirestoreRecyclerAdapter adapter;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
@@ -93,6 +94,8 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
         downloadBukti.setOnClickListener(this);
         setuju.setOnClickListener(this);
         tolak.setOnClickListener(this);
+
+        ReadAdmin();
         Bundle bundle = getIntent().getExtras();
         if(bundle!= null){
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
@@ -218,6 +221,42 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
 
     }
+    private void ReadAdmin() {
+
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference user = db.collection("users").document(currentuser);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+
+                    uidAdmin = (String) doc.getString("UID");
+                    adminname =(String)doc.getString("username");
+
+                }
+
+            }
+
+        })
+
+                .addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+
+                    public void onFailure(@NonNull Exception e) {
+
+
+                    }
+
+                });
+
+    }
     public void arrayReload(){
 
         CollectionReference collectionReferences = db.collection("NewKeranjang");
@@ -255,7 +294,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        uploadAdmin();
                         String fail = " Mohon maaf pembayaran anda pada tanggal "+tanggalupload+", telah gagal dimohonn untuk mengulangi proses pembelian";
                         String keterangan="Gagal";
                         uploadNotifikasi(UIDUser,fail,keterangan);
@@ -278,7 +317,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        uploadAdmin();
                         inputAkses(UIDUser);
                         Toast.makeText(DetailKonfirmasi.this, "Berhasil ", Toast.LENGTH_SHORT).show();
                     }
@@ -492,6 +531,38 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
         db.collection("Notifikasi")
                 .document(idNotifikasi)
+                .set(doc)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        getUIDNotifikasi();
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                })
+
+
+        ;
+    }
+    private void uploadAdmin(){
+
+        Map<String, Object> doc = new HashMap<>();
+
+        doc.put("uidAdmin", uidAdmin);
+
+        doc.put("checkedBy", adminname);
+
+
+        doc.put("checkedDate", FieldValue.serverTimestamp());
+
+        db.collection("NewPembelian")
+                .document(keyPembelian)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

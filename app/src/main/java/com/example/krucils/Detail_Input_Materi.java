@@ -162,7 +162,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        getUIDMateri();
         ReadUser(currentuser);
 
 
@@ -287,6 +287,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
                     progressDialog.dismiss();
                     uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
+                    getUIDMateri();
                     judulMateri.setText(null);
                     file = null;
                     linkMateri.setText(null);
