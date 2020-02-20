@@ -51,7 +51,7 @@ public class InputMateriFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_input_materi, container, false);
         Query query = FirebaseFirestore.getInstance()
-                .collection("NewKelas")
+                .collection("Kelas")
                 .whereEqualTo("check",true)
                 ;
         FirestoreRecyclerOptions<Kelas> options = new FirestoreRecyclerOptions.Builder<Kelas>()

@@ -211,7 +211,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("check",true);
         doc.put("created", FieldValue.serverTimestamp());
 
-        db.collection("NewKeranjang")
+        db.collection("Keranjang")
                 .document(idKeranjang)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -239,7 +239,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private void getUIDKeranjang () {
 
         String uid = UUID.randomUUID().toString();
-        DocumentReference user = db.collection("NewKeranjang").document(uid);
+        DocumentReference user = db.collection("Keranjang").document(uid);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 

@@ -51,7 +51,7 @@ public class BerandaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_beranda, container, false);
         Query query = FirebaseFirestore.getInstance()
-                .collection("NewKelas")
+                .collection("Kelas")
                 .whereEqualTo("publish",true)
                 ;
         FirestoreRecyclerOptions<Kelas> options = new FirestoreRecyclerOptions.Builder<Kelas>()

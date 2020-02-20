@@ -136,7 +136,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
         arrayReload();
         getUIDNotifikasi();
         Query query = FirebaseFirestore.getInstance()
-                .collection("NewKeranjang")
+                .collection("Keranjang")
                 .whereEqualTo("keyPembelian",keyPembelian)
                 .whereEqualTo("check",true)
                 ;
@@ -259,7 +259,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
     }
     public void arrayReload(){
 
-        CollectionReference collectionReferences = db.collection("NewKeranjang");
+        CollectionReference collectionReferences = db.collection("Keranjang");
         Query query = collectionReferences
                 .whereEqualTo("keyPembelian",keyPembelian)
                 .whereEqualTo("check",true);
@@ -285,7 +285,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
     }
     private void tolak(){
-        DocumentReference akses = db.collection("NewPembelian")
+        DocumentReference akses = db.collection("Pembelian")
                 .document(keyPembelian);
         akses.update("checkAdmin",true);
         akses.update("pembayaran",false)
@@ -308,7 +308,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
                 });
     }
     private void setuju(){
-        DocumentReference akseskelas = db.collection("NewPembelian")
+        DocumentReference akseskelas = db.collection("Pembelian")
                 .document(keyPembelian);
         akseskelas.update("checkAdmin",true);
         akseskelas.update("pembayaran",true)
@@ -491,7 +491,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
     private void getUIDNotifikasi () {
 
         String uid = UUID.randomUUID().toString();
-        DocumentReference user = db.collection("NewKeranjang").document(uid);
+        DocumentReference user = db.collection("Keranjang").document(uid);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -561,7 +561,7 @@ public class DetailKonfirmasi extends AppCompatActivity implements View.OnClickL
 
         doc.put("checkedDate", FieldValue.serverTimestamp());
 
-        db.collection("NewPembelian")
+        db.collection("Pembelian")
                 .document(keyPembelian)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

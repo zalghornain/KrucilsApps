@@ -74,7 +74,7 @@ public class KonfirmasiAdminFragment extends Fragment {
         currentuserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Query query = FirebaseFirestore.getInstance()
-                .collection("NewPembelian")
+                .collection("Pembelian")
                 .whereEqualTo("checkAdmin", false)
                 ;
 

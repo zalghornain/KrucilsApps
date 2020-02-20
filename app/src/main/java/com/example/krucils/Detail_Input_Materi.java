@@ -385,7 +385,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         }
     }
     private void delete(){
-        DocumentReference kelas = db.collection("NewKelas")
+        DocumentReference kelas = db.collection("Kelas")
                 .document(UIDkelas);
         kelas.update("check",false);
         kelas.update("publish",false)
@@ -552,7 +552,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
     private void publishKelas (String kelas){
 
-        DocumentReference submitkelas = db.collection("NewKelas")
+        DocumentReference submitkelas = db.collection("Kelas")
                 .document(kelas);
         submitkelas.update("publish",true)
 
@@ -586,7 +586,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
     private void getUIDMateri () {
 
         String uid = UUID.randomUUID().toString();
-        DocumentReference user = db.collection("NewKeranjang").document(uid);
+        DocumentReference user = db.collection("Keranjang").document(uid);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 

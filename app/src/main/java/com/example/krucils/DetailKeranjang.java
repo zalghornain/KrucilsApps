@@ -268,7 +268,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
     private void getUIDPembelian () {
 
         String uid = UUID.randomUUID().toString();
-        DocumentReference user = db.collection("NewKeranjang").document(uid);
+        DocumentReference user = db.collection("Keranjang").document(uid);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -319,7 +319,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         doc.put("timestamp", FieldValue.serverTimestamp());
 
 
-        db.collection("NewPembelian")
+        db.collection("Pembelian")
                 .document(idPembelian)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -356,7 +356,7 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
                 Keranjang input = new Keranjang();
                 input = list.get(i);
                 String uidKelas = input.getUidKeranjang();
-                DocumentReference keranjangg = db.collection("NewKeranjang")
+                DocumentReference keranjangg = db.collection("Keranjang")
                         .document(uidKelas);
                 keranjangg.update("keyPembelian", keyPembelian)
 

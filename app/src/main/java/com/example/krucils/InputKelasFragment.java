@@ -430,7 +430,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
 
 
 
-        db.collection("NewKelas")
+        db.collection("Kelas")
                 .document(idKelas)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -454,7 +454,7 @@ public class InputKelasFragment extends Fragment implements View.OnClickListener
     private void getUIDKelas () {
 
         String uid = UUID.randomUUID().toString();
-        DocumentReference user = db.collection("NewKelas").document(uid);
+        DocumentReference user = db.collection("Kelas").document(uid);
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
