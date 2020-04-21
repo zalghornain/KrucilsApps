@@ -6,8 +6,8 @@ public class Kelas {
 
     public String id;
     public String judul;
-    public String hargaFull;
-    public String hargaBiasa;
+    public int hargaFull;
+    public int hargaBiasa;
     public String detail;
     public String uidAkses;
     public String uidAmin;
@@ -22,7 +22,7 @@ public class Kelas {
 
     }
 
-    public Kelas(String id, String judul, String hargaFull, String hargaBiasa, String detail, String uidAkses, String uidAmin, String createdBy, Date mulaiKelas, boolean check, boolean publish, String imageURL, Date created) {
+    public Kelas(String id, String judul, int hargaFull, int hargaBiasa, String detail, String uidAkses, String uidAmin, String createdBy, Date mulaiKelas, boolean check, boolean publish, String imageURL, Date created) {
         this.id = id;
         this.judul = judul;
         this.hargaFull = hargaFull;
@@ -36,6 +36,22 @@ public class Kelas {
         this.publish = publish;
         this.imageURL = imageURL;
         this.created = created;
+    }
+
+    public int getHargaFull() {
+        return hargaFull;
+    }
+
+    public void setHargaFull(int hargaFull) {
+        this.hargaFull = hargaFull;
+    }
+
+    public int getHargaBiasa() {
+        return hargaBiasa;
+    }
+
+    public void setHargaBiasa(int hargaBiasa) {
+        this.hargaBiasa = hargaBiasa;
     }
 
     public String getUidAmin() {
@@ -84,22 +100,6 @@ public class Kelas {
 
     public void setJudul(String judul) {
         this.judul = judul;
-    }
-
-    public String getHargaFull() {
-        return hargaFull;
-    }
-
-    public void setHargaFull(String hargaFull) {
-        this.hargaFull = hargaFull;
-    }
-
-    public String getHargaBiasa() {
-        return hargaBiasa;
-    }
-
-    public void setHargaBiasa(String hargaBiasa) {
-        this.hargaBiasa = hargaBiasa;
     }
 
     public String getDetail() {

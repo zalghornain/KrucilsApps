@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -62,7 +63,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
     private FirebaseAuth mAuth;
     private ImageView image;
     private TextView judul,detail,kelasMulai,harga,detail_harga;
-    private Button chooseFile,uploadFile, deleteKelas, checkKelas,materiFile,materiLink;
+    private Button chooseFile,uploadFile, deleteKelas, checkKelas,materiFile,materiLink, publishKelas;
     private EditText judulMateri,linkMateri;
     private final int PICK_PDF_CODE = 72;
     private Uri file;
@@ -71,7 +72,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
     DownloadManager downloadManager;
     private Boolean typeFile;
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private String UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses, format, idMateri;
+    private int hargaFull,hargaBiasa;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://test-f3c56.appspot.com");
 
@@ -98,6 +100,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         uploadFile=findViewById(R.id.btn_submit);
         deleteKelas=findViewById(R.id.btn_delete);
         checkKelas=findViewById(R.id.btn_check);
+        publishKelas=findViewById(R.id.btn_publish);
         materiFile=findViewById(R.id.checkbox_file);
         materiLink=findViewById(R.id.uncheckbox_file);
 
@@ -110,6 +113,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         checkKelas.setOnClickListener(this);
         chooseFile.setOnClickListener(this);
         uploadFile.setOnClickListener(this);
+        publishKelas.setOnClickListener(this);
+
 
         chooseFile.setEnabled(false);
         linkMateri.setVisibility(View.VISIBLE);
@@ -136,8 +141,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
             // SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
             // String date = formatter.format(getIntent().getStringExtra("mulaiKelas"));
             kelasMulai.setText(date);
-            hargaFull = getIntent().getStringExtra("hargaFull");
-            hargaBiasa = getIntent().getStringExtra("hargaBiasa");
+            hargaFull = getIntent().getIntExtra("hargaFull",0);
+            hargaBiasa = getIntent().getIntExtra("hargaBiasa",0);
 
             boolean check = getIntent().getExtras().getBoolean("check");
 
@@ -157,7 +162,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        getUIDMateri();
         ReadUser(currentuser);
 
 
@@ -226,8 +231,10 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
 
                     } else {
-
-                        final StorageReference childRef = storageRef.child("Materi/" + System.currentTimeMillis() + ".pdf");
+                        getUIDMateri();
+                        String formatFile = file.toString();
+                        formatFile(formatFile);
+                        final StorageReference childRef = storageRef.child("Materi/" + judul + "."+format);
                         uploadTask = childRef.putFile(file)
 
 
@@ -257,6 +264,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                                     public void onFailure(@NonNull Exception exception) {
                                         // Handle unsuccessful uploads
                                         progressDialog.dismiss();
+                                        Toast.makeText(Detail_Input_Materi.this, "Kenapa gagal ppt nya", Toast.LENGTH_LONG).show();
                                         // ...
                                     }
                                 })
@@ -279,6 +287,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
                     progressDialog.dismiss();
                     uploadMateri(judul, urlLink, UIDuser, username, uidAkses,typeFile);
+                    getUIDMateri();
                     judulMateri.setText(null);
                     file = null;
                     linkMateri.setText(null);
@@ -323,7 +332,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_delete:
-               alert();
+               alertDelete();
 
                 break;
             case R.id.btn_check:
@@ -335,6 +344,10 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
 
 
                 break;
+            case R.id.btn_publish :
+                alertPublish();
+
+                break;
         }
     }
     private boolean isEmpty(EditText text){
@@ -343,6 +356,10 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         return TextUtils.isEmpty(s);
     }
 
+    private void formatFile (String file){
+        String [] arrFormat = file.split("[.]",0);
+        format = arrFormat[(arrFormat.length)-1];
+    }
 
     private void checkDataInput(){
 
@@ -367,22 +384,22 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
             Toast.makeText(getApplicationContext(), "File materi kosong", Toast.LENGTH_SHORT).show();
         }
     }
-    private void delete (){
-
+    private void delete(){
         DocumentReference kelas = db.collection("Kelas")
                 .document(UIDkelas);
-        kelas.update("check",false)
+        kelas.update("check",false);
+        kelas.update("publish",false)
 
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-
+                        batalpublish(uidAkses);
                     }
                 });
     }
-    private void alert(){
+    private void alertDelete(){
         // Create the object of
         // AlertDialog Builder class
         AlertDialog.Builder builder
@@ -448,13 +465,157 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         // Show the Alert Dialog box
         alertDialog.show();
     }
+    private void publishAksesKelas(){
+        DocumentReference akseskelas = db.collection("AksesKelas")
+                .document(uidAkses);
+        akseskelas.update("check",true);
+        akseskelas.update("publish",true)
 
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        publishKelas(UIDkelas);
+
+                    }
+                });
+    }
+    private void alertPublish(){
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(Detail_Input_Materi.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("Anda yakin ingin mempublish kelas ini ?");
+
+        // Set Alert Title
+        builder.setTitle("Perhatian");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Ya",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                publishAksesKelas();
+                                dialog.cancel();
+                                Intent intent = new Intent(Detail_Input_Materi.this, BerandaAdmin.class);
+
+                                startActivity(intent);
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Tidak",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
+
+    private void publishKelas (String kelas){
+
+        DocumentReference submitkelas = db.collection("Kelas")
+                .document(kelas);
+        submitkelas.update("publish",true)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Detail_Input_Materi.this, "Berhasil Publish", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+    }
+
+    public void batalpublish(String uidAkses){
+
+        DocumentReference batalAkses = db.collection("AksesKelas")
+                .document(uidAkses);
+        batalAkses.update("publish",false)
+
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Detail_Input_Materi.this, "Batal Publish", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+    }
+    private void getUIDMateri () {
+
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("Keranjang").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDMateri();
+                    } else {
+                        idMateri = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
     private void  uploadMateri(String judul,String file,String uidAdmin, String username, String uidAkses,boolean tipeFile){
 
-        String id = UUID.randomUUID().toString();
-        String keyPembelian = "kosong";
+
+
         Map<String,Object> doc = new HashMap<>();
-        doc.put("id",id);
+        doc.put("id",idMateri);
         doc.put("judul",judul);
         doc.put("urlFile",file);
         doc.put("uploadBy",username);
@@ -466,7 +627,7 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         doc.put("check",true);
         doc.put("created", FieldValue.serverTimestamp());
         db.collection("MateriKelas")
-                .document(id)
+                .document(idMateri)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -493,9 +654,8 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
+            ActivityCompat.requestPermissions(Detail_Input_Materi.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PICK_PDF_CODE);
+
             return;
         }
 
@@ -580,12 +740,12 @@ public class Detail_Input_Materi extends AppCompatActivity implements View.OnCli
             case 0:
                 // Whatever you want to happen when the first item gets selected
                 checkGrupchat = true;
-                harga.setText(hargaFull);
+                harga.setText(String.valueOf(hargaFull));
                 detail_harga.setText("Materi dan Akses Grup chat");
                 break;
             case 1:
                 checkGrupchat = false;
-                harga.setText(hargaBiasa);
+                harga.setText(String.valueOf(hargaBiasa));
                 detail_harga.setText("Materi aja");
                 break;
 

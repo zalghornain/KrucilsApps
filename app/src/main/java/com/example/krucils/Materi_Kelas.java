@@ -101,7 +101,7 @@ public class Materi_Kelas extends AppCompatActivity  {
                 String uploadBy = model.getUploadBy();
 
                 boolean check = model.isCheck();
-                boolean typeFile = model.isTypeFile();
+                boolean typeFile = model.isTipe();
                 Date created = model.getCreated();
 
                 holder.setText(judul);

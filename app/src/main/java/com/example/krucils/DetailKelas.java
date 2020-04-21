@@ -42,7 +42,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
     private Button bayar,login;
     boolean checkGrupchat;
     private static final String[] paths = {"Harga Full", "Harga Biasa"};
-    private String hargaFull,hargaBiasa,UIDuser,email,username,UIDkelas,hargaPick,judulPick,imageURL,detailPick,mulaiKelas, uidAkses;
+    private String UIDuser,email,username,UIDkelas,judulPick,imageURL,detailPick,mulaiKelas, uidAkses, idKeranjang;
+    private int hargaFull,hargaBiasa,hargaPick;
 
 
     @Override
@@ -63,7 +64,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         bayar.setOnClickListener(this);
         login = findViewById(R.id.btn_login);
         login.setOnClickListener(this);
-
+        getUIDKeranjang();
 
         if(getIntent().getExtras() != null){
             //Statement Disini Akan Berjalan Jika Menggunakan Bundle
@@ -80,8 +81,8 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
            // SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
            // String date = formatter.format(getIntent().getStringExtra("mulaiKelas"));
             kelasMulai.setText(date);
-            hargaFull = getIntent().getStringExtra("hargaFull");
-             hargaBiasa = getIntent().getStringExtra("hargaBiasa");
+            hargaFull =getIntent().getIntExtra("hargaFull",0) ;
+             hargaBiasa =getIntent().getIntExtra("hargaBiasa",0);
 
             boolean check = getIntent().getExtras().getBoolean("check");
 
@@ -159,7 +160,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
 
             case R.id.btn_bayar:
                 judulPick = judul.getText().toString();
-                hargaPick = harga.getText().toString();
+                hargaPick = Integer.parseInt(harga.getText().toString());
                 detailPick= detail_harga.getText().toString();
                 mulaiKelas = kelasMulai.getText().toString();
                 inputKeranjang(UIDuser,username,email,UIDkelas,judulPick,imageURL,hargaPick,detailPick,mulaiKelas,checkGrupchat,uidAkses);
@@ -181,18 +182,18 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
                                 String UIDkelas,
                                 String judul,
                                 String imageURL,
-                                String harga,
+                                int harga,
                                 String detail,
                                 String mulaiKelas,
                                 boolean grupchat,
                                 String uidAkses
                                 ) {
 
-        String id = UUID.randomUUID().toString();
+
         String keyPembelian = "kosong";
         Map<String,Object> doc = new HashMap<>();
 
-        doc.put("id", id);
+        doc.put("id", idKeranjang);
         doc.put("uiduser", UIDuser);
         doc.put("username", username);
         doc.put("email", email);
@@ -211,7 +212,7 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         doc.put("created", FieldValue.serverTimestamp());
 
         db.collection("Keranjang")
-                .document(id)
+                .document(idKeranjang)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -235,19 +236,45 @@ public class DetailKelas extends AppCompatActivity implements View.OnClickListen
         ;
     }
 
+    private void getUIDKeranjang () {
 
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("Keranjang").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDKeranjang();
+                    } else {
+                        idKeranjang = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         switch (position) {
             case 0:
                 // Whatever you want to happen when the first item gets selected
                 checkGrupchat = true;
-                harga.setText(hargaFull);
+                harga.setText(String.valueOf(hargaFull));
                 detail_harga.setText("Materi dan Akses Grup chat");
                 break;
             case 1:
                 checkGrupchat = false;
-                harga.setText(hargaBiasa);
+                harga.setText(String.valueOf(hargaBiasa));
                 detail_harga.setText("Materi aja");
                 break;
 

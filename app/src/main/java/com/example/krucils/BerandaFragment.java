@@ -70,8 +70,8 @@ public class BerandaFragment extends Fragment {
             protected void onBindViewHolder(@NonNull KelasHolder holder, int position, @NonNull Kelas model) {
                 String id = model.getId();
                 String judul = model.getJudul();
-                String hargaFull = model.getHargaFull();
-                String hargaBiasa = model.getHargaBiasa();
+                int hargaFull = model.getHargaFull();
+                int hargaBiasa = model.getHargaBiasa();
                 String detail = model.getDetail();
                 Date mulaiKelas = model.getMulaiKelas();
                 Boolean check = model.isCheck();
@@ -133,7 +133,7 @@ public class BerandaFragment extends Fragment {
 
         }
 
-        void getData(String id, String judul, String hargaFull, String hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL,String uidAkses){
+        void getData(String id, String judul, int hargaFull, int hargaBiasa, String detail, Date mulaiKelas, boolean check, String imageURL,String uidAkses){
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,8 +150,7 @@ public class BerandaFragment extends Fragment {
                      */
 
                     SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");//formating according to my need
-                    String date = formatter.format(mulaiKelas);
-
+                    String date = formatter.format(mulaiKelas);;
                     Intent intent = new Intent(getContext(), DetailKelas.class);
                     intent.putExtra("id",id);
                     intent.putExtra("uidAkses",uidAkses);

@@ -19,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.krucils.objek.Keranjang;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,12 +43,12 @@ import java.util.UUID;
 public class DetailKeranjang extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView buktiPembayaran;
-    private EditText kodeRef,atasnama,bank;
+    private EditText atasnama,bank;
     private TextView hargaTotal;
-    private Button checkRef, uploadImage, bayar,back;
-    private int hargaAwal, hargaDiskon;
+    private Button  uploadImage, bayar,back;
+    private int hargaAwal,hargaAkhir;
     //private ArrayList<Keranjang> keranjangList = new ArrayList<Keranjang>();
-    private String currentuserUID,email,username,harga,hargaAkhir;
+    private String currentuserUID,email,username,koderef,idPembelian;
     private Uri  imgUri;
     private  ArrayList<Keranjang> listKerangjang;
     private StorageTask uploadTask;
@@ -60,17 +63,15 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_detail_keranjang);
-        kodeRef = findViewById(R.id.kodeRef);
         atasnama=findViewById(R.id.atas_nama);
         bank = findViewById(R.id.bank);
         hargaTotal=findViewById(R.id.tv_total);
-        checkRef=findViewById(R.id.btn_check);
         uploadImage=findViewById(R.id.btn_image);
         bayar=findViewById(R.id.btn_bayar);
         buktiPembayaran=findViewById(R.id.thumbnail);
+        getUIDPembelian();
 
 
-        checkRef.setOnClickListener(this);
         uploadImage.setOnClickListener(this);
         bayar.setOnClickListener(this);
 
@@ -79,10 +80,11 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
             currentuserUID = bundle.getString("uidUser");
             email=bundle.getString("usermail");
             username=bundle.getString("username");
-
+            koderef = bundle.getString("koderef");
             listKerangjang =(ArrayList<Keranjang>) bundle.getSerializable("keranjangList");
 
             hargaAwal = bundle.getInt("totalHarga");
+            hargaAkhir= bundle.getInt("hargaAkhir");
            /* Keranjang array = new Keranjang();
             array = listKerangjang.get(1);
             String udin = array.getUidKeranjang();
@@ -91,9 +93,9 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
             */
             formatRP(hargaAwal);
         }
-        harga = String.valueOf(hargaAwal);
-        hargaAkhir=String.valueOf(hargaAwal);
-        kodeRef.setText("1");
+
+
+
         //kodeRef.setText(String.valueOf(listKerangjang.size()));
 
 
@@ -153,13 +155,13 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
                                                     final Uri downloadUrl = uri;
                                                     String image = downloadUrl.toString();
-                                                    String koderef = kodeRef.getText().toString();
+
                                                     //Disini Tambahin Method input ke database
                                                     //uploadKelas(judul, detail, harga,harga2, tanggal, image);
-                                                    uploadKeranjang(currentuserUID,email,username,image,listKerangjang,hargaAkhir,harga,koderef,checkAtasNama,checkBank);
+                                                    uploadKeranjang(currentuserUID,email,username,image,listKerangjang,hargaAkhir,hargaAwal,koderef,checkAtasNama,checkBank);
                                                     progressDialog.dismiss();
 
-                                                    kodeRef.setText("1");
+
                                                     buktiPembayaran.setImageURI(null);
                                                     imgUri= null;
 
@@ -263,18 +265,45 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void uploadKeranjang(String UIDuser, String email, String username , String imageURL, ArrayList keranjangList,String hargaAkhir,String hargaAwal, String kodeRef, String checkNama, String checkBank) {
+    private void getUIDPembelian () {
+
+        String uid = UUID.randomUUID().toString();
+        DocumentReference user = db.collection("Keranjang").document(uid);
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+
+                        getUIDPembelian();
+                    } else {
+                        idPembelian = uid;
+                    }
+                }
+
+            }
+
+        });
+
+    }
+    private void uploadKeranjang(String UIDuser, String email, String username , String imageURL, ArrayList keranjangList,int hargaAkhir,int hargaAwal, String kodeRef, String checkNama, String checkBank) {
         final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
         //progressDialog.setTitle("Uploading...");
         //progressDialog.show();
 
-        String keyPembelian = UUID.randomUUID().toString();
+
 
 
 
         Map<String, Object> doc = new HashMap<>();
 
-        doc.put("keyPembelian", keyPembelian);
+        doc.put("keyPembelian", idPembelian);
         doc.put("uidUser", currentuserUID);
         doc.put("username", username);
         doc.put("atasnama", checkNama);
@@ -291,12 +320,12 @@ public class DetailKeranjang extends AppCompatActivity implements View.OnClickLi
 
 
         db.collection("Pembelian")
-                .document(keyPembelian)
+                .document(idPembelian)
                 .set(doc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        updateKeypembelian(keranjangList,keyPembelian);
+                        updateKeypembelian(keranjangList,idPembelian);
                         Intent intents = new Intent(DetailKeranjang.this,Beranda.class);
                         startActivity(intents);
 

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".DetailKeranjang">
 
 
@@ -37,29 +38,7 @@
             />
 
 
-        <EditText
-            android:id="@+id/kodeRef"
-            android:layout_below="@+id/bank"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Kode Ref"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/btn_check"
 
-
-            />
-
-        <Button
-            android:id="@+id/btn_check"
-            android:layout_width="96dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/kodeRef"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-39dp"
-            android:layout_marginRight="0dp"
-            android:text="Check"
-            android:textColor="@android:color/white" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

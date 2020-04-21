@@ -12,11 +12,22 @@ public class BahanMateri {
     public String uploadBy;
 
     public boolean check;
-    public boolean typeFile;
+    public boolean tipe;
     public Date created;
 
     public BahanMateri(){}
 
+    public BahanMateri(String id, String judul, String urlFile, String uidAdmin, String uidAkses, String uploadBy, boolean check, boolean tipe, Date created) {
+        this.id = id;
+        this.judul = judul;
+        this.urlFile = urlFile;
+        this.uidAdmin = uidAdmin;
+        this.uidAkses = uidAkses;
+        this.uploadBy = uploadBy;
+        this.check = check;
+        this.tipe = tipe;
+        this.created = created;
+    }
 
     public String getId() {
         return id;
@@ -74,12 +85,12 @@ public class BahanMateri {
         this.check = check;
     }
 
-    public boolean isTypeFile() {
-        return typeFile;
+    public boolean isTipe() {
+        return tipe;
     }
 
-    public void setTypeFile(boolean typeFile) {
-        this.typeFile = typeFile;
+    public void setTipe(boolean tipe) {
+        this.tipe = tipe;
     }
 
     public Date getCreated() {
